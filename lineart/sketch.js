@@ -11,5 +11,7 @@ function setup() {
 }
 
 function draw() {
-line(mouseX,mouseY,pmouseX,pmouseY);
+  if(onmousedown===true){
+    line(mouseX,mouseY,pmouseX,pmouseY);
+  }
 }
