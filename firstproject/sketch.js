@@ -50,5 +50,4 @@ function draw(x,y) {
   if(greenAmount <= 0){
     greenChangeAmount *= -1;
   }
-  console.log(redAmount);
 }
