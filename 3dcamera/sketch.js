@@ -5,13 +5,6 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let xPosition = 0;
-let yPosition = 0;
-let zPosition = 90;
-let xCameraShift = 10;
-let yCameraShift = 10;
-let zCameraShift = 10;
-
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   normalMaterial();
@@ -21,5 +14,14 @@ function setup() {
 function draw() {
   background(220)
   orbitControl();
+  rotation();
   box(100);
+}
+
+function rotation(){
+  if(keyIsDown(32)){
+    console.log('space pressed');
+    rotateY(mouseX*0.01);
+    rotateX(mouseY*-0.01);
+  }
 }
