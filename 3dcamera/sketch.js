@@ -39,11 +39,50 @@ function draw() {
 }
 
 function lookAtCubes(){
+  
   xCentre=numCubesX*60/2
-  while(camX<=xCentre){
-    cam.lookAt(camX,camY,camZ);
-    camX++;
-    //slow down frame rate or move camera slower
+  if(camX<xCentre){
+    while(camX<xCentre){
+      cam.lookAt(camX,camY,camZ);
+      camX++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camX>xCentre){
+    while(camX>xCentre){
+      cam.lookAt(camX,camY,camZ);
+      camX--;
+      //slow down frame rate or move camera slower
+    }
+  }
+  
+  yCentre=numCubesY*-60/2
+  if(camY<yCentre){
+    while(camY<=yCentre){
+      cam.lookAt(camX,camY,camZ);
+      camY++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camY>yCentre){
+    while(camY>=yCentre){
+      cam.lookAt(camX,camY,camZ);
+      camY--;
+      //slow down frame rate or move camera slower
+    }
+  }
+
+ zCentre=numCubesZ*-60/2
+ if(camZ<zCentre){
+   while(camZ<zCentre){
+      cam.lookAt(camX,camY,camZ);
+      camZ++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camZ>zCentre){
+    while(camZ>zCentre){
+      cam.lookAt(camX,camY,camZ);
+      camZ--;
+      //slow down frame rate or move camera slower
+    }
   }
 }
 
@@ -56,14 +95,14 @@ function makeCubesX(){
 }
 
 function makeCubesZ(){
-  for(let j=0; j<numCubesZ; j++){
+  for(let j=0; j<=numCubesZ; j++){
     box(50);
     translate(0,0,-60);
   }
 }
 
 function makeCubesY(){
-  for(let k=0; k<numCubesY; k++){
+  for(let k=0; k<=numCubesY; k++){
     box(50);
     translate(0,-60,0);
   }
