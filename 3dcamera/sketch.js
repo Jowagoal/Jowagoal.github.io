@@ -35,57 +35,8 @@ function draw() {
   makeCubesX();
   makeCubesZ();
   makeCubesY();
-  lookAtCubes();
+  lookAtCentre();
 }
-
-function lookAtCubes(){
-  
-  xCentre=numCubesX*60/2
-  if(camX<xCentre){
-    while(camX<xCentre){
-      cam.lookAt(camX,camY,camZ);
-      camX++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camX>xCentre){
-    while(camX>xCentre){
-      cam.lookAt(camX,camY,camZ);
-      camX--;
-      //slow down frame rate or move camera slower
-    }
-  }
-  
-  yCentre=numCubesY*-60/2
-  if(camY<yCentre){
-    while(camY<=yCentre){
-      cam.lookAt(camX,camY,camZ);
-      camY++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camY>yCentre){
-    while(camY>=yCentre){
-      cam.lookAt(camX,camY,camZ);
-      camY--;
-      //slow down frame rate or move camera slower
-    }
-  }
-
- zCentre=numCubesZ*-60/2
- if(camZ<zCentre){
-   while(camZ<zCentre){
-      cam.lookAt(camX,camY,camZ);
-      camZ++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camZ>zCentre){
-    while(camZ>zCentre){
-      cam.lookAt(camX,camY,camZ);
-      camZ--;
-      //slow down frame rate or move camera slower
-    }
-  }
-}
-
 
 function makeCubesX(){
   for(let i=0; i<=numCubesX; i++){
@@ -126,5 +77,51 @@ function keyPressed(){
   }
   if(keyIsDown(8)){
     numCubesY-=1;
+  }
+}
+function lookAtCentre(){
+xCentre=numCubesX*60/2
+  if(camX<xCentre){
+    while(camX<xCentre){
+      cam.lookAt(camX,camY,camZ);
+      camX++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camX>xCentre){
+    while(camX>xCentre){
+      cam.lookAt(camX,camY,camZ);
+      camX--;
+      //slow down frame rate or move camera slower
+    }
+  }
+  
+  yCentre=numCubesY*-60/2
+  if(camY<yCentre){
+    while(camY<=yCentre){
+      cam.lookAt(camX,camY,camZ);
+      camY++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camY>yCentre){
+    while(camY>=yCentre){
+      cam.lookAt(camX,camY,camZ);
+      camY--;
+      //slow down frame rate or move camera slower
+    }
+  }
+
+  zCentre=numCubesZ*-60/2
+  if(camZ<zCentre){
+    while(camZ<zCentre){
+      cam.lookAt(camX,camY,camZ);
+      camZ++;
+      //slow down frame rate or move camera slower
+    }
+  }else if(camZ>zCentre){
+    while(camZ>zCentre){
+      cam.lookAt(camX,camY,camZ);
+      camZ--;
+      //slow down frame rate or move camera slower
+    }
   }
 }
