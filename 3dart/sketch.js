@@ -89,6 +89,7 @@ function keyPressed(){
     positionCube.push(position[0],position[1],position[2]);
   }
   if(keyIsDown(8)){
+    //sometimes a box will not disappear
     let checkPosition = [0,0,0];
     let indexNumber=0;
     while(true){
