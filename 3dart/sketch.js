@@ -5,8 +5,8 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let arr = [];
-let position = [0,0,0,0];
+let arr = [0,0,0,0,1];
+let position = [0,0,0];
 let positionCube = [];
 
 let furthestX = 0;
@@ -40,24 +40,73 @@ function setup() {
 function draw() {
   background(220)
   orbitControl();
-  makeBoxes();
-  makePoint();
+  readArray();
   lookAtCentre();
   //currentCamera();
 }
 
-function makePoint(){
-  translate(position[0],position[1],position[2]);
-  sphere(10);
-}
-
-function makeBoxes(){
-  for(var i=0; i<=arr.length; i+=4){
+function readArray(){
+  for(var i=0; i<=arr.length; i+=5){
     translate(arr[i],arr[i+1],arr[i+2]);
     if(arr[i+3]===1){
       box(50);
     }
+    if(arr[i+4]===1){
+      sphere(25);
+      arr[i-1]=0;
+    }
   }
+}
+
+
+function keyPressed(){
+  if(keyIsDown(68)){
+    arr.push(60,0,0,0,1);
+    position[0]=position[0]+60;
+  }
+  if(keyIsDown(65)){
+    arr.push(-60,0,0,0,1);
+    position[0]=position[0]-60;
+  }
+  if(keyIsDown(87)){
+    arr.push(0,0,-60,0,1);
+    position[2]=position[2]-60;
+  }
+  if(keyIsDown(83)){
+    arr.push(0,0,60,0,1);
+    position[2]=position[2]+60;
+  }
+  if(keyIsDown(38)){
+    arr.push(0,-60,0,0,1);
+    position[1]=position[1]-60;
+  }
+  if(keyIsDown(40)){
+    arr.push(0,60,0,0,1);
+    position[1]=position[1]+60;
+  }
+  if(keyIsDown(13)){
+    arr.push(0,0,0,1,1);
+    positionCube.push(position[0],position[1],position[2]);
+  }
+  if(keyIsDown(8)){
+    let checkPosition = [0,0,0];
+    let indexNumber=0;
+    while(true){
+      checkPosition[0]=checkPosition[0]+arr[indexNumber];
+      checkPosition[1]=checkPosition[1]+arr[indexNumber+1];
+      checkPosition[2]=checkPosition[2]+arr[indexNumber+2];
+      indexNumber+=5;
+      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]){
+        arr[indexNumber+3]=0;
+        break;
+      }
+    }
+  }
+}
+
+
+function windowResized(){
+  setup();
 }
 
 /*
@@ -145,44 +194,4 @@ if(camX<xCentre){
       //slow down frame rate or move camera slower
     }
   }
-}
-
-
-function keyPressed(){
-  if(keyIsDown(68)){
-    arr.push(60,0,0,0);
-    position[0]=position[0]+60;
-  }
-  if(keyIsDown(65)){
-    arr.push(-60,0,0,0);
-    position[0]=position[0]-60;
-  }
-  if(keyIsDown(87)){
-    arr.push(0,0,-60,0);
-    position[2]=position[2]-60;
-  }
-  if(keyIsDown(83)){
-    arr.push(0,0,60,0);
-    position[2]=position[2]+60;
-  }
-  if(keyIsDown(38)){
-    arr.push(0,-60,0,0);
-    position[1]=position[1]-60;
-  }
-  if(keyIsDown(40)){
-    arr.push(0,60,0,0);
-    position[1]=position[1]+60;
-  }
-  if(keyIsDown(13)){
-    arr.push(0,0,0,1);
-    positionCube.push(position[0],position[1],position[2],position[3]);
-  }
-  if(keyIsDown(68)){
-    //if there is a cube a 'd' is pressed, get rid of the cube
-  }
-}
-
-
-function windowResized(){
-  setup();
 }
