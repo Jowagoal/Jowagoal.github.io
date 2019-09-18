@@ -101,6 +101,9 @@ function keyPressed(){
         arr[indexNumber+3]=0;
         break;
       }
+      if(indexNumber>=arr.length){
+        break;
+      }
     }
   }
 }
