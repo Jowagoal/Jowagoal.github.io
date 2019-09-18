@@ -97,7 +97,7 @@ function keyPressed(){
       checkPosition[1]=checkPosition[1]+arr[indexNumber+1];
       checkPosition[2]=checkPosition[2]+arr[indexNumber+2];
       indexNumber+=5;
-      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]){
+      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]&&arr[indexNumber+3]===1){
         arr[indexNumber+3]=0;
         break;
       }
