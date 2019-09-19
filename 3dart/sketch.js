@@ -9,12 +9,20 @@ let arr = [0,0,0,0,1];
 let position = [0,0,0];
 let positionCube = [];
 
-let furthestX = 0;
-let furthestY = 0;
-let furthestZ = 0;
-let closestX = 0;
-let closestY = 0;
-let closestZ = 0;
+let furthestCubeX = 0;
+let furthestCubeY = 0;
+let furthestCubeZ = 0;
+let closestCubeX = 0;
+let closestCubeY = 0;
+let closestCubeZ = 0;
+
+let furthestBallX = 0;
+let furthestBallY = 0;
+let furthestBallZ = 0;
+let closestBallX = 0;
+let closestBallY = 0;
+let closestBallZ = 0;
+
 let xCentre;
 let yCentre;
 let zCentre;
@@ -89,7 +97,6 @@ function keyPressed(){
     positionCube.push(position[0],position[1],position[2]);
   }
   if(keyIsDown(8)){
-    //sometimes a box will not disappear
     let checkPosition = [0,0,0];
     let indexNumber=0;
     while(true){
@@ -135,27 +142,91 @@ function lookAtPoint(){
 */
 
 function lookAtCentre(){
-  if(position[0]<closestX){
-    closestX=position[0];
+  for(var i=0; i<=positionCube.length; i+=3){
+    if(positionCube[i]<closestCubeX){
+      closestCubeX=positionCube[i];
+    }
+    if(positionCube[i+1]<closestCubeY){
+      closestCubeY=positionCube[i+1];
+    }
+    if(positionCube[i+2]<closestCubeZ){
+      closestCubeZ=positionCube[i+1];
+    }
+    if(positionCube[i]>furthestCubeX){
+      furthestCubeX=positionCube[i];
+    }
+    if(positionCube[i+1]>furthestCubeY){
+      furthestCubeY=positionCube[i+1];
+    }
+    if(positionCube[i+2]>furthestCubeZ){
+      furthestCubeZ=positionCube[i+2];
+    }
   }
-  if(position[1]<closestY){
-    closestY=position[1];
+  
+  if(position[0]<closestBallX){
+    closestBallX=position[0];
   }
-  if(position[2]<closestZ){
-    closestZ=position[2];
+  if(position[1]<closestCubeY){
+    closestBallY=position[1];
   }
-  if(position[0]>furthestX){
-    furthestX=position[0];
+  if(position[2]<closestCubeZ){
+    closestBallZ=position[1];
   }
-  if(position[1]>furthestY){
-    furthestY=position[1];
+  if(position[0]>furthestCubeX){
+    furthestBallX=position[0];
   }
-  if(position[2]>furthestZ){
-    furthestZ=position[2];
+  if(position[1]>furthestCubeY){
+    furthestBallY=position[1];
+  }
+  if(position[2]>furthestCubeZ){
+    furthestBallZ=position[2];
+  }
+  
+  let furthestX;
+  let furthestY;
+  let furthestZ;
+  let closestX;
+  let closestY;
+  let closestZ;
+  //not working
+  if(furthestBallX>furthestCubeX){
+    furthestX = furthestBallX
+  }else if(furthestBallX<furthestCubeX){
+    furthestX = furthestCubeX
+  }
+  if(furthestBallY>furthestCubeY){
+    furthestY = furthestBallY
+  }else if(furthestBallY<furthestCubeY){
+    furthestY = furthestCubeY
+  }
+  if(furthestBallZ>furthestCubeZ){
+    furthestZ = furthestBallZ
+  }else if(furthestBallZ<furthestCubeZ){
+    furthestZ = furthestCubeZ
   }
 
-xCentre=(furthestX+closestX)/2;
-if(camX<xCentre){
+  if(closestBallX>closestCubeX){
+    closestX = closestBallX
+  }else if(closestBallX<closestCubeX){
+    closestX = closestCubeX
+  }
+  if(closestBallY>closestCubeY){
+    closestY = closestBallY
+  }else if(closestBallY<closestCubeY){
+    closestY = closestCubeY
+  }
+  if(closestBallZ>closestCubeZ){
+    closestZ = closestBallZ
+  }else if(closestBallZ<closestCubeZ){
+    closestZ = closestCubeZ
+  }
+
+
+
+  xCentre=(furthestX+closestX)/2;
+  yCentre=(furthestY+closestY)/2;
+  zCentre=(furthestZ+closestZ)/2;
+  if(camX<xCentre){
     while(camX<xCentre){
       cam1.lookAt(camX,camY,camZ);
       camX++;
@@ -169,7 +240,6 @@ if(camX<xCentre){
     }
   }
   
-  yCentre=(furthestY+closestY)/2;
   if(camY<yCentre){
     while(camY<=yCentre){
       cam1.lookAt(camX,camY,camZ);
@@ -184,7 +254,6 @@ if(camX<xCentre){
     }
   }
 
-  zCentre=(furthestZ+closestZ)/2;
   if(camZ<zCentre){
     while(camZ<zCentre){
       cam1.lookAt(camX,camY,camZ);
