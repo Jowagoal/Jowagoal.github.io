@@ -9,24 +9,6 @@ let arr = [0,0,0,0,1];
 let position = [0,0,0];
 let positionCube = [];
 
-let furthestCubeX = 0;
-let furthestCubeY = 0;
-let furthestCubeZ = 0;
-let closestCubeX = 0;
-let closestCubeY = 0;
-let closestCubeZ = 0;
-
-let furthestBallX = 0;
-let furthestBallY = 0;
-let furthestBallZ = 0;
-let closestBallX = 0;
-let closestBallY = 0;
-let closestBallZ = 0;
-
-let xCentre;
-let yCentre;
-let zCentre;
-
 let cam1;
 //let cam2;
 //let currentCam = 1;
@@ -112,6 +94,17 @@ function keyPressed(){
         break;
       }
     }
+
+    let i = 0;
+    while(true){
+      if(positionCube[i]===position[0]&&positionCube[i+1]===position[1]&&positionCube[i+2]===position[2]){
+        positionCube.splice(i, 1);
+        positionCube.splice(i, 1);
+        positionCube.splice(i, 1);
+        break;
+      }
+      i+=3;
+    }
   }
 }
 
@@ -142,6 +135,20 @@ function lookAtPoint(){
 */
 
 function lookAtCentre(){
+  let furthestCubeX = 0;
+  let furthestCubeY = 0;
+  let furthestCubeZ = 0;
+  let closestCubeX = 0;
+  let closestCubeY = 0;
+  let closestCubeZ = 0;
+
+  let ballX = 0;
+  let ballY = 0;
+  let ballZ = 0;
+  
+  let xCentre;
+  let yCentre;
+  let zCentre;
   for(var i=0; i<=positionCube.length; i+=3){
     if(positionCube[i]<closestCubeX){
       closestCubeX=positionCube[i];
@@ -150,7 +157,7 @@ function lookAtCentre(){
       closestCubeY=positionCube[i+1];
     }
     if(positionCube[i+2]<closestCubeZ){
-      closestCubeZ=positionCube[i+1];
+      closestCubeZ=positionCube[i+2];
     }
     if(positionCube[i]>furthestCubeX){
       furthestCubeX=positionCube[i];
@@ -163,24 +170,9 @@ function lookAtCentre(){
     }
   }
   
-  if(position[0]<closestBallX){
-    closestBallX=position[0];
-  }
-  if(position[1]<closestCubeY){
-    closestBallY=position[1];
-  }
-  if(position[2]<closestCubeZ){
-    closestBallZ=position[1];
-  }
-  if(position[0]>furthestCubeX){
-    furthestBallX=position[0];
-  }
-  if(position[1]>furthestCubeY){
-    furthestBallY=position[1];
-  }
-  if(position[2]>furthestCubeZ){
-    furthestBallZ=position[2];
-  }
+  ballX = position[0];
+  ballY = position[1];
+  ballZ = position[2];
   
   let furthestX;
   let furthestY;
@@ -188,83 +180,41 @@ function lookAtCentre(){
   let closestX;
   let closestY;
   let closestZ;
-  //not working
-  if(furthestBallX>furthestCubeX){
-    furthestX = furthestBallX
-  }else if(furthestBallX<furthestCubeX){
+  
+  if(ballX>=furthestCubeX){
+    furthestX = ballX
+  }else if(ballX<=furthestCubeX){
     furthestX = furthestCubeX
   }
-  if(furthestBallY>furthestCubeY){
-    furthestY = furthestBallY
-  }else if(furthestBallY<furthestCubeY){
+  if(ballY>=furthestCubeY){
+    furthestY = ballY
+  }else if(ballY<=furthestCubeY){
     furthestY = furthestCubeY
   }
-  if(furthestBallZ>furthestCubeZ){
-    furthestZ = furthestBallZ
-  }else if(furthestBallZ<furthestCubeZ){
+  if(ballZ>=furthestCubeZ){
+    furthestZ = ballZ
+  }else if(ballZ<=furthestCubeZ){
     furthestZ = furthestCubeZ
   }
-
-  if(closestBallX>closestCubeX){
-    closestX = closestBallX
-  }else if(closestBallX<closestCubeX){
+  
+  if(ballX<=closestCubeX){
+    closestX = ballX
+  }else if(ballX>=closestCubeX){
     closestX = closestCubeX
   }
-  if(closestBallY>closestCubeY){
-    closestY = closestBallY
-  }else if(closestBallY<closestCubeY){
+  if(ballY<=closestCubeY){
+    closestY = ballY
+  }else if(ballY>=closestCubeY){
     closestY = closestCubeY
   }
-  if(closestBallZ>closestCubeZ){
-    closestZ = closestBallZ
-  }else if(closestBallZ<closestCubeZ){
+  if(ballZ<=closestCubeZ){
+    closestZ = ballZ
+  }else if(ballZ>=closestCubeZ){
     closestZ = closestCubeZ
   }
 
-
-
-  xCentre=(furthestX+closestX)/2;
-  yCentre=(furthestY+closestY)/2;
-  zCentre=(furthestZ+closestZ)/2;
-  if(camX<xCentre){
-    while(camX<xCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camX++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camX>xCentre){
-    while(camX>xCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camX--;
-      //slow down frame rate or move camera slower
-    }
-  }
-  
-  if(camY<yCentre){
-    while(camY<=yCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camY++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camY>yCentre){
-    while(camY>=yCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camY--;
-      //slow down frame rate or move camera slower
-    }
-  }
-
-  if(camZ<zCentre){
-    while(camZ<zCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camZ++;
-      //slow down frame rate or move camera slower
-    }
-  }else if(camZ>zCentre){
-    while(camZ>zCentre){
-      cam1.lookAt(camX,camY,camZ);
-      camZ--;
-      //slow down frame rate or move camera slower
-    }
-  }
+  xCentre=((furthestX+closestX)/2);
+  yCentre=((furthestY+closestY)/2);
+  zCentre=((furthestZ+closestZ)/2);
+  cam1.lookAt(xCentre,yCentre,zCentre);
 }
