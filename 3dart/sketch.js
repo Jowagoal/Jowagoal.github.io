@@ -32,6 +32,7 @@ function draw() {
   orbitControl();
   readArray();
   lookAtCentre();
+  //keyDown();
   //currentCamera();
 }
 
@@ -104,6 +105,9 @@ function keyPressed(){
         break;
       }
       i+=3;
+      if(i>=positionCube.length){
+        break;
+      }
     }
   }
 }
