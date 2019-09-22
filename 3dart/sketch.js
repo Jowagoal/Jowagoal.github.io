@@ -10,8 +10,8 @@ let position = [0,0,0];
 let positionCube = [];
 
 let cam1;
-//let cam2;
-//let currentCam = 1;
+let cam2;
+let currentCam = 1;
 
 let camX=0;
 let camY=0;
@@ -23,8 +23,8 @@ function setup() {
   background(220);
   cam1 = createCamera();
   cam1.lookAt(camX,camY,camZ);
-  //cam2 = createCamera();
-  //cam2.lookAt(position[0],position[1],position[2]);
+  cam2 = createCamera();
+  cam2.lookAt(position[0],position[1],position[2]);
 }
 
 function draw() {
@@ -32,8 +32,17 @@ function draw() {
   orbitControl();
   readArray();
   lookAtCentre();
-  //keyDown();
-  //currentCamera();
+  cam();
+  //keyDown(); maybe?
+}
+
+//only one cam works
+function cam(){
+  if(currentCam===1){
+    lookAtCentre;
+  }else if(currentCam===2){
+    lookAtBall;
+  }
 }
 
 function readArray(){
@@ -49,96 +58,16 @@ function readArray(){
   }
 }
 
-
-function keyPressed(){
-  if(keyIsDown(68)){
-    arr.push(60,0,0,0,1);
-    position[0]=position[0]+60;
-  }
-  if(keyIsDown(65)){
-    arr.push(-60,0,0,0,1);
-    position[0]=position[0]-60;
-  }
-  if(keyIsDown(87)){
-    arr.push(0,0,-60,0,1);
-    position[2]=position[2]-60;
-  }
-  if(keyIsDown(83)){
-    arr.push(0,0,60,0,1);
-    position[2]=position[2]+60;
-  }
-  if(keyIsDown(38)){
-    arr.push(0,-60,0,0,1);
-    position[1]=position[1]-60;
-  }
-  if(keyIsDown(40)){
-    arr.push(0,60,0,0,1);
-    position[1]=position[1]+60;
-  }
-  if(keyIsDown(13)){
-    arr.push(0,0,0,1,1);
-    positionCube.push(position[0],position[1],position[2]);
-  }
-  if(keyIsDown(8)){
-    let checkPosition = [0,0,0];
-    let indexNumber=0;
-    while(true){
-      checkPosition[0]=checkPosition[0]+arr[indexNumber];
-      checkPosition[1]=checkPosition[1]+arr[indexNumber+1];
-      checkPosition[2]=checkPosition[2]+arr[indexNumber+2];
-      indexNumber+=5;
-      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]&&arr[indexNumber+3]===1){
-        arr[indexNumber+3]=0;
-        break;
-      }
-      if(indexNumber>=arr.length){
-        break;
-      }
-    }
-
-    let i = 0;
-    while(true){
-      if(positionCube[i]===position[0]&&positionCube[i+1]===position[1]&&positionCube[i+2]===position[2]){
-        positionCube.splice(i, 1);
-        positionCube.splice(i, 1);
-        positionCube.splice(i, 1);
-        break;
-      }
-      i+=3;
-      if(i>=positionCube.length){
-        break;
-      }
-    }
-  }
-}
-
-
-function windowResized(){
-  setup();
-}
-
-/*
-function currentCamera(){
-  if(keyIsDown(49)){
-    setCamera(cam1);
-    currentCam=1;
-  }else if(keyIsDown(50)){
-    setCamera(cam2);
-    currentCam=2;
-  }
-  if(currentCam===1){
-    lookAtCentre();
-  }else if(currentCam===2){
-    lookAtPoint();
-  }
-}
-
-function lookAtPoint(){
+function lookAtBall(){
+  setCamera(cam2);
   cam2.lookAt(position[0],position[1],position[2]);
+  if(keyIsDown(49)){
+    currentCam=1;
+  }
 }
-*/
 
 function lookAtCentre(){
+  setCamera(cam1);
   let furthestCubeX = 0;
   let furthestCubeY = 0;
   let furthestCubeZ = 0;
@@ -221,4 +150,73 @@ function lookAtCentre(){
   yCentre=((furthestY+closestY)/2);
   zCentre=((furthestZ+closestZ)/2);
   cam1.lookAt(xCentre,yCentre,zCentre);
+  if(keyIsDown(50)){
+    currentCam=2;
+  }
+}
+
+function keyPressed(){
+  if(keyIsDown(68)){
+    arr.push(60,0,0,0,1);
+    position[0]=position[0]+60;
+  }
+  if(keyIsDown(65)){
+    arr.push(-60,0,0,0,1);
+    position[0]=position[0]-60;
+  }
+  if(keyIsDown(87)){
+    arr.push(0,0,-60,0,1);
+    position[2]=position[2]-60;
+  }
+  if(keyIsDown(83)){
+    arr.push(0,0,60,0,1);
+    position[2]=position[2]+60;
+  }
+  if(keyIsDown(38)){
+    arr.push(0,-60,0,0,1);
+    position[1]=position[1]-60;
+  }
+  if(keyIsDown(40)){
+    arr.push(0,60,0,0,1);
+    position[1]=position[1]+60;
+  }
+  if(keyIsDown(13)){
+    arr.push(0,0,0,1,1);
+    positionCube.push(position[0],position[1],position[2]);
+  }
+  if(keyIsDown(8)){
+    let checkPosition = [0,0,0];
+    let indexNumber=0;
+    while(true){
+      checkPosition[0]=checkPosition[0]+arr[indexNumber];
+      checkPosition[1]=checkPosition[1]+arr[indexNumber+1];
+      checkPosition[2]=checkPosition[2]+arr[indexNumber+2];
+      indexNumber+=5;
+      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]&&arr[indexNumber+3]===1){
+        arr[indexNumber+3]=0;
+        break;
+      }
+      if(indexNumber>=arr.length){
+        break;
+      }
+    }
+
+    let i = 0;
+    while(true){
+      if(positionCube[i]===position[0]&&positionCube[i+1]===position[1]&&positionCube[i+2]===position[2]){
+        positionCube.splice(i, 1);
+        positionCube.splice(i, 1);
+        positionCube.splice(i, 1);
+        break;
+      }
+      i+=3;
+      if(i>=positionCube.length){
+        break;
+      }
+    }
+  }
+}
+
+function windowResized(){
+  setup();
 }
