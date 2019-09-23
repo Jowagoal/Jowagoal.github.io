@@ -1,4 +1,4 @@
-// 3d Test
+// Interactive Scene
 // Jordie Walter
 // Sept 9, 2019
 //
@@ -17,14 +17,23 @@ let camX=0;
 let camY=0;
 let camZ=0;
 
+function preload(){
+  inconsolata = loadFont('assets/inconsolata.otf');
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   normalMaterial();
   background(220);
+
   cam1 = createCamera();
   cam1.lookAt(camX,camY,camZ);
   cam2 = createCamera();
   cam2.lookAt(position[0],position[1],position[2]);
+
+  textFont(inconsolata);
+  textSize(width / 3);
+  textAlign(CENTER, CENTER);
 }
 
 function draw() {
@@ -37,6 +46,7 @@ function draw() {
 }
 
 //only one cam works
+
 function cam(){
   if(currentCam===1){
     lookAtCentre;
