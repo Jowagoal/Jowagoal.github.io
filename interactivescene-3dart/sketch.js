@@ -1,9 +1,11 @@
-// Interactive Scene
+// Interactive Scene - 3D Art
 // Jordie Walter
 // Sept 9, 2019
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// This code is entirely based around 3D.  Within it I have explored
+// 3D objects, preloading fonts that support 3D, and the use of
+// multiple cameras to view the user's masterpeice.
 
 let arr = [0,0,0,0,1];
 let position = [0,0,0];
@@ -17,42 +19,36 @@ let camX=0;
 let camY=0;
 let camZ=0;
 
+let inconsolata;
+let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down", "T          = hide/show controls", "Enter      = place block", "Backspace  = delete block", "1          = Camera 1 (looks at centre)", "2          = Camera 2 (looks at ball)", "","Click and drag to look around", "Mouse wheel to zoom in and out", "(Hint: be agressive with it!)"]
+let toggle = 1;
+
 function preload(){
   inconsolata = loadFont('assets/inconsolata.otf');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  normalMaterial();
   background(220);
-
+  
   cam1 = createCamera();
-  cam1.lookAt(camX,camY,camZ);
+  cam1.lookAt(0,0,0);
   cam2 = createCamera();
-  cam2.lookAt(position[0],position[1],position[2]);
-
+  cam2.lookAt(0,0,0);
+  
   textFont(inconsolata);
-  textSize(width / 3);
-  textAlign(CENTER, CENTER);
+  textSize(25);
+  textAlign(LEFT, BOTTOM);
 }
 
 function draw() {
+  normalMaterial();
   background(220)
   orbitControl();
+
   readArray();
-  lookAtCentre();
   cam();
-  //keyDown(); maybe?
-}
-
-//only one cam works
-
-function cam(){
-  if(currentCam===1){
-    lookAtCentre;
-  }else if(currentCam===2){
-    lookAtBall;
-  }
+  controls();
 }
 
 function readArray(){
@@ -68,12 +64,27 @@ function readArray(){
   }
 }
 
+function cam(){
+  if(currentCam===1){
+    lookAtCentre();
+  }else if(currentCam===2){
+    lookAtBall();
+  }
+}
+
+function controls(){
+  if(toggle===1){
+    fill(0);
+    for(var i=0; i<=instructions.length; i++){
+      text(instructions[i], -550, -150);
+      translate(0, 25);
+    }
+  }
+}
+
 function lookAtBall(){
   setCamera(cam2);
   cam2.lookAt(position[0],position[1],position[2]);
-  if(keyIsDown(49)){
-    currentCam=1;
-  }
 }
 
 function lookAtCentre(){
@@ -89,9 +100,6 @@ function lookAtCentre(){
   let ballY = 0;
   let ballZ = 0;
   
-  let xCentre;
-  let yCentre;
-  let zCentre;
   for(var i=0; i<=positionCube.length; i+=3){
     if(positionCube[i]<closestCubeX){
       closestCubeX=positionCube[i];
@@ -156,13 +164,14 @@ function lookAtCentre(){
     closestZ = closestCubeZ
   }
 
+  let xCentre;
+  let yCentre;
+  let zCentre;
+
   xCentre=((furthestX+closestX)/2);
   yCentre=((furthestY+closestY)/2);
   zCentre=((furthestZ+closestZ)/2);
   cam1.lookAt(xCentre,yCentre,zCentre);
-  if(keyIsDown(50)){
-    currentCam=2;
-  }
 }
 
 function keyPressed(){
@@ -190,6 +199,9 @@ function keyPressed(){
     arr.push(0,60,0,0,1);
     position[1]=position[1]+60;
   }
+  if(keyIsDown(84)){
+    toggle*=-1;
+  }
   if(keyIsDown(13)){
     arr.push(0,0,0,1,1);
     positionCube.push(position[0],position[1],position[2]);
@@ -210,7 +222,7 @@ function keyPressed(){
         break;
       }
     }
-
+    
     let i = 0;
     while(true){
       if(positionCube[i]===position[0]&&positionCube[i+1]===position[1]&&positionCube[i+2]===position[2]){
@@ -224,6 +236,14 @@ function keyPressed(){
         break;
       }
     }
+  }
+  if(keyIsDown(49)){
+    currentCam=1;
+    console.log(currentCam);
+  }
+  if(keyIsDown(50)){
+    currentCam=2;
+    console.log(currentCam);
   }
 }
 
