@@ -26,7 +26,7 @@ let toggle = 1;
 
 //preloads the font
 function preload(){
-  inconsolata = loadFont('assets/inconsolata.otf');
+  inconsolata = loadFont('assets/Inconsolata.otf');
 }
 
 function setup() {
