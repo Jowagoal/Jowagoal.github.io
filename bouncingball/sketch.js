@@ -5,6 +5,11 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+let state = "menu";
+
+
+
+
 let x;
 let y;
 let dx;
@@ -14,6 +19,7 @@ let mode = 1;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  background(255);
   x = width/2;
   y = height/2;
   dx = random(-15,15);
@@ -24,12 +30,45 @@ function draw() {
   background(255);
   noStroke();
   fill(0);
-  if(mode===1){
+  if(state === "menu"){
+    showMenu();
+    checkIfButtonClicked();
+  }else if(state === "circle"){
     circle(x, y, radius);
     moveShape();
-  }else if(mode===-1){
-    rect(x-radius/2, y-radius/2, radius, radius);
-    moveShape();
+  }else if(state === "rectangle"){
+      rect(x-radius/2, y-radius/2, radius, radius);
+      moveShape();
+  }
+}
+
+function showMenu(){
+rectMode(CENTER);
+
+textAlign(CENTER, CENTER);
+textSize(50);
+
+fill(255, 0, 0, 125);
+rect(width/2,height/2-100,400,150);
+fill(0);
+text("Rectangle", width/2, height/2-100);
+
+fill(255, 0, 0, 125);
+rect(width/2,height/2+100,400,150);
+fill(0);
+text("Circle", width/2, height/2+100);
+}
+
+function checkIfButtonClicked(){
+  if(mouseIsPressed){
+    //rectangle
+    if(x>width/2-200 && x<width+200 && y>height/2-175 && y<height/2-25){
+      state = "rectangle";
+    }
+    //circle
+    if(x>width/2-200 && x<width+200 && y>height/2+25 && y<height/2+175){
+      state = "circle";
+    }
   }
 }
 
