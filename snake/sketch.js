@@ -15,7 +15,6 @@ let push0 = 60;
 let push1 = 0;
 let push2 = 0;
 let push3 = 1;
-let counter = 3
 
 let cam1;
 let cam2;
@@ -41,8 +40,6 @@ function setup() {
   //creates each camera
   cam1 = createCamera();
   cam1.lookAt(0,0,0);
-  cam2 = createCamera();
-  cam2.lookAt(0,0,0);
   
   //sets font
   textFont(inconsolata);
@@ -50,6 +47,7 @@ function setup() {
   textAlign(LEFT, BOTTOM);
 
   frameRate(20);
+  strokeWeight(5);
 }
 
 //draw loop calls all functions
@@ -66,6 +64,12 @@ function draw() {
   arr.push(push1);
   arr.push(push2);
   arr.push(push3);
+  if(push1===50||push1===-50){
+    push0=arr[arr.length-8];
+    push1=0;
+    push2=arr[arr.length-6];
+    push3=arr[arr.length-5];
+  }
 }
 
 //when a key is pressed this function is called
@@ -73,62 +77,62 @@ function keyPressed(){
   //if 'd' is pressed it pushes 5-bits into the array
   //telling it to move the ball to the right 
   if(keyIsDown(68)){
-    if(push0!==-60){
-      push0=60;
+    if(push0!==-50){
+      push0=50;
     }
     push1=0;
     push2=0;
-    position[0]=position[0]+60;
+    position[0]=position[0]+50;
   }
   //if 'a' is pressed it pushes 5-bits into the array
   //telling it to move the ball to the left
   if(keyIsDown(65)){
-    if(push0!==60){
-      push0=-60;
+    if(push0!==50){
+      push0=-50;
     }
     push1=0;
     push2=0;
-    position[0]=position[0]-60;
+    position[0]=position[0]-50;
   }
   //if 'w' is pressed it pushes 5-bits into the array
   //telling it to move the ball forward
   if(keyIsDown(87)){
     push0=0;
     push1=0;
-    if(push2!==60){
-      push2=-60;
+    if(push2!==50){
+      push2=-50;
     }
-    position[2]=position[2]-60;
+    position[2]=position[2]-50;
   }
   //if 's' is pressed it pushes 5-bits into the array
   //telling it to move the ball backward 
   if(keyIsDown(83)){
     push0=0;
     push1=0;
-    if(push2!==-60){
-      push2=60;
+    if(push2!==-50){
+      push2=50;
     }
-    position[2]=position[2]+60;
+    position[2]=position[2]+50;
   }
   //if 'UP_ARROW' is pressed it pushes 5-bits into the array
   //telling it to move the ball up 
   if(keyIsDown(38)){
     push0=0;
-    if(push1!==60){
-      push1=-60;
+    if(push1!==50){
+      push1=-50;
     }
     push2=0;
-    position[1]=position[1]-60;
+    position[1]=position[1]-50;
   }
   //if 'DOWN_ARROW' is pressed it pushes 5-bits into the array
   //telling it to move the ball down 
   if(keyIsDown(40)){
     push0=0;
-    if(push1!==-60){
-      push1=60;
+    if(push1!==-50){
+      push1=50;
     }
     push2=0;
-    position[1]=position[1]+60;
+    position[1]=position[1]+50;
   }
   //if 't' is pressed it changes which camera is active
   if(keyIsDown(84)){
@@ -184,12 +188,10 @@ function keyPressed(){
   //if '1' is pressed, changes to camera 1
   if(keyIsDown(49)){
     currentCam=1;
-    console.log(currentCam);
   }
   //if '2' is pressed, changes to camera 2
   if(keyIsDown(50)){
     currentCam=2;
-    console.log(currentCam);
   }
 }
 
