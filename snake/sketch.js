@@ -1,13 +1,12 @@
-// Interactive Scene - 3D Art
+// State Variable - Snake
 // Jordie Walter
 // Sept 9, 2019
 //
 // Extra for Experts:
-// This code is entirely based around 3D.  Within it I have explored
-// 3D objects, preloading fonts that support 3D, and the use of
-// multiple cameras to view the user's masterpeice.
 
 //global variables
+let state = "Menu";
+
 let arr = [60,0,0,0];
 let position = [0,0,0];
 let positionCube = [];
@@ -52,6 +51,26 @@ function setup() {
 
 //draw loop calls all functions
 function draw() {
+  checkState();
+}
+
+function checkState(){
+  if(state==="Menu"){
+    startScreen();
+  }
+  if(state==="Play"){
+    gamePlay();
+  }
+  if(state==="Game Over"){
+
+  }
+}
+
+function startScreen(){
+  
+}
+
+function gamePlay(){
   fill(0,200,0, 50);
   background(220)
   orbitControl();
@@ -59,7 +78,7 @@ function draw() {
   readArray();
   cam();
   controls();
-
+  
   arr.push(push0);
   arr.push(push1);
   arr.push(push2);
