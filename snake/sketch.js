@@ -67,12 +67,31 @@ function checkState(){
 }
 
 function startScreen(){
-  
+  background(220);
 }
 
 function gamePlay(){
+  background(220);
+  
+  createBoard();
+  gameStartedWaitTime();
+  gameStart();
+}
+
+function createBoard(){
+  fill(0,0,0,0);
+  stroke(255,0,0);
+  box(1000,1000,1);
+  //translate(500,-500, 0);
+}
+
+function gameStartedWaitTime(){
+  
+}
+
+function gameStart(){
   fill(0,200,0, 50);
-  background(220)
+  stroke(0);
   orbitControl();
   
   readArray();
@@ -243,7 +262,8 @@ function controls(){
 //determines which camera to use
 function cam(){
   if(currentCam===1){
-    lookAtCentre();
+    cam1.lookAt(500,500,-500);
+    //lookAtCentre();
   }else if(currentCam===2){
     lookAtBall();
   }
