@@ -5,15 +5,16 @@
 // Extra for Experts:
 
 //global variables
-let state = "Menu";
+let state = "Play";
 
-let arr = [60,0,0,0];
+let arr = [50,0,0,0];
 let position = [0,0,0];
 let positionCube = [];
-let push0 = 60;
+let push0 = 50;
 let push1 = 0;
 let push2 = 0;
 let push3 = 1;
+let snakeLength = 3;
 
 let cam1;
 let cam2;
@@ -45,7 +46,7 @@ function setup() {
   textSize(25);
   textAlign(LEFT, BOTTOM);
 
-  frameRate(20);
+  frameRate(10);
   strokeWeight(5);
 }
 
@@ -79,9 +80,25 @@ function gamePlay(){
 }
 
 function createBoard(){
-  fill(0,0,0,0);
+  fill(0,0,0);
   stroke(255,0,0);
-  box(1000,1000,1);
+  line(-25,-25,25,975,-25,25);
+  line(-25,-25,25,-25,975,25);
+  line(-25,-25,25,-25,-25,-975);
+
+  line(975,975,-975,975,975,25);
+  line(975,975,-975,975,-25,-975);
+  line(975,975,-975,-25,975,-975);
+
+  line(-25,975,25,975,975,25);
+  line(-25,975,25,-25,975,-975);
+  
+  line(975,-25,-975,975,-25,25);
+  line(975,-25,-975,-25,-25,-975);
+
+  line(-25,-25,-975,-25,975,-975);
+
+  line(975,-25,25,975,975,25)
   //translate(500,-500, 0);
 }
 
@@ -90,13 +107,16 @@ function gameStartedWaitTime(){
 }
 
 function gameStart(){
-  fill(0,200,0, 50);
   stroke(0);
   orbitControl();
   
   readArray();
   cam();
   controls();
+  
+  position[0]=position[0]+push0;
+  position[1]=position[1]+push1;
+  position[2]=position[2]+push2;
   
   arr.push(push0);
   arr.push(push1);
@@ -107,6 +127,65 @@ function gameStart(){
     push1=0;
     push2=arr[arr.length-6];
     push3=arr[arr.length-5];
+  }
+  if(position[0]<-100){
+    console.log('over');
+    state = "Game Over";
+  }
+  if(position[0]>950){
+    console.log('over');
+    state = "Game Over";
+  }
+  if(position[1]<0){
+    console.log('over');
+    state = "Game Over";
+  }
+  if(position[1]>1950){
+    console.log('over');
+    state = "Game Over";
+  }
+  if(position[2]>0){
+    console.log('over');
+    state = "Game Over";
+  }
+  if(position[2]<-1050){
+    console.log('over');
+    state = "Game Over";
+  }
+}
+
+//reads avery 5 indexs of the array
+function readArray(){
+  for(var i=0; i<=arr.length; i+=4){
+    //translates by the first 3 indexs of 5
+    translate(arr[i],arr[i+1],arr[i+2]);
+    //creates a box if the fourth index is a 1
+    if(arr[i+3]===1){
+      placeBox();
+      //fill(0,200,0, 50);
+      //box(50);
+    }
+    if(arr[i-(4*snakeLength-3)]===1){
+      arr[i-(4*snakeLength-3)]=0;
+    }
+  }
+}
+
+//borders are -100<x>900, 0<y>1950, -1000<z>0
+function placeBox(){
+  let x = position[0];
+  let y = position[1];
+  let z = position[2];
+  if(x<=0||x>=800||y<=200||y>=1700||z<=-900||z>=-100){
+  fill(255,0,0,50);
+    box(50);
+  }else if(x<=200||x>=550||y<=500||y>=1400||z<=-750||z>=-300){
+    fill(0,0,255,50);
+    box(50);
+  }
+  else{
+    fill(0,255,0,50);
+    box(50);
   }
 }
 
@@ -176,77 +255,8 @@ function keyPressed(){
   if(keyIsDown(84)){
     toggle*=-1;
   }
-  //if 'ENTER' is pressed it pushes 5-bits into the array
-  //telling the program to put a box there
-  if(keyIsDown(13)){
-    arr.push(0,0,0,1,1);
-    //positionCube remembers where each box is
-    positionCube.push(position[0],position[1],position[2]);
-  }
-  //if 'BACKSPACE' is pressed it will remove the box at that position
-  //and remove it from the positionCube array
-  if(keyIsDown(8)){
-    let checkPosition = [0,0,0];
-    let indexNumber=0;
-    while(true){
-      //checkPosition will go through the array and find the current
-      //position the program is in, then if the 'cube' bit is 1 change
-      //it to a 0
-      checkPosition[0]=checkPosition[0]+arr[indexNumber];
-      checkPosition[1]=checkPosition[1]+arr[indexNumber+1];
-      checkPosition[2]=checkPosition[2]+arr[indexNumber+2];
-      indexNumber+=5;
-      if(checkPosition[0]===position[0]&&checkPosition[1]===position[1]&&checkPosition[2]===position[2]&&arr[indexNumber+3]===1){
-        arr[indexNumber+3]=0;
-        break;
-      }
-      //if no cube is found at the position then the loop will break
-      if(indexNumber>=arr.length){
-        break;
-      }
-    }
-    
-    //will check the positionCube array and erase the position of a
-    //cube if there is a cube in the position
-    let i = 0;
-    while(true){
-      if(positionCube[i]===position[0]&&positionCube[i+1]===position[1]&&positionCube[i+2]===position[2]){
-        positionCube.splice(i, 1);
-        positionCube.splice(i, 1);
-        positionCube.splice(i, 1);
-        break;
-      }
-      i+=3;
-      //if no cube is found at the position, break the loop
-      if(i>=positionCube.length){
-        break;
-      }
-    }
-  }
-  //if '1' is pressed, changes to camera 1
-  if(keyIsDown(49)){
-    currentCam=1;
-  }
-  //if '2' is pressed, changes to camera 2
-  if(keyIsDown(50)){
-    currentCam=2;
-  }
 }
 
-//reads avery 5 indexs of the array
-function readArray(){
-  for(var i=0; i<=arr.length; i+=4){
-    //translates by the first 3 indexs of 5
-    translate(arr[i],arr[i+1],arr[i+2]);
-    //creates a box if the fourth index is a 1
-    if(arr[i+3]===1){
-      box(50);
-    }
-    if(arr[i-13]===1){
-      arr[i-13]=0;
-    }
-  }
-}
 
 //shows the controls if it is toggeled on
 function controls(){
@@ -263,109 +273,7 @@ function controls(){
 function cam(){
   if(currentCam===1){
     cam1.lookAt(500,500,-500);
-    //lookAtCentre();
-  }else if(currentCam===2){
-    lookAtBall();
   }
-}
-
-//this camera will look at the ball
-function lookAtBall(){
-  setCamera(cam2);
-  cam2.lookAt(position[0],position[1],position[2]);
-}
-
-//this camera will look at the centre of everything
-function lookAtCentre(){
-  setCamera(cam1);
-  let furthestCubeX = 0;
-  let furthestCubeY = 0;
-  let furthestCubeZ = 0;
-  let closestCubeX = 0;
-  let closestCubeY = 0;
-  let closestCubeZ = 0;
-
-  let ballX = 0;
-  let ballY = 0;
-  let ballZ = 0;
-  
-  //for loop will find the furthest and closest cube in x, y, and z
-  for(var i=0; i<=positionCube.length; i+=3){
-    if(positionCube[i]<closestCubeX){
-      closestCubeX=positionCube[i];
-    }
-    if(positionCube[i+1]<closestCubeY){
-      closestCubeY=positionCube[i+1];
-    }
-    if(positionCube[i+2]<closestCubeZ){
-      closestCubeZ=positionCube[i+2];
-    }
-    if(positionCube[i]>furthestCubeX){
-      furthestCubeX=positionCube[i];
-    }
-    if(positionCube[i+1]>furthestCubeY){
-      furthestCubeY=positionCube[i+1];
-    }
-    if(positionCube[i+2]>furthestCubeZ){
-      furthestCubeZ=positionCube[i+2];
-    }
-  }
-  
-  ballX = position[0];
-  ballY = position[1];
-  ballZ = position[2];
-  
-  let furthestX;
-  let furthestY;
-  let furthestZ;
-  let closestX;
-  let closestY;
-  let closestZ;
-  
-  //sets the furthest and closest x, y, and z position to the
-  //furthest/closest item (ball or box)
-  if(ballX>=furthestCubeX){
-    furthestX = ballX
-  }else if(ballX<=furthestCubeX){
-    furthestX = furthestCubeX
-  }
-  if(ballY>=furthestCubeY){
-    furthestY = ballY
-  }else if(ballY<=furthestCubeY){
-    furthestY = furthestCubeY
-  }
-  if(ballZ>=furthestCubeZ){
-    furthestZ = ballZ
-  }else if(ballZ<=furthestCubeZ){
-    furthestZ = furthestCubeZ
-  }
-  
-  if(ballX<=closestCubeX){
-    closestX = ballX
-  }else if(ballX>=closestCubeX){
-    closestX = closestCubeX
-  }
-  if(ballY<=closestCubeY){
-    closestY = ballY
-  }else if(ballY>=closestCubeY){
-    closestY = closestCubeY
-  }
-  if(ballZ<=closestCubeZ){
-    closestZ = ballZ
-  }else if(ballZ>=closestCubeZ){
-    closestZ = closestCubeZ
-  }
-
-  let xCentre;
-  let yCentre;
-  let zCentre;
-
-  //sets the centre of x, y, and z
-  xCentre=((furthestX+closestX)/2);
-  yCentre=((furthestY+closestY)/2);
-  zCentre=((furthestZ+closestZ)/2);
-  //camera will look at the centre
-  cam1.lookAt(xCentre,yCentre,zCentre);
 }
 
 //when window is resized setup is called again
