@@ -5,9 +5,9 @@
 // Extra for Experts:
 
 //global variables
-let state = "Play";
+let state = "Menu";
 
-let arr = [50,0,0,0];
+let arr = [0,0,0,0];
 let position = [0,0,0];
 let positionCube = [];
 let push0 = 50;
@@ -17,15 +17,9 @@ let push3 = 1;
 let snakeLength = 3;
 
 let cam1;
-let cam2;
-let currentCam = 1;
-
-let camX=0;
-let camY=0;
-let camZ=0;
 
 let inconsolata;
-let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down", "T          = hide/show controls", "Enter      = place block", "Backspace  = delete block", "1          = Camera 1 (looks at centre)", "2          = Camera 2 (looks at ball)", "","Click and drag to look around", "Mouse wheel to zoom in and out", "(Hint: be agressive with it!)"]
+let instructions = ["Controls:", "A                   = left", "D                   = right", "W                  = forward", "S                   = back", "Up Arrow      = up", "Down Arrow =  down"];
 let toggle = 1;
 
 //preloads the font
@@ -34,20 +28,21 @@ function preload(){
 }
 
 function setup() {
-  //creates a 3d canvas
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  
-  //creates each camera
-  cam1 = createCamera();
-  cam1.lookAt(0,0,0);
-  
-  //sets font
-  textFont(inconsolata);
-  textSize(25);
-  textAlign(LEFT, BOTTOM);
+  if(state==="Menu"){
+    createCanvas(windowWidth, windowHeight);
+  }else if(state==="Options"){
+    createCanvas(windowWidth, windowHeight);
+    textSize(25);
+  }else if(state==="Play"){
+    //creates a 3d canvas
+    createCanvas(windowWidth, windowHeight, WEBGL);
+    
+    camera(-300,-400,600,500,700,-500);
 
-  frameRate(10);
-  strokeWeight(5);
+    frameRate(10);
+  }else if(state==="Game Over"){
+    
+  }
 }
 
 //draw loop calls all functions
@@ -59,23 +54,61 @@ function checkState(){
   if(state==="Menu"){
     startScreen();
   }
+  if(state==="Options"){
+    optionMenu();
+  }
   if(state==="Play"){
     gamePlay();
   }
   if(state==="Game Over"){
-
+    
   }
 }
 
 function startScreen(){
   background(220);
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  textSize(25);
+
+  rect(width/2, height/2, width/4, height/8);
+  text("Start Game",width/2, height/2);
+  
+  rect(width/2, height/2+height/4, width/4, height/8);
+  text("Options",width/2, height/2+height/4);
+
+  
+  if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
+    state="Play";
+    setup();
+  }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+    state="Options";
+    setup();
+  }
+}
+
+function optionMenu(){
+  background(220);
+  controls();
+  fill(255,0,0);
+
+  rectMode(CENTER);
+  rect(width*0.9,-150, 30, 20);
+  if(mouseX>width*0.9-15&&mouseX<width*0.9+15&&mouseY>38&&mouseY<60&&mouseIsPressed){
+    state="Menu";
+    setup();
+  }
 }
 
 function gamePlay(){
   background(220);
   
+  strokeWeight(5);
   createBoard();
+
   gameStartedWaitTime();
+
+  strokeWeight(2);
   gameStart();
 }
 
@@ -111,8 +144,6 @@ function gameStart(){
   orbitControl();
   
   readArray();
-  cam();
-  controls();
   
   position[0]=position[0]+push0;
   position[1]=position[1]+push1;
@@ -122,34 +153,8 @@ function gameStart(){
   arr.push(push1);
   arr.push(push2);
   arr.push(push3);
-  if(push1===50||push1===-50){
-    push0=arr[arr.length-8];
-    push1=0;
-    push2=arr[arr.length-6];
-    push3=arr[arr.length-5];
-  }
-  if(position[0]<-100){
-    console.log('over');
-    state = "Game Over";
-  }
-  if(position[0]>950){
-    console.log('over');
-    state = "Game Over";
-  }
-  if(position[1]<0){
-    console.log('over');
-    state = "Game Over";
-  }
-  if(position[1]>1950){
-    console.log('over');
-    state = "Game Over";
-  }
-  if(position[2]>0){
-    console.log('over');
-    state = "Game Over";
-  }
-  if(position[2]<-1050){
-    console.log('over');
+  
+  if(position[0]<-100||position[0]>950||position[1]<0||position[1]>1000||position[2]>0||position[2]<-1050){
     state = "Game Over";
   }
 }
@@ -171,15 +176,15 @@ function readArray(){
   }
 }
 
-//borders are -100<x>900, 0<y>1950, -1000<z>0
+//borders are -100<x>900, 0<y>1000, -1000<z>0
 function placeBox(){
   let x = position[0];
   let y = position[1];
   let z = position[2];
-  if(x<=0||x>=800||y<=200||y>=1700||z<=-900||z>=-100){
+  if(x<=-100||x>=900||y<=0||y>=1000||z<=-1000||z>=0){
   fill(255,0,0,50);
     box(50);
-  }else if(x<=200||x>=550||y<=500||y>=1400||z<=-750||z>=-300){
+  }else if(x<=0||x>=800||y<=100||y>=900||z<=-900||z>=-100){
     fill(0,0,255,50);
     box(50);
   }
@@ -260,19 +265,13 @@ function keyPressed(){
 
 //shows the controls if it is toggeled on
 function controls(){
+  textAlign(LEFT, TOP);
   if(toggle===1){
     fill(0);
     for(var i=0; i<=instructions.length; i++){
-      text(instructions[i], -550, -150);
+      text(instructions[i], 100, 100);
       translate(0, 25);
     }
-  }
-}
-
-//determines which camera to use
-function cam(){
-  if(currentCam===1){
-    cam1.lookAt(500,500,-500);
   }
 }
 
