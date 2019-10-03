@@ -71,10 +71,14 @@ function startScreen(){
   textAlign(CENTER, CENTER);
   textSize(25);
 
+  fill(255);
   rect(width/2, height/2, width/4, height/8);
+  fill(0);
   text("Start Game",width/2, height/2);
   
+  fill(255);
   rect(width/2, height/2+height/4, width/4, height/8);
+  fill(0);
   text("Options",width/2, height/2+height/4);
 
   
@@ -131,8 +135,7 @@ function createBoard(){
 
   line(-25,-25,-975,-25,975,-975);
 
-  line(975,-25,25,975,975,25)
-  //translate(500,-500, 0);
+  line(975,-25,25,975,975,25);
 }
 
 function gameStartedWaitTime(){
@@ -205,50 +208,45 @@ function keyPressed(){
     push1=0;
     push2=0;
     position[0]=position[0]+50;
-  }
+  }else if(keyIsDown(65)){
   //if 'a' is pressed it pushes 5-bits into the array
   //telling it to move the ball to the left
-  if(keyIsDown(65)){
     if(push0!==50){
       push0=-50;
     }
     push1=0;
     push2=0;
     position[0]=position[0]-50;
-  }
-  //if 'w' is pressed it pushes 5-bits into the array
-  //telling it to move the ball forward
-  if(keyIsDown(87)){
+  }else if(keyIsDown(87)){
+    //if 'w' is pressed it pushes 5-bits into the array
+    //telling it to move the ball forward
     push0=0;
     push1=0;
     if(push2!==50){
       push2=-50;
     }
     position[2]=position[2]-50;
-  }
-  //if 's' is pressed it pushes 5-bits into the array
-  //telling it to move the ball backward 
-  if(keyIsDown(83)){
+  }else if(keyIsDown(83)){
+    //if 's' is pressed it pushes 5-bits into the array
+    //telling it to move the ball backward 
     push0=0;
     push1=0;
     if(push2!==-50){
       push2=50;
     }
     position[2]=position[2]+50;
-  }
-  //if 'UP_ARROW' is pressed it pushes 5-bits into the array
-  //telling it to move the ball up 
-  if(keyIsDown(38)){
+  }else if(keyIsDown(38)){
+    //if 'UP_ARROW' is pressed it pushes 5-bits into the array
+    //telling it to move the ball up 
     push0=0;
     if(push1!==50){
       push1=-50;
     }
     push2=0;
     position[1]=position[1]-50;
-  }
-  //if 'DOWN_ARROW' is pressed it pushes 5-bits into the array
-  //telling it to move the ball down 
-  if(keyIsDown(40)){
+  }else if(keyIsDown(40)){
+    //if 'DOWN_ARROW' is pressed it pushes 5-bits into the array
+    //telling it to move the ball down 
     push0=0;
     if(push1!==-50){
       push1=50;
@@ -256,22 +254,16 @@ function keyPressed(){
     push2=0;
     position[1]=position[1]+50;
   }
-  //if 't' is pressed it changes which camera is active
-  if(keyIsDown(84)){
-    toggle*=-1;
-  }
 }
 
 
 //shows the controls if it is toggeled on
 function controls(){
   textAlign(LEFT, TOP);
-  if(toggle===1){
-    fill(0);
-    for(var i=0; i<=instructions.length; i++){
-      text(instructions[i], 100, 100);
-      translate(0, 25);
-    }
+  fill(0);
+  for(var i=0; i<=instructions.length; i++){
+    text(instructions[i], 100, 100);
+    translate(0, 25);
   }
 }
 
