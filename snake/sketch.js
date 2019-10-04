@@ -20,7 +20,7 @@ let push3 = 1;
 let snakeLength = 3;
 
 let inconsolata;
-let instructions = ["Controls:", "A                   = left", "D                   = right", "W                  = forward", "S                   = back", "Up Arrow      = up", "Down Arrow =  down"];
+let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow =  down"];
 
 let gameCounter = 0;
 
@@ -118,6 +118,7 @@ function resetAllValues(){
 }
 
 function optionMenu(){
+  textFont(inconsolata);
   if(gameCounter===1){
     translate(-1/2*width,-1/2*height);
   }
