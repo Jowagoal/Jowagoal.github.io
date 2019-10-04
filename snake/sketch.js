@@ -77,8 +77,12 @@ function startScreen(){
   background(220);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
-  textSize(25);
+  textSize(75);
   
+  fill(0,255,100);
+  text("3D Snake",width/2, height/8);
+  
+  textSize(25);
   fill(255);
   rect(width/2, height/2, width/4, height/8);
   fill(0);
