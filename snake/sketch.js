@@ -40,7 +40,7 @@ function setup() {
     camera(-300,-400,600,500,700,-500);
     
     frameRate(10);
-    
+
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
@@ -144,10 +144,10 @@ function gamePlay(){
   
   strokeWeight(5);
   createBoard();
+  strokeWeight(2);
   
   gameStartedWaitTime();
   
-  strokeWeight(2);
   gameStart();
 }
 
@@ -174,7 +174,6 @@ function createBoard(){
 }
 
 function gameStartedWaitTime(){
-  
 }
 
 function gameStart(){
@@ -182,12 +181,12 @@ function gameStart(){
   orbitControl();
   
   food();
-  
+
   arr.push(push0);
   arr.push(push1);
   arr.push(push2);
   arr.push(push3);
-  
+
   moveSnake();
 }
 
@@ -213,7 +212,7 @@ function moveSnake(){
       arr[i-(4*snakeLength-3)]=0;
     }
   }
-
+  
   bodyPosition.push(positionStored[0]);
   bodyPosition.push(positionStored[1]);
   bodyPosition.push(positionStored[2]);
@@ -229,7 +228,6 @@ function moveSnake(){
   }
   for(var j=0; j<=bodyPosition.length-3; j+=3){
     if(position[0]===bodyPosition[j]&&position[1]===bodyPosition[j+1]&&position[2]===bodyPosition[j+2]){
-      
       state = "Game Over";
       setup();
     }
@@ -254,7 +252,12 @@ function placeBox(){
 }
 
 function food(){
-  if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
+  if(position[0]+push0===foodPosition[0]&&position[1]+push1===foodPosition[1]&&position[2]+push2===foodPosition[2]){
+    foodPosition[0]=ceil(random(0,19))*50;
+    foodPosition[1]=ceil(random(0,19))*50;
+    foodPosition[2]=ceil(random(-19,0))*50;
+    snakeLength++;
+  }else if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
