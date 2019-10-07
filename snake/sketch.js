@@ -9,6 +9,7 @@ let state = "Menu";
 
 let arr = [0,0,0,0];
 let position = [0,0,0];
+let secondPosition = [0,0,0];
 let foodPosition = [0,0,0];
 let bodyPosition = [];
 let positionStored = [0,0,0];
@@ -20,7 +21,7 @@ let push3 = 1;
 let snakeLength = 3;
 
 let inconsolata;
-let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow =  down"];
+let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 
 let gameCounter = 0;
 
@@ -74,6 +75,7 @@ function startScreen(){
   if(gameCounter===1){
     translate(-1/2*width,-1/2*height);
   }
+  noStroke();
   background(220);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
@@ -82,6 +84,7 @@ function startScreen(){
   fill(0,255,100);
   text("3D Snake",width/2, height/8);
   
+  stroke(0);
   textSize(25);
   fill(255);
   rect(width/2, height/2, width/4, height/8);
@@ -106,6 +109,7 @@ function startScreen(){
 function resetAllValues(){
   arr = [0,0,0,0];
   position = [0,0,0];
+  secondPosition = [0,0,0];
   foodPosition = [0,0,0];
   bodyPosition = [];
   positionStored = [0,0,0];
@@ -128,6 +132,34 @@ function optionMenu(){
   for(var i=0; i<=instructions.length; i++){
     text(instructions[i], 100, 100);
     translate(0, 25);
+  }
+
+  stroke(1);
+  fill(255);
+  rect(225, 200, 250, 20);
+
+  noStroke();
+  fill(220);
+  rect(225-25*4, 200, 5, 20);
+  rect(225-25*3, 200, 5, 20);
+  rect(225-25*2, 200, 5, 20);
+  rect(225-25*1, 200, 5, 20);
+  
+  rect(225, 200, 5, 20);
+
+  rect(225+25*1, 200, 5, 20);
+  rect(225+25*2, 200, 5, 20);
+  rect(225+25*3, 200, 5, 20);
+  rect(225+25*4, 200, 5, 20);
+
+  stroke(1);
+  fill(150);
+
+  let x = 225;
+  rect(x, 200, 9, 25);
+  if(mouseX>x-5&&mouseX<x+5&&mouseY>400-12&&mouseY<400+12&&mouseIsPressed){
+    console.log(x);
+    x=mouseX;
   }
 
   fill(255,0,0);
@@ -194,12 +226,18 @@ function moveSnake(){
   position[0]=0;
   position[1]=0;
   position[2]=0;
+  secondPosition[0]=0;
+  secondPosition[1]=0;
+  secondPosition[2]=0;
   for(var i=0; i<=arr.length; i+=4){
     translate(arr[i],arr[i+1],arr[i+2]);
     if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
       position[0]=position[0]+arr[i+0];
       position[1]=position[1]+arr[i+1];
       position[2]=position[2]+arr[i+2];
+      secondPosition[0]=secondPosition[0]+arr[i-4];
+      secondPosition[1]=secondPosition[1]+arr[i-3];
+      secondPosition[2]=secondPosition[2]+arr[i-2];
     }
     if(position[0]<0||position[0]>950||position[1]<0||position[1]>950||position[2]>0||position[2]<-950){
       state = "Game Over";
@@ -304,47 +342,47 @@ function deathScreen(){
 
 function keyPressed(){
   if(keyIsDown(68)){
-    if(push0!==-50){
+    if(secondPosition[0]!==position[0]+50){
       push0=50;
+      push1=0;
+      push2=0;
+      position[0]=position[0]+50;
     }
-    push1=0;
-    push2=0;
-    position[0]=position[0]+50;
   }else if(keyIsDown(65)){
-    if(push0!==50){
+    if(secondPosition[0]!==position[0]-50){
       push0=-50;
+      push1=0;
+      push2=0;
+      position[0]=position[0]-50;
     }
-    push1=0;
-    push2=0;
-    position[0]=position[0]-50;
   }else if(keyIsDown(87)){
-    push0=0;
-    push1=0;
-    if(push2!==50){
+    if(secondPosition[2]!==position[2]-50){
+      push0=0;
+      push1=0;
       push2=-50;
+      position[2]=position[2]-50;
     }
-    position[2]=position[2]-50;
   }else if(keyIsDown(83)){
-    push0=0;
-    push1=0;
-    if(push2!==-50){
+    if(secondPosition[2]!==position[2]+50){
+      push0=0;
+      push1=0;
       push2=50;
+      position[2]=position[2]+50;
     }
-    position[2]=position[2]+50;
   }else if(keyIsDown(38)){
-    push0=0;
-    if(push1!==50){
+    if(secondPosition[1]!==position[1]-50){
+      push0=0;
       push1=-50;
+      push2=0;
+      position[1]=position[1]-50;
     }
-    push2=0;
-    position[1]=position[1]-50;
   }else if(keyIsDown(40)){
-    push0=0;
-    if(push1!==-50){
+    if(secondPosition[1]!==position[1]+50){
+      push0=0;
       push1=50;
+      push2=0;
+      position[1]=position[1]+50;
     }
-    push2=0;
-    position[1]=position[1]+50;
   }
 }
 
