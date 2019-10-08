@@ -22,6 +22,7 @@ let snakeLength = 3;
 
 let inconsolata;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
+let sliderX = 225;
 
 let gameCounter = 0;
 
@@ -155,11 +156,13 @@ function optionMenu(){
   stroke(1);
   fill(150);
 
-  let x = 225;
-  rect(x, 200, 9, 25);
-  if(mouseX>x-5&&mouseX<x+5&&mouseY>400-12&&mouseY<400+12&&mouseIsPressed){
-    console.log(x);
-    x=mouseX;
+  rect(sliderX, 200, 9, 25);
+  if(mouseX>100&&mouseX<350&&mouseY>400-12&&mouseY<400+12&&mouseIsPressed){
+    sliderX=mouseX;
+  }else if(sliderX<100+25/2){
+    sliderX=100;
+  }else if(sliderX>=100+25/2&&sliderX<100+25/2*3){
+    sliderX=100+25;
   }
 
   fill(255,0,0);
