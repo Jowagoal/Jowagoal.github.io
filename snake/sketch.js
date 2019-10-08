@@ -23,6 +23,7 @@ let snakeLength = 3;
 let inconsolata;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
+let difficulty = 10;
 
 let gameCounter = 0;
 
@@ -41,7 +42,7 @@ function setup() {
     
     camera(-300,-400,600,500,700,-500);
     
-    frameRate(10);
+    frameRate(difficulty);
 
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
@@ -80,8 +81,9 @@ function startScreen(){
   background(220);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
-  textSize(75);
-  
+  textSize(100);
+  textFont(inconsolata);
+
   fill(0,255,100);
   text("3D Snake",width/2, height/8);
   
@@ -89,11 +91,13 @@ function startScreen(){
   textSize(25);
   fill(255);
   rect(width/2, height/2, width/4, height/8);
-  fill(0);
-  text("Start Game",width/2, height/2);
-  
   fill(255);
   rect(width/2, height/2+height/4, width/4, height/8);
+
+  fill(0);
+  noStroke();
+  text("Start Game",width/2, height/2);
+  
   fill(0);
   text("Options",width/2, height/2+height/4);
   
@@ -123,51 +127,89 @@ function resetAllValues(){
 }
 
 function optionMenu(){
+  noStroke();
   textFont(inconsolata);
+  textSize(25);
   if(gameCounter===1){
     translate(-1/2*width,-1/2*height);
   }
   background(220);
   textAlign(LEFT, TOP);
   fill(0);
-  for(var i=0; i<=instructions.length; i++){
+  for(var i=0; i<instructions.length; i++){
     text(instructions[i], 100, 100);
     translate(0, 25);
   }
 
-  stroke(1);
+  stroke(0);
   fill(255);
-  rect(225, 200, 250, 20);
+  rect(225, 300, 250, 20);
 
   noStroke();
   fill(220);
-  rect(225-25*4, 200, 5, 20);
-  rect(225-25*3, 200, 5, 20);
-  rect(225-25*2, 200, 5, 20);
-  rect(225-25*1, 200, 5, 20);
+  rect(225-25*4, 300, 5, 20);
+  rect(225-25*3, 300, 5, 20);
+  rect(225-25*2, 300, 5, 20);
+  rect(225-25*1, 300, 5, 20);
   
-  rect(225, 200, 5, 20);
+  rect(225, 300, 5, 20);
 
-  rect(225+25*1, 200, 5, 20);
-  rect(225+25*2, 200, 5, 20);
-  rect(225+25*3, 200, 5, 20);
-  rect(225+25*4, 200, 5, 20);
+  rect(225+25*1, 300, 5, 20);
+  rect(225+25*2, 300, 5, 20);
+  rect(225+25*3, 300, 5, 20);
+  rect(225+25*4, 300, 5, 20);
 
-  stroke(1);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("Difficulty", 225, 250);
+  textSize(15);
+  text("Easy", 100, 325);
+  text("Normal", 225, 325);
+  text("Hard", 350, 325);
+
+  stroke(0);
   fill(150);
-
-  rect(sliderX, 200, 9, 25);
-  if(mouseX>100&&mouseX<350&&mouseY>400-12&&mouseY<400+12&&mouseIsPressed){
+  rect(sliderX, 300, 9, 25);
+  if(mouseX>100&&mouseX<350&&mouseY>474-12&&mouseY<474+12&&mouseIsPressed){
     sliderX=mouseX;
   }else if(sliderX<100+25/2){
     sliderX=100;
+    difficulty = 5;
   }else if(sliderX>=100+25/2&&sliderX<100+25/2*3){
     sliderX=100+25;
+    difficulty = 6;
+  }else if(sliderX>=100+25/2*3&&sliderX<100+25/2*5){
+    sliderX=100+25*2;
+    difficulty = 7;
+  }else if(sliderX>=100+25/2*5&&sliderX<100+25/2*7){
+    sliderX=100+25*3;
+    difficulty = 8;
+  }else if(sliderX>=100+25/2*7&&sliderX<100+25/2*9){
+    sliderX=100+25*4;
+    difficulty = 9;
+  }else if(sliderX>=100+25/2*9&&sliderX<100+25/2*11){
+    sliderX=100+25*5;
+    difficulty = 10;
+  }else if(sliderX>=100+25/2*11&&sliderX<100+25/2*13){
+    sliderX=100+25*6;
+    difficulty = 11;
+  }else if(sliderX>=100+25/2*13&&sliderX<100+25/2*15){
+    sliderX=100+25*7;
+    difficulty = 12;
+  }else if(sliderX>=100+25/2*15&&sliderX<100+25/2*17){
+    sliderX=100+25*8;
+    difficulty = 13;
+  }else if(sliderX>=100+25/2*17&&sliderX<100+25/2*19){
+    sliderX=100+25*9;
+    difficulty = 14;
+  }else if(sliderX>=100+25/2*19){
+    sliderX=100+25*10;
+    difficulty = 15;
   }
 
   fill(255,0,0);
   rectMode(CENTER);
-  rect(width*0.9,-150, 30, 20);
+  rect(width*0.9,-125, 30, 20);
   if(mouseX>width*0.9-15&&mouseX<width*0.9+15&&mouseY>38&&mouseY<60&&mouseIsPressed){
     state="Menu";
     setup();
