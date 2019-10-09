@@ -42,7 +42,7 @@ function setup() {
     
     camera(-300,-400,600,500,700,-500);
     
-    frameRate(difficulty);
+    frameRate(60);
 
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
@@ -147,17 +147,9 @@ function optionMenu(){
 
   noStroke();
   fill(220);
-  rect(225-25*4, 300, 5, 20);
-  rect(225-25*3, 300, 5, 20);
-  rect(225-25*2, 300, 5, 20);
-  rect(225-25*1, 300, 5, 20);
-  
-  rect(225, 300, 5, 20);
-
-  rect(225+25*1, 300, 5, 20);
-  rect(225+25*2, 300, 5, 20);
-  rect(225+25*3, 300, 5, 20);
-  rect(225+25*4, 300, 5, 20);
+  for(var j=0; j<9; j++){
+    rect(125+25*j, 300, 5, 20);
+  }
 
   fill(0);
   textAlign(CENTER, CENTER);
@@ -254,6 +246,7 @@ function gameStartedWaitTime(){
 }
 
 function gameStart(){
+  frameRate(difficulty);
   stroke(0);
   orbitControl();
   
@@ -360,6 +353,7 @@ function food(){
 }
 
 function deathScreen(){
+  frameRate(60);
   textFont(inconsolata);
   translate(-1/2*width,-1/2*height);
   background(220);

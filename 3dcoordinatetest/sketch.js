@@ -14,39 +14,18 @@ function setup() {
 }
 
 function draw() {
-  fill(0,255,0,20);
   background(220);
   orbitControl();
-
-  strokeWeight(1);
-  stroke(2);
+  
+  fill(0,0,255);
   box(50);
-  translate(50,0,0);
-  box(50);
-  translate(50,0,0);
-  box(50);
-  translate(50,0,0);
-  box(50);
-  translate(0,0,-50);
-  box(50);
-  translate(0,0,-50);
-  box(50);
-  translate(0,0,-50);
-  box(50);
-  translate(0,50,0);
-  box(50);
-  translate(0,50,0);
-  box(50);
-  translate(0,50,0);
-  box(50);
+  translate(-100, 0, 0);
 
   fill(255,0,0);
-  translate(500,0,0);
-  sphere(25,25,25);
-  translate(-500,0,0);
+  box(50);
 
-  fill(0,255,0,20);
-  translate(0,50,0);
+  fill(0,255,0);
+  translate(200, 0, 0);
   box(50);
 }
 
