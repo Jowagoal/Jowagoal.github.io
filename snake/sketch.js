@@ -6,6 +6,7 @@
 
 //global variables
 let state = "Menu";
+let play;
 
 let arr = [0,0,0,0];
 let position = [0,0,0];
@@ -60,16 +61,25 @@ function checkState(){
   if(state==="Menu"){
     resetAllValues();
     startScreen();
+    play=false;
   }
   if(state==="Options"){
     optionMenu();
+    play=false;
   }
   if(state==="Play"){
     gamePlay();
+    play=true;
   }
   if(state==="Game Over"){
     gameCounter=1;
     deathScreen();
+    play=false;
+  }
+  if(play===false){
+    noStroke();
+    fill(255,0,0);
+    circle(mouseX, mouseY, 3);
   }
 }
 
@@ -78,7 +88,7 @@ function startScreen(){
     translate(-1/2*width,-1/2*height);
   }
   noStroke();
-  background(220);
+  background(100);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
   textSize(100);
@@ -89,9 +99,8 @@ function startScreen(){
   
   stroke(0);
   textSize(25);
-  fill(255);
+  fill(200);
   rect(width/2, height/2, width/4, height/8);
-  fill(255);
   rect(width/2, height/2+height/4, width/4, height/8);
 
   fill(0);
@@ -112,6 +121,8 @@ function startScreen(){
 }
 
 function resetAllValues(){
+  play=false;
+
   arr = [0,0,0,0];
   position = [0,0,0];
   secondPosition = [0,0,0];
@@ -158,7 +169,7 @@ function optionMenu(){
   text("Easy", 100, 325);
   text("Normal", 225, 325);
   text("Hard", 350, 325);
-
+  
   stroke(0);
   fill(150);
   rect(sliderX, 300, 9, 25);
@@ -198,13 +209,18 @@ function optionMenu(){
     sliderX=100+25*10;
     difficulty = 15;
   }
-
+  
   fill(255,0,0);
   rectMode(CENTER);
   rect(width*0.9,-125, 30, 20);
   if(mouseX>width*0.9-15&&mouseX<width*0.9+15&&mouseY>38&&mouseY<60&&mouseIsPressed){
     state="Menu";
     setup();
+  }
+  if(play===false){
+    translate(0,-175);
+    fill(255,0,0);
+    circle(mouseX, mouseY, 3);
   }
 }
 
@@ -367,6 +383,7 @@ function deathScreen(){
   textSize(25);
   text("Score: " + snakeLength, width/2, height/4);
 
+  stroke(0);
   fill(255);
   rectMode(CENTER);
   rect(width/2,height/2+height/8, width/4, height/8);
