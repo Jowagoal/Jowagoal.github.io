@@ -256,16 +256,6 @@ function createBoard(){
   line(-25,-25,-975,-25,975,-975);
   
   line(975,-25,25,975,975,25);
-  /*
-  for(var x=-25; x<=975; x+=50){
-    for(var y=-25; y<=975; y+=50){
-      for(var z=-25; z>=-975; z-=50){
-        stroke(200);
-        point(x,y,z);
-      }
-    }
-  }
-  */
 }
 
 function gameStartedWaitTime(){
