@@ -19,7 +19,7 @@ let push0 = 50;
 let push1 = 0;
 let push2 = 0;
 let push3 = 1;
-let snakeLength = 3;
+let snakeLength;
 
 let inconsolata;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
@@ -44,7 +44,7 @@ function setup() {
     camera(-300,-400,600,500,700,-500);
     
     frameRate(60);
-
+    
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
@@ -129,7 +129,7 @@ function resetAllValues(){
   foodPosition = [0,0,0];
   bodyPosition = [];
   positionStored = [0,0,0];
-
+  
   push0 = 50;
   push1 = 0;
   push2 = 0;
@@ -230,9 +230,7 @@ function gamePlay(){
   strokeWeight(5);
   createBoard();
   strokeWeight(2);
-  
-  gameStartedWaitTime();
-  
+
   gameStart();
 }
 
@@ -256,9 +254,6 @@ function createBoard(){
   line(-25,-25,-975,-25,975,-975);
   
   line(975,-25,25,975,975,25);
-}
-
-function gameStartedWaitTime(){
 }
 
 function gameStart(){
@@ -349,11 +344,25 @@ function food(){
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
+    for(var i=0; i<=bodyPosition.length-3; i+=3){
+      if(foodPosition[0]===bodyPosition[i]&&foodPosition[1]===bodyPosition[i+1]&&foodPosition[2]===bodyPosition[i+2]){
+        foodPosition[0]=ceil(random(0,19))*50;
+        foodPosition[1]=ceil(random(0,19))*50;
+        foodPosition[2]=ceil(random(-19,0))*50;
+      }
+    }
   }else if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
+    for(var j=0; j<=bodyPosition.length-3; j+=3){
+      if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
+        foodPosition[0]=ceil(random(0,19))*50;
+        foodPosition[1]=ceil(random(0,19))*50;
+        foodPosition[2]=ceil(random(-19,0))*50;
+      }
+    }
   }else{
 
     let x = foodPosition[0];
