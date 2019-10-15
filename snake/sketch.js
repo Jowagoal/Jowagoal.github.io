@@ -227,14 +227,13 @@ function optionMenu(){
 function gamePlay(){
   background(220);
   
-  strokeWeight(5);
   createBoard();
-  strokeWeight(2);
-
+  
   gameStart();
 }
 
 function createBoard(){
+  strokeWeight(5);
   fill(0,0,0);
   stroke(255,0,0);
   line(-25,-25,25,975,-25,25);
@@ -257,6 +256,7 @@ function createBoard(){
 }
 
 function gameStart(){
+  strokeWeight(2);
   frameRate(difficulty);
   stroke(0);
   orbitControl();
