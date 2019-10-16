@@ -28,6 +28,23 @@ let difficulty = 10;
 
 let gameCounter = 0;
 
+let myp5 = new p5(( sketch ) => {
+
+  let x = 100;
+  let y = 100;
+
+  sketch.setup = () => {
+    sketch.createCanvas(200, 200);
+  };
+
+  sketch.draw = () => {
+    sketch.background(0);
+    sketch.fill(255);
+    sketch.rect(x,y,50,50);
+  };
+});
+// myp5.style("position", "absolute");
+
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
 }
@@ -70,6 +87,7 @@ function checkState(){
   if(state==="Play"){
     gamePlay();
     play=true;
+    box(100, 100, 0);
   }
   if(state==="Game Over"){
     gameCounter=1;
@@ -228,7 +246,7 @@ function gamePlay(){
   background(220);
   
   createBoard();
-  
+
   gameStart();
 }
 
