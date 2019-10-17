@@ -10,7 +10,21 @@ body, html {
  
 #defaultCanvas0 {
     position: absolute;
-    top: 100px;
-    left: 50px;
+    top: 50px;
+    left: 100px;
+    /* visibility: hidden; */
+}
+
+#defaultCanvas1 {
+    position: absolute;
+    top: 225px;
+    left: 100px;
+    /* visibility: hidden; */
+}
+
+#defaultCanvas2 {
+    position: absolute;
+    top: 400px;
+    left: 100px;
     /* visibility: hidden; */
 }

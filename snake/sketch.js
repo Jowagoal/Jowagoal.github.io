@@ -28,19 +28,81 @@ let difficulty = 10;
 
 let gameCounter = 0;
 
-let myp5 = new p5(( sketch ) => {
+let topView = new p5(( sketch ) => {
 
-  let x = 100;
-  let y = 100;
+  let x = 50;
+  let y = 50;
 
   sketch.setup = () => {
-    sketch.createCanvas(200, 200);
+    sketch.createCanvas(150, 150);
   };
-
   sketch.draw = () => {
-    sketch.background(0);
-    sketch.fill(255);
-    sketch.rect(x,y,50,50);
+    if(state==="Menu"){
+      sketch.background(100);
+    }
+    if(state==="Options"){
+      sketch.background(220);
+    }
+    if(state==="Play"){
+      sketch.background(0);
+      sketch.fill(255);
+      sketch.rect(x,y,50,50);
+    }
+    if(state==="Game Over"){
+      sketch.background(220);
+    }
+  };
+});
+
+let sideView = new p5(( sketch ) => {
+
+  let x = 50;
+  let y = 50;
+
+  sketch.setup = () => {
+    sketch.createCanvas(150, 150);
+  };
+  sketch.draw = () => {
+    if(state==="Menu"){
+      sketch.background(100);
+    }
+    if(state==="Options"){
+      sketch.background(220);
+    }
+    if(state==="Play"){
+      sketch.background(100);
+      sketch.fill(255);
+      sketch.rect(x,y,50,50);
+    }
+    if(state==="Game Over"){
+      sketch.background(220);
+    }
+  };
+});
+
+let frontView = new p5(( sketch ) => {
+
+  let x = 50;
+  let y = 50;
+
+  sketch.setup = () => {
+    sketch.createCanvas(150, 150);
+  };
+  sketch.draw = () => {
+    if(state==="Menu"){
+      sketch.background(100);
+    }
+    if(state==="Options"){
+      sketch.background(220);
+    }
+    if(state==="Play"){
+      sketch.background(200);
+      sketch.fill(255);
+      sketch.rect(x,y,50,50);
+    }
+    if(state==="Game Over"){
+      sketch.background(220);
+    }
   };
 });
 // myp5.style("position", "absolute");
