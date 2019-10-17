@@ -28,13 +28,10 @@ let difficulty = 10;
 
 let gameCounter = 0;
 
+//y(z) backwards
 let topView = new p5(( sketch ) => {
-
-  let x = 50;
-  let y = 50;
-
   sketch.setup = () => {
-    sketch.createCanvas(150, 150);
+    sketch.createCanvas(190, 190);
   };
   sketch.draw = () => {
     if(state==="Menu"){
@@ -46,7 +43,7 @@ let topView = new p5(( sketch ) => {
     if(state==="Play"){
       sketch.background(0);
       sketch.fill(255);
-      sketch.rect(x,y,50,50);
+      sketch.rect(foodPosition[0]/50*9.5,foodPosition[2]/50*9.5,9.5,9.5);
     }
     if(state==="Game Over"){
       sketch.background(220);
@@ -54,13 +51,10 @@ let topView = new p5(( sketch ) => {
   };
 });
 
+//x(z) backwards
 let sideView = new p5(( sketch ) => {
-
-  let x = 50;
-  let y = 50;
-
   sketch.setup = () => {
-    sketch.createCanvas(150, 150);
+    sketch.createCanvas(190, 190);
   };
   sketch.draw = () => {
     if(state==="Menu"){
@@ -72,7 +66,7 @@ let sideView = new p5(( sketch ) => {
     if(state==="Play"){
       sketch.background(100);
       sketch.fill(255);
-      sketch.rect(x,y,50,50);
+      sketch.rect(foodPosition[2]/50*9.5,foodPosition[1]/50*9.5,9.5,9.5);
     }
     if(state==="Game Over"){
       sketch.background(220);
@@ -80,13 +74,10 @@ let sideView = new p5(( sketch ) => {
   };
 });
 
+//good
 let frontView = new p5(( sketch ) => {
-
-  let x = 50;
-  let y = 50;
-
   sketch.setup = () => {
-    sketch.createCanvas(150, 150);
+    sketch.createCanvas(190, 190);
   };
   sketch.draw = () => {
     if(state==="Menu"){
@@ -97,8 +88,8 @@ let frontView = new p5(( sketch ) => {
     }
     if(state==="Play"){
       sketch.background(200);
-      sketch.fill(255);
-      sketch.rect(x,y,50,50);
+      sketch.fill(255,0,0);
+      sketch.rect(foodPosition[0]/50*9.5,foodPosition[1]/50*9.5,9.5,9.5);
     }
     if(state==="Game Over"){
       sketch.background(220);
@@ -124,9 +115,13 @@ function setup() {
     
     frameRate(60);
     
-    foodPosition[0]=ceil(random(0,19))*50;
-    foodPosition[1]=ceil(random(0,19))*50;
-    foodPosition[2]=ceil(random(-19,0))*50;
+    foodPosition[0]=0;
+    foodPosition[1]=950;
+    foodPosition[2]=1;
+
+    //foodPosition[0]=ceil(random(0,19))*50;
+    //foodPosition[1]=ceil(random(0,19))*50;
+    //foodPosition[2]=ceil(random(-19,0))*50;
   }else if(state==="Game Over"){
     createCanvas(windowWidth, windowHeight);
   }

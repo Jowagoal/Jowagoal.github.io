@@ -17,14 +17,14 @@ body, html {
 
 #defaultCanvas1 {
     position: absolute;
-    top: 225px;
+    top: 250px;
     left: 100px;
     /* visibility: hidden; */
 }
 
 #defaultCanvas2 {
     position: absolute;
-    top: 400px;
+    top: 450px;
     left: 100px;
     /* visibility: hidden; */
 }
