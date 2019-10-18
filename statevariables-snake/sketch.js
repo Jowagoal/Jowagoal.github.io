@@ -5,9 +5,11 @@
 // Extra for Experts:
 
 //global variables
-let state = "Menu";
-let play;
 
+//this variable determines the state of the program
+let state = "Menu";
+
+//these variables are the memory of the program
 let arr = [0,0,0,0];
 let position = [0,0,0];
 let secondPosition = [0,0,0];
@@ -15,36 +17,41 @@ let foodPosition = [0,0,0];
 let bodyPosition = [];
 let positionStored = [0,0,0];
 
+//these variables determine how the snake moves aswell as how long the snake is
 let push0 = 50;
 let push1 = 0;
 let push2 = 0;
 let push3 = 1;
 let snakeLength;
 
+//these variables are for text and the difficulty slider in the options menu
 let inconsolata;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
 let difficulty = 10;
 
-let gameCounter = 0;
+//this variable kees track of if the game has been restarted
+let restarted = false;
 
+//preloads text font
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
 }
 
+//based on the state of the program, setup will create a new canvas
 function setup() {
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
-    textSize(25);
   }else if(state==="Play"){
+    //creates 3d camera
     createCanvas(windowWidth, windowHeight, WEBGL);
     
+    //sets camera position and where it looks
     camera(-300,-400,600,500,700,-500);
-    
-    frameRate(60);
-    
+
+    //sets initial position of food
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
@@ -53,77 +60,92 @@ function setup() {
   }
 }
 
+//draw loop will first check the state
 function draw() {
   checkState();
 }
 
+//after state is determined, it will call its corresponding function
 function checkState(){
   if(state==="Menu"){
+    //after user resets, all values that changed need to be reset
     resetAllValues();
     startScreen();
-    play=false;
+    pointerDot();
   }
   if(state==="Options"){
     optionMenu();
-    play=false;
+    pointerDot();
   }
   if(state==="Play"){
     gamePlay();
-    play=true;
-    box(100, 100, 0);
   }
   if(state==="Game Over"){
-    gameCounter=1;
+    restarted=true;
     deathScreen();
-    play=false;
-  }
-  if(play===false){
-    noStroke();
-    fill(255,0,0);
-    circle(mouseX, mouseY, 3);
+    pointerDot();
   }
 }
 
+//this just puts a red dot on the mouse
+function pointerDot(){
+  noStroke();
+  fill(255,0,0);
+  circle(mouseX, mouseY, 3);
+}
+
+//this function does everything on the start screen
 function startScreen(){
-  if(gameCounter===1){
+  //after the program is restarted, everything on the screen is displaced
+  //this corrects that displacement
+  if(restarted===true){
     translate(-1/2*width,-1/2*height);
   }
-  noStroke();
+
   background(100);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
-  textSize(100);
   textFont(inconsolata);
-
+  
+  //sets stroke, size, and fill for title
+  noStroke();
+  textSize(100);
   fill(0,255,100);
+  //title
   text("3D Snake",width/2, height/8);
   
+  //sets stroke and fill for the buttons
   stroke(0);
-  textSize(25);
   fill(200);
+  //creates buttons
   rect(width/2, height/2, width/4, height/8);
   rect(width/2, height/2+height/4, width/4, height/8);
-
-  fill(0);
+  
+  //sets stroke, size, and fill for buttons
   noStroke();
+  textSize(25);
+  fill(0);
+  //start game button
   text("Start Game",width/2, height/2);
   
   fill(0);
+  //options button
   text("Options",width/2, height/2+height/4);
   
   
   if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to start the game
     state="Play";
     setup();
   }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to open options screen
     state="Options";
     setup();
   }
 }
 
+//after user resets, all values that changed need to be reset
 function resetAllValues(){
-  play=false;
-
   arr = [0,0,0,0];
   position = [0,0,0];
   secondPosition = [0,0,0];
@@ -138,31 +160,36 @@ function resetAllValues(){
   snakeLength = 3;
 }
 
+//this function does everything on the options screen
 function optionMenu(){
-  noStroke();
-  textFont(inconsolata);
-  textSize(25);
-  if(gameCounter===1){
-    translate(-1/2*width,-1/2*height);
-  }
-  background(220);
+  background(150);
   textAlign(LEFT, TOP);
   fill(0);
+  
+  //after the program is restarted, everything on the screen is displaced
+  //this corrects that displacement
+  if(restarted===true){
+    translate(-1/2*width,-1/2*height);
+  }
+  
+  textFont(inconsolata);
+  noStroke();
+  textSize(25);
   for(var i=0; i<instructions.length; i++){
     text(instructions[i], 100, 100);
     translate(0, 25);
   }
-
+  
   stroke(0);
   fill(255);
   rect(225, 300, 250, 20);
-
+  
   noStroke();
   fill(220);
   for(var j=0; j<9; j++){
     rect(125+25*j, 300, 5, 20);
   }
-
+  
   fill(0);
   textAlign(CENTER, CENTER);
   text("Difficulty", 225, 250);
@@ -218,11 +245,7 @@ function optionMenu(){
     state="Menu";
     setup();
   }
-  if(play===false){
-    translate(0,-175);
-    fill(255,0,0);
-    circle(mouseX, mouseY, 3);
-  }
+  translate(0,-25*instructions.length);
 }
 
 function gamePlay(){
