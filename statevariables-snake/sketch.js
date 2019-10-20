@@ -1,6 +1,6 @@
 // State Variable - Snake
 // Jordie Walter
-// Sept 9, 2019
+// October 21, 2019
 //
 // Extra for Experts:
 
@@ -15,7 +15,6 @@ let position = [0,0,0];
 let secondPosition = [0,0,0];
 let foodPosition = [0,0,0];
 let bodyPosition = [];
-let positionStored = [0,0,0];
 
 //these variables determine how the snake moves aswell as how long the snake is
 let push0 = 50;
@@ -151,7 +150,6 @@ function resetAllValues(){
   secondPosition = [0,0,0];
   foodPosition = [0,0,0];
   bodyPosition = [];
-  positionStored = [0,0,0];
   
   push0 = 50;
   push1 = 0;
@@ -172,24 +170,29 @@ function optionMenu(){
     translate(-1/2*width,-1/2*height);
   }
   
+  //writes the instructions on screen
   textFont(inconsolata);
   noStroke();
   textSize(25);
+  //for loop allows for easy changes to the instructions
   for(var i=0; i<instructions.length; i++){
     text(instructions[i], 100, 100);
     translate(0, 25);
   }
   
+  //difficulty slider bar
   stroke(0);
   fill(255);
   rect(225, 300, 250, 20);
   
+  //notches on slider bar
   noStroke();
   fill(220);
   for(var j=0; j<9; j++){
     rect(125+25*j, 300, 5, 20);
   }
   
+  //text for difficulty
   fill(0);
   textAlign(CENTER, CENTER);
   text("Difficulty", 225, 250);
@@ -198,12 +201,18 @@ function optionMenu(){
   text("Normal", 225, 325);
   text("Hard", 350, 325);
   
+  //the slider
   stroke(0);
   fill(150);
   rect(sliderX, 300, 9, 25);
+
+  //if the mouse is down on any part of the bar, the slider will move to that position
   if(mouseX>100&&mouseX<350&&mouseY>474-12&&mouseY<474+12&&mouseIsPressed){
     sliderX=mouseX;
-  }else if(sliderX<100+25/2){
+  }else 
+  //when the mouse is released, the slider will snap to its nearest notch
+  //each notch changes the difficulty of the game
+  if(sliderX<100+25/2){
     sliderX=100;
     difficulty = 5;
   }else if(sliderX>=100+25/2&&sliderX<100+25/2*3){
@@ -238,6 +247,7 @@ function optionMenu(){
     difficulty = 15;
   }
   
+  //red back rectangle, changes the state back to menu
   fill(255,0,0);
   rectMode(CENTER);
   rect(width*0.9,-125, 30, 20);
@@ -245,9 +255,11 @@ function optionMenu(){
     state="Menu";
     setup();
   }
+  //translates the origin back to the top left of the screen
   translate(0,-25*instructions.length);
 }
 
+//gameplay is split into two parts, board creation and the part that the user plays
 function gamePlay(){
   background(220);
   
@@ -256,6 +268,7 @@ function gamePlay(){
   gameStart();
 }
 
+//the board is simply 12 lines to make a large box, the game is played within
 function createBoard(){
   strokeWeight(5);
   fill(0,0,0);
@@ -279,31 +292,44 @@ function createBoard(){
   line(975,-25,25,975,975,25);
 }
 
+//every part of the game the user plays is in this function
 function gameStart(){
-  strokeWeight(2);
+  //the difficulty changes the framerate
   frameRate(difficulty);
-  stroke(0);
-  orbitControl();
   
+  orbitControl();
+  strokeWeight(2);
+  stroke(0);
+  
+  //food function makes the food
   food();
 
+  //arr is the memory of the moves
+  //push0 through push3 tells the array which of 6 directions to move
   arr.push(push0);
   arr.push(push1);
   arr.push(push2);
   arr.push(push3);
-
+  
+  //moves the snake
   moveSnake();
 }
 
+
 function moveSnake(){
+  //resets the current position to 0
   position[0]=0;
   position[1]=0;
   position[2]=0;
+  //resets second position to 0
   secondPosition[0]=0;
   secondPosition[1]=0;
   secondPosition[2]=0;
+  //for loop reads every 4 elements (bit) of the array
   for(var i=0; i<=arr.length; i+=4){
+    //translates by the first 3 elements of a bit (x,y,z) 
     translate(arr[i],arr[i+1],arr[i+2]);
+    //updates position and secondPosition
     if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
       position[0]=position[0]+arr[i+0];
       position[1]=position[1]+arr[i+1];
@@ -312,32 +338,37 @@ function moveSnake(){
       secondPosition[1]=secondPosition[1]+arr[i-3];
       secondPosition[2]=secondPosition[2]+arr[i-2];
     }
+    //if the position is outside the border, state changes to game over and calls setup
     if(position[0]<0||position[0]>950||position[1]<0||position[1]>950||position[2]>0||position[2]<-950){
       state = "Game Over";
       setup();
     }
+    //if the fourth element of a bit is equal to 1, calls the placeBox function
     if(arr[i+3]===1){
       placeBox();
     }
-    if(arr[i-(4*snakeLength-3)]===1){
-      arr[i-(4*snakeLength-3)]=0;
+    //checks a snakeLength bit back if the third element is equal to 1
+    //if so, changes it to 0
+    //this keeps the length of the snake equal to snakelength
+    if(arr[i-4*snakeLength+3]===1){
+      arr[i-4*snakeLength+3]=0;
     }
   }
   
-  bodyPosition.push(positionStored[0]);
-  bodyPosition.push(positionStored[1]);
-  bodyPosition.push(positionStored[2]);
-  
-  positionStored.splice(0,3);
+  //pushes the secondPosition into the bodyPosition
+  bodyPosition.push(secondPosition[0]);
+  bodyPosition.push(secondPosition[1]);
+  bodyPosition.push(secondPosition[2]);
 
-  positionStored.push(position[0]);
-  positionStored.push(position[1]);
-  positionStored.push(position[2]);
-  
+  //if bodyPosition is greater than the snake length
+  //the first three elements are deleted since they are no longer a part of the body
   if(bodyPosition.length>snakeLength*3){
     bodyPosition.splice(0,3);
   }
-  for(var j=0; j<=bodyPosition.length-3; j+=3){
+
+  //checks if the position is equal to any of the body positions
+  //if so, state changes to game over and calls setup
+  for(var j=0; j<=bodyPosition.length; j+=3){
     if(position[0]===bodyPosition[j]&&position[1]===bodyPosition[j+1]&&position[2]===bodyPosition[j+2]){
       state = "Game Over";
       setup();
@@ -345,29 +376,42 @@ function moveSnake(){
   }
 }
 
+//function shows the snake on screen
 function placeBox(){
   let x = position[0];
   let y = position[1];
   let z = position[2];
+  //if the position is 1 box away from the border, place a box with the color red
   if(x<=0||x>=950||y<=0||y>=950||z<=-950||z>=0){
     fill(255,0,0,50);
     box(50);
-  }else if(x<=100||x>=850||y<=100||y>=850||z<=-850||z>=-100){
+  }else 
+  //if the position is 2-3 boxs away from the border, place a box with the color blue
+  if(x<=100||x>=850||y<=100||y>=850||z<=-850||z>=-100){
     fill(0,0,255,50);
     box(50);
   }else{
+    //otherwise, place a box with the color green
     fill(0,255,0,50);
     box(50);
   }
+  //the color scheme is a warning system for the user, tells them how close they are to the border
 }
 
+//food function places food on screen and checks if the snake has eaten it
 function food(){
+  //there are two scenarios to check if the snake has eaten the food
+  //the first checks the position ahead of the snake head
+  //the second checks on the snake head
+  //having these two scenarios will stop the snake from going straight through the food
+  //when the snake has 'eaten' the food, a new piece will randomly be chosen
   if(position[0]+push0===foodPosition[0]&&position[1]+push1===foodPosition[1]&&position[2]+push2===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
     for(var i=0; i<=bodyPosition.length-3; i+=3){
+      //incase this scenario misses the food on the position, checks if the food is in the body
       if(foodPosition[0]===bodyPosition[i]&&foodPosition[1]===bodyPosition[i+1]&&foodPosition[2]===bodyPosition[i+2]){
         foodPosition[0]=ceil(random(0,19))*50;
         foodPosition[1]=ceil(random(0,19))*50;
@@ -381,47 +425,56 @@ function food(){
     snakeLength++;
     for(var j=0; j<=bodyPosition.length-3; j+=3){
       if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
+        //incase this scenario misses the food on the position, checks if the food is in the body
         foodPosition[0]=ceil(random(0,19))*50;
         foodPosition[1]=ceil(random(0,19))*50;
         foodPosition[2]=ceil(random(-19,0))*50;
       }
     }
   }else{
-
+    //places the food on screen
     let x = foodPosition[0];
     let y = foodPosition[1];
     let z = foodPosition[2];
     fill(255,0,0);
     noStroke();
+    //moves origin to food position
     translate(x, y, z);
     box(50);
+    //returns origin to 0,0,0
     translate(-1*x, -1*y, -1*z);
     stroke(2);
   }
 }
 
+//when the user dies the death screen is shown
 function deathScreen(){
   frameRate(60);
   textFont(inconsolata);
-  translate(-1/2*width,-1/2*height);
-  background(220);
   textAlign(CENTER, CENTER);
+  background(220);
+  //screen is displaced, translation fixes it
+  translate(-1/2*width,-1/2*height);
   
+  //says 'You Died!' at top of screen
   fill(255,0,0);
   textSize(50);
   text("You Died!", width/2, height/8);
   
+  //displays the users score
   fill(0);
   textSize(25);
   text("Score: " + snakeLength, width/2, height/4);
 
+  //makes Back to Menu button
   stroke(0);
   fill(255);
   rectMode(CENTER);
   rect(width/2,height/2+height/8, width/4, height/8);
-
   fill(0);
   text("Back to Menu", width/2, height/2+height/8);
+
+  //if mouse is clicked on button, state changes to menu and calls setup
   if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2+height/8-height/16&&mouseY<height/2+height/8+height/16&&mouseIsPressed){
     state="Menu";
     setup();
@@ -429,6 +482,7 @@ function deathScreen(){
 }
 
 function keyPressed(){
+  //'d', changes direction to right unless snake is going left
   if(keyIsDown(68)){
     if(secondPosition[0]!==position[0]+50){
       push0=50;
@@ -436,35 +490,45 @@ function keyPressed(){
       push2=0;
       position[0]=position[0]+50;
     }
-  }else if(keyIsDown(65)){
+  }else 
+  //'a', changes direction to left unless snake is going right
+  if(keyIsDown(65)){
     if(secondPosition[0]!==position[0]-50){
       push0=-50;
       push1=0;
       push2=0;
       position[0]=position[0]-50;
     }
-  }else if(keyIsDown(87)){
+  }else 
+  //'w', changes direction to forward unless snake is going back
+  if(keyIsDown(87)){
     if(secondPosition[2]!==position[2]-50){
       push0=0;
       push1=0;
       push2=-50;
       position[2]=position[2]-50;
     }
-  }else if(keyIsDown(83)){
+  }else 
+  //'s', changes direction to back unless snake is going forward
+  if(keyIsDown(83)){
     if(secondPosition[2]!==position[2]+50){
       push0=0;
       push1=0;
       push2=50;
       position[2]=position[2]+50;
     }
-  }else if(keyIsDown(38)){
+  }else 
+  //'UP_ARROW', changes direction to up unless snake is going down
+  if(keyIsDown(38)){
     if(secondPosition[1]!==position[1]-50){
       push0=0;
       push1=-50;
       push2=0;
       position[1]=position[1]-50;
     }
-  }else if(keyIsDown(40)){
+  }else 
+  //'DOWN_ARROW', changes direction to down unless snake is going up
+  if(keyIsDown(40)){
     if(secondPosition[1]!==position[1]+50){
       push0=0;
       push1=50;
@@ -474,6 +538,7 @@ function keyPressed(){
   }
 }
 
+//calls set up when window is resized
 function windowResized(){
   setup();
 }
