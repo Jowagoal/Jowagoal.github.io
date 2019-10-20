@@ -2,7 +2,15 @@
 // Jordie Walter
 // October 21, 2019
 //
-// Extra for Experts:
+// In this program, a state variable is used to determine what is on screen
+// based on what the user does, the state of the program will be in Menu, Options, Play, or Game Over 
+//
+// Extra for Experts: 
+// This game requires a strong understanding of translation. Since it is a 3D program,
+// there is no coordinate system for shapes (there is for line and the camera though)
+// my previous 3D art program was just a peek into 3D translation, this program requires 
+// so much more since there is now the translation for the snake aswell as the food
+// happening at the same time
 
 //global variables
 
@@ -261,7 +269,7 @@ function optionMenu(){
 
 //gameplay is split into two parts, board creation and the part that the user plays
 function gamePlay(){
-  background(220);
+  background(200);
   
   createBoard();
 
@@ -452,7 +460,7 @@ function deathScreen(){
   frameRate(60);
   textFont(inconsolata);
   textAlign(CENTER, CENTER);
-  background(220);
+  background(100);
   //screen is displaced, translation fixes it
   translate(-1/2*width,-1/2*height);
   
