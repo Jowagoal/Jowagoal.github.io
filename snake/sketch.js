@@ -40,22 +40,11 @@ let topViewWord = new p5(( sketch ) => {
   };
 
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.background(220);
       sketch.translate(30,15);
       sketch.textAlign(BOTTOM, CENTER);
       sketch.textSize(20);
       sketch.text("Top View",0,0);
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
   };
 });
 
@@ -70,18 +59,7 @@ let topView = new p5(( sketch ) => {
   };
 
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.gamePlay();
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
   };
 
   sketch.gamePlay = () => {
@@ -108,22 +86,11 @@ let sideViewWord = new p5(( sketch ) => {
   };
 
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.background(220);
       sketch.translate(30,15);
       sketch.textAlign(BOTTOM, CENTER);
       sketch.textSize(20);
       sketch.text("Side View",0,0);
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
   };
 });
 
@@ -136,21 +103,10 @@ let sideView = new p5(( sketch ) => {
     sketch.createCanvas(x, y);
   };
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.background(200);
       sketch.fill(255,0,0);
       sketch.rect((foodPosition[2]/50+19)*x/20,foodPosition[1]/50*y/20,x/20,y/20);
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
-  };
+  }
 });
 
 let frontViewWord = new p5(( sketch ) => {
@@ -163,22 +119,11 @@ let frontViewWord = new p5(( sketch ) => {
   };
 
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.background(220);
       sketch.translate(30,15);
       sketch.textAlign(BOTTOM, CENTER);
       sketch.textSize(20);
       sketch.text("Front View",0,0);
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
   };
 });
 
@@ -191,24 +136,11 @@ let frontView = new p5(( sketch ) => {
     sketch.createCanvas(x, y);
   };
   sketch.draw = () => {
-    if(state==="Menu"){
-      sketch.background(100);
-    }
-    if(state==="Options"){
-      sketch.background(220);
-    }
-    if(state==="Play"){
       sketch.background(200);
       sketch.fill(255,0,0);
       sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
-    }
-    if(state==="Game Over"){
-      sketch.background(220);
-    }
   };
 });
-//myp5.style("position", "absolute");
-
 
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
@@ -217,9 +149,15 @@ function preload(){
 function setup() {
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
+    
+    document.getElementById("defaultCanvas0").style.visibility = "hidden";
+    document.getElementById("defaultCanvas1").style.visibility = "hidden";
+    document.getElementById("defaultCanvas2").style.visibility = "hidden";
+    document.getElementById("defaultCanvas3").style.visibility = "hidden";
+    document.getElementById("defaultCanvas4").style.visibility = "hidden";
+    document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
-    textSize(25);
   }else if(state==="Play"){
     createCanvas(windowWidth, windowHeight, WEBGL);
     
@@ -230,8 +168,22 @@ function setup() {
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
+
+    document.getElementById("defaultCanvas0").style.visibility = "visible";
+    document.getElementById("defaultCanvas1").style.visibility = "visible";
+    document.getElementById("defaultCanvas2").style.visibility = "visible";
+    document.getElementById("defaultCanvas3").style.visibility = "visible";
+    document.getElementById("defaultCanvas4").style.visibility = "visible";
+    document.getElementById("defaultCanvas5").style.visibility = "visible";
   }else if(state==="Game Over"){
     createCanvas(windowWidth, windowHeight);
+    
+    document.getElementById("defaultCanvas0").style.visibility = "hidden";
+    document.getElementById("defaultCanvas1").style.visibility = "hidden";
+    document.getElementById("defaultCanvas2").style.visibility = "hidden";
+    document.getElementById("defaultCanvas3").style.visibility = "hidden";
+    document.getElementById("defaultCanvas4").style.visibility = "hidden";
+    document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }
 }
 
