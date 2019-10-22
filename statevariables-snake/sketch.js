@@ -496,6 +496,7 @@ function keyPressed(){
       push0=50;
       push1=0;
       push2=0;
+      //updates current position
       position[0]=position[0]+50;
     }
   }else 
@@ -505,6 +506,7 @@ function keyPressed(){
       push0=-50;
       push1=0;
       push2=0;
+      //updates current position
       position[0]=position[0]-50;
     }
   }else 
@@ -514,6 +516,7 @@ function keyPressed(){
       push0=0;
       push1=0;
       push2=-50;
+      //updates current position
       position[2]=position[2]-50;
     }
   }else 
@@ -523,6 +526,7 @@ function keyPressed(){
       push0=0;
       push1=0;
       push2=50;
+      //updates current position
       position[2]=position[2]+50;
     }
   }else 
@@ -532,6 +536,7 @@ function keyPressed(){
       push0=0;
       push1=-50;
       push2=0;
+      //updates current position
       position[1]=position[1]-50;
     }
   }else 
@@ -541,6 +546,7 @@ function keyPressed(){
       push0=0;
       push1=50;
       push2=0;
+      //updates current position
       position[1]=position[1]+50;
     }
   }

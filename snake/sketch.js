@@ -541,18 +541,19 @@ function createBoard(){
 }
 
 function gameStart(){
-  strokeWeight(2);
   frameRate(difficulty);
-  stroke(0);
+  
   orbitControl();
+  strokeWeight(2);
+  stroke(0);
   
   food();
-
+  
   arr.push(push0);
   arr.push(push1);
   arr.push(push2);
   arr.push(push3);
-
+  
   moveSnake();
 }
 
@@ -585,15 +586,9 @@ function moveSnake(){
     }
   }
   
-  bodyPosition.push(positionStored[0]);
-  bodyPosition.push(positionStored[1]);
-  bodyPosition.push(positionStored[2]);
-  
-  positionStored.splice(0,3);
-
-  positionStored.push(position[0]);
-  positionStored.push(position[1]);
-  positionStored.push(position[2]);
+  bodyPosition.push(secondPosition[0]);
+  bodyPosition.push(secondPosition[1]);
+  bodyPosition.push(secondPosition[2]);
   
   if(bodyPosition.length>snakeLength*3){
     bodyPosition.splice(0,3);

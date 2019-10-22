@@ -14,10 +14,13 @@ function setup() {
 function draw() {
   background(0);
   noStroke();
-  for(var i=0; i<shapes.length; i++){
+  for(var i=shapes.length-1; i>=0; i--){
     shapes[i].y+=shapes[i].dy;
     fill(shapes[i].color);
     ellipse(shapes[i].x, shapes[i].y, shapes[i].radius);
+    if(shapes[i].y>height+shapes[i].radius){
+      shapes.splice(i,1);
+    }
   }
 }
 

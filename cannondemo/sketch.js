@@ -22,9 +22,9 @@ function setup() {
 
 function draw() {
   background(220);
-
+  
   displayCannon();
-
+  
   updateBullets();
 }
 
@@ -34,8 +34,14 @@ function displayCannon(){
   cannonAngle = atan2(mouseY - cannonY, mouseX - cannonX);
   rotate(cannonAngle);
   rect(0, -cannonWidth/2, cannonLength, cannonWidth);
-  circle(0,0, cannonWidth)
+  circle(0,0, cannonWidth);
   pop();
+  if(keyIsDown(68)){
+    cannonX+=5;
+  }
+  if(keyIsDown(65)){
+    cannonX-=5;
+  }
 }
 
 function mouseClicked(){
@@ -46,21 +52,21 @@ function fire(){
   let thisBullet = {
     x: cannonX,
     y: cannonY,
-    radius: cannonLength,
+    radius: cannonWidth,
     angle: cannonAngle,
-    speed: 15
+    speed: 10
   };
   bullets.push(thisBullet);
 }
 
 function updateBullets(){
-  for (let i=0; i<bullets.length; i++){
+  for (let i=bullets.length-1; i>=0; i--){
     bullets[i].x += bullets[i].speed*cos(bullets[i].angle);
     bullets[i].y += bullets[i].speed*sin(bullets[i].angle);
     circle(bullets[i].x, bullets[i].y, bullets[i].radius);
-    //if(bullets[i].x>width||bullets[i].x<width||bullets[i].y>height||bullets[i].y>height){
-      //bullets.splice(i,1);
-    //}
+    if(bullets[i].x>width+bullets[i].radius||bullets[i].x<0-bullets[i].radius||bullets[i].y>height+bullets[i].radius||bullets[i].y<0-bullets[i].radius){
+      bullets.splice(i,1);
+    }
   }
 }
 
