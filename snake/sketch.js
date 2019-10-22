@@ -28,8 +28,6 @@ let difficulty = 10;
 
 let gameCounter = 0;
 
-//Things I want to add in future
-
 let topViewWord = new p5(( sketch ) => {
 
   let x = 150;
@@ -59,7 +57,8 @@ let topView = new p5(( sketch ) => {
   };
 
   sketch.draw = () => {
-      sketch.gamePlay();
+    sketch.frameRate(difficulty);
+    sketch.gamePlay();
   };
 
   sketch.gamePlay = () => {
@@ -67,9 +66,51 @@ let topView = new p5(( sketch ) => {
     
     sketch.food();
     
-    //sketch.moveSnake();
+    sketch.moveSnake();
   };
   
+  sketch.moveSnake = () => {
+    arr.push(push0);
+    arr.push(push1);
+    arr.push(push2);
+    arr.push(1);
+    sketch.translate(0,y-y/20);
+    position[0]=0;
+    position[1]=0;
+    position[2]=0;
+    for(var i=0; i<=arr.length; i+=4){
+      sketch.translate(arr[i]/50*x/20,arr[i+2]/50*y/20);
+      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
+        position[0]=position[0]+arr[i+0];
+        position[1]=position[1]+arr[i+1];
+        position[2]=position[2]+arr[i+2];
+      }
+      if(arr[i+3]===1){
+        sketch.placeBox();
+      }
+    }
+    arr.pop();
+    arr.pop();
+    arr.pop();
+    arr.pop();
+  };
+  
+  sketch.placeBox = () => {
+    let x1 = position[0];
+    let y1 = position[1];
+    let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
   sketch.food = () => {
     sketch.fill(255,0,0);
     sketch.rect(foodPosition[0]/50*x/20,(foodPosition[2]/50+19)*y/20,x/20,y/20);
@@ -102,13 +143,68 @@ let sideView = new p5(( sketch ) => {
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
+  
   sketch.draw = () => {
-      sketch.background(200);
-      sketch.fill(255,0,0);
-      sketch.rect((foodPosition[2]/50+19)*x/20,foodPosition[1]/50*y/20,x/20,y/20);
-  }
-});
+    sketch.frameRate(difficulty);
+    sketch.gamePlay();
+  };
 
+  sketch.gamePlay = () => {
+    sketch.background(200);
+    
+    sketch.food();
+    
+    sketch.moveSnake();
+  };
+  
+  sketch.moveSnake = () => {
+    arr.push(push0);
+    arr.push(push1);
+    arr.push(push2);
+    arr.push(1);
+    sketch.translate(y-y/20,0);
+    position[0]=0;
+    position[1]=0;
+    position[2]=0;
+    for(var i=0; i<=arr.length; i+=4){
+      sketch.translate(arr[i+2]/50*x/20,arr[i+1]/50*y/20);
+      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
+        position[0]=position[0]+arr[i+0];
+        position[1]=position[1]+arr[i+1];
+        position[2]=position[2]+arr[i+2];
+      }
+      if(arr[i+3]===1){
+        sketch.placeBox();
+      }
+    }
+    arr.pop();
+    arr.pop();
+    arr.pop();
+    arr.pop();
+  };
+  
+  sketch.placeBox = () => {
+    let x1 = position[0];
+    let y1 = position[1];
+    let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
+  sketch.food = () => {
+    sketch.fill(255,0,0);
+    sketch.rect((foodPosition[2]/50+19)*x/20,foodPosition[1]/50*y/20,x/20,y/20);
+  };
+});
+  
 let frontViewWord = new p5(( sketch ) => {
 
   let x = 150;
@@ -135,10 +231,64 @@ let frontView = new p5(( sketch ) => {
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
+  
   sketch.draw = () => {
-      sketch.background(200);
-      sketch.fill(255,0,0);
-      sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
+    sketch.frameRate(difficulty);
+    sketch.gamePlay();
+  };
+
+  sketch.gamePlay = () => {
+    sketch.background(200);
+    
+    sketch.food();
+    
+    sketch.moveSnake();
+  };
+  
+  sketch.moveSnake = () => {
+    arr.push(push0);
+    arr.push(push1);
+    arr.push(push2);
+    arr.push(1);
+    position[0]=0;
+    position[1]=0;
+    position[2]=0;
+    for(var i=0; i<=arr.length; i+=4){
+      sketch.translate(arr[i]/50*x/20,arr[i+1]/50*y/20);
+      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
+        position[0]=position[0]+arr[i+0];
+        position[1]=position[1]+arr[i+1];
+        position[2]=position[2]+arr[i+2];
+      }
+      if(arr[i+3]===1){
+        sketch.placeBox();
+      }
+    }
+    arr.pop();
+    arr.pop();
+    arr.pop();
+    arr.pop();
+  };
+  
+  sketch.placeBox = () => {
+    let x1 = position[0];
+    let y1 = position[1];
+    let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
+  sketch.food = () => {
+    sketch.fill(255,0,0);
+    sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
   };
 });
 
