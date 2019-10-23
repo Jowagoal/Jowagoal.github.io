@@ -70,10 +70,9 @@ let topView = new p5(( sketch ) => {
   };
   
   sketch.moveSnake = () => {
-    arr.push(push0);
-    arr.push(push1);
-    arr.push(push2);
-    arr.push(1);
+    if(arr[arr.length-(4*snakeLength-3)]===0){
+      arr[arr.length-(4*snakeLength-3)]=1;
+    }
     sketch.translate(0,y-y/20);
     position[0]=0;
     position[1]=0;
@@ -89,10 +88,9 @@ let topView = new p5(( sketch ) => {
         sketch.placeBox();
       }
     }
-    arr.pop();
-    arr.pop();
-    arr.pop();
-    arr.pop();
+    if(arr[arr.length-(4*snakeLength-3)]===1){
+      arr[arr.length-(4*snakeLength-3)]=0;
+    }
   };
   
   sketch.placeBox = () => {
@@ -158,10 +156,9 @@ let sideView = new p5(( sketch ) => {
   };
   
   sketch.moveSnake = () => {
-    arr.push(push0);
-    arr.push(push1);
-    arr.push(push2);
-    arr.push(1);
+    if(arr[arr.length-(4*snakeLength-3)]===0){
+      arr[arr.length-(4*snakeLength-3)]=1;
+    }
     sketch.translate(y-y/20,0);
     position[0]=0;
     position[1]=0;
@@ -177,10 +174,9 @@ let sideView = new p5(( sketch ) => {
         sketch.placeBox();
       }
     }
-    arr.pop();
-    arr.pop();
-    arr.pop();
-    arr.pop();
+    if(arr[arr.length-(4*snakeLength-3)]===1){
+      arr[arr.length-(4*snakeLength-3)]=0;
+    }
   };
   
   sketch.placeBox = () => {
@@ -246,10 +242,9 @@ let frontView = new p5(( sketch ) => {
   };
   
   sketch.moveSnake = () => {
-    arr.push(push0);
-    arr.push(push1);
-    arr.push(push2);
-    arr.push(1);
+    if(arr[arr.length-(4*snakeLength-3)]===0){
+      arr[arr.length-(4*snakeLength-3)]=1;
+    }
     position[0]=0;
     position[1]=0;
     position[2]=0;
@@ -264,10 +259,9 @@ let frontView = new p5(( sketch ) => {
         sketch.placeBox();
       }
     }
-    arr.pop();
-    arr.pop();
-    arr.pop();
-    arr.pop();
+    if(arr[arr.length-(4*snakeLength-3)]===1){
+      arr[arr.length-(4*snakeLength-3)]=0;
+    }
   };
   
   sketch.placeBox = () => {
