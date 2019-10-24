@@ -6,43 +6,71 @@
 // - describe what you did to take this project "above and beyond"
 
 let grid;
+let totalRows = 20;
+let totalCols = 20;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  grid = create2dArray(20,20);
+  if(windowWidth>windowHeight){
+    createCanvas(windowHeight,windowHeight);
+  }else{
+    createCanvas(windowWidth,windowWidth);
+  }
+  background(220);
+  
+  grid = create2dGrid(totalRows,totalCols);
 }
 
 function draw() {
-  background(220);
-  dislayGrid(grid);
+  display(grid);
 }
 
-function dislayGrid(theGrid){
-  for(let y=0; y<theGrid[0].length; y++){
-    for(let x=0; x<theGrid[0].length; x++){
-      if(theGrid[y][x] === 0){
-        fill(255)
+function create2dGrid(rows, cols){
+  let grid2D = [];
+  for(let i=0; i<rows; i++){
+    let thisGrid = [];
+    for(let j=0; j<cols; j++){
+      if(random(100)>50){
+        thisGrid.push(1);
       }else{
+        thisGrid.push(0);
+      }
+    }
+    grid2D.push(thisGrid);
+  }
+  return grid2D;
+}
+
+function display(grid){
+  for(let i=0; i<totalRows; i++){
+    for(let j=0; j<totalCols; j++){
+      if(grid[i][j]===0){
         fill(0);
+      }else{
+        fill(255);
       }
-      let cellSize = width/theGrid[0].length;
-      rect(x*cellSize, y*cellSize, cellSize,cellSize);
+      rect(i*width/totalRows, j*height/totalCols, 
+           width/totalRows, height/totalRows);
     }
   }
 }
 
-function create2dArray(cols, rows){
-  let someArray = [];
-
-  for(let i=0; i<cols; i++){
-    someArray.push([]);
-    for(let j=0; j<rows; j++){
-      if(random(100)<50){
-        someArray[i].push(1);
-      }else{
-        someArray[i].push(0);
+function mouseClicked(){
+  let x = mouseX;
+  let y = mouseY;
+  for(let i=0; i<totalRows; i++){
+    for(let j=0; j<totalCols; j++){
+      if(x>i*width/totalRows&&x<i*width/totalRows+width/totalRows+1&&
+         y>j*height/totalCols&&y<j*height/totalCols+height/totalCols+1){
+        if(grid[i][j]===0){
+          grid[i][j]=1;
+        }else{
+          grid[i][j]=0;
+        }
       }
     }
   }
-  return someArray;
+}
+
+function windowResized(){
+  setup();
 }

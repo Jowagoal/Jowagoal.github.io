@@ -52,7 +52,7 @@ function setup() {
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
   }else if(state==="Play"){
-    //creates 3d camera
+    //creates 3d canvas
     createCanvas(windowWidth, windowHeight, WEBGL);
     
     //sets camera position and where it looks
@@ -169,7 +169,6 @@ function resetAllValues(){
 //this function does everything on the options screen
 function optionMenu(){
   background(150);
-  textAlign(LEFT, TOP);
   fill(0);
   
   //after the program is restarted, everything on the screen is displaced
@@ -179,6 +178,7 @@ function optionMenu(){
   }
   
   //writes the instructions on screen
+  textAlign(LEFT, TOP);
   textFont(inconsolata);
   noStroke();
   textSize(25);
