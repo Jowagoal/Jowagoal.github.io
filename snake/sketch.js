@@ -1,8 +1,10 @@
 // State Variable - Snake
 // Jordie Walter
-// Sept 9, 2019
+// Oct 27, 2019
 //
-// Extra for Experts:
+// Extra for Experts: This program explores the idea of having
+// additional canvases on the screen.  This was a neccessity
+// to learn to be able to have the different views of the game
 
 //global variables
 
@@ -588,6 +590,7 @@ let topViewWord = new p5(( sketch ) => {
   };
 });
 
+//each view creates a new canvas that shows the game frome a different angle
 let topView = new p5(( sketch ) => {
   
   //x and y = height/4
@@ -602,6 +605,7 @@ let topView = new p5(( sketch ) => {
     sketch.gamePlay();
   };
 
+  //each view follows most of the same functions as the normal program
   sketch.gamePlay = () => {
     sketch.background(200);
     
@@ -611,13 +615,20 @@ let topView = new p5(( sketch ) => {
   };
   
   sketch.moveSnake = () => {
+    //by the time the program gets to this point, it has deleted a block of the end of the snake
+    //if I were to do nothing, the side views length would be one less then the 3d snake
     if(arr[arr.length-(4*snakeLength-3)]===0){
       arr[arr.length-(4*snakeLength-3)]=1;
     }
+    //since the z coordinate is negative and the side views are positive
+    //this translation aligns the snake with the canvas
     sketch.translate(0,y-y/20);
+    //resets position values
     position[0]=0;
     position[1]=0;
     position[2]=0;
+    //reads the array and translates by x and z of the arr, 
+    //in the top view x is the same as 3d x, but y is the 3d z
     for(var i=0; i<=arr.length; i+=4){
       sketch.translate(arr[i]/50*x/20,arr[i+2]/50*y/20);
       if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
@@ -625,15 +636,18 @@ let topView = new p5(( sketch ) => {
         position[1]=position[1]+arr[i+1];
         position[2]=position[2]+arr[i+2];
       }
+      //places a box
       if(arr[i+3]===1){
         sketch.placeBox();
       }
     }
+    //returns the arr back to what it was
     if(arr[arr.length-(4*snakeLength-3)]===1){
       arr[arr.length-(4*snakeLength-3)]=0;
     }
   };
   
+  //function is the same as 3d function
   sketch.placeBox = () => {
     let x1 = position[0];
     let y1 = position[1];
@@ -650,6 +664,7 @@ let topView = new p5(( sketch ) => {
     }
   };
 
+  //places the food at its correct position
   sketch.food = () => {
     sketch.fill(255,0,0);
     sketch.rect(foodPosition[0]/50*x/20,(foodPosition[2]/50+19)*y/20,x/20,y/20);
@@ -677,6 +692,7 @@ let sideViewWord = new p5(( sketch ) => {
   };
 });
 
+//side view is mainly the same as top view
 let sideView = new p5(( sketch ) => {
 
   let x = 150;
@@ -702,11 +718,13 @@ let sideView = new p5(( sketch ) => {
     if(arr[arr.length-(4*snakeLength-3)]===0){
       arr[arr.length-(4*snakeLength-3)]=1;
     }
+    //corrects x(z) axis
     sketch.translate(y-y/20,0);
     position[0]=0;
     position[1]=0;
     position[2]=0;
     for(var i=0; i<=arr.length; i+=4){
+      //in side view, x is 3d z and y is the same as 3d y
       sketch.translate(arr[i+2]/50*x/20,arr[i+1]/50*y/20);
       if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
         position[0]=position[0]+arr[i+0];
@@ -790,10 +808,12 @@ let frontView = new p5(( sketch ) => {
     if(arr[arr.length-(4*snakeLength-3)]===0){
       arr[arr.length-(4*snakeLength-3)]=1;
     }
+    //front view does not need to be translated since x and y are the same as 3d x and y
     position[0]=0;
     position[1]=0;
     position[2]=0;
     for(var i=0; i<=arr.length; i+=4){
+      //in front view, x and y are the same as 3d x and y
       sketch.translate(arr[i]/50*x/20,arr[i+1]/50*y/20);
       if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
         position[0]=position[0]+arr[i+0];
@@ -830,7 +850,6 @@ let frontView = new p5(( sketch ) => {
     sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
   };
 });
-
 
 //calls set up when window is resized
 function windowResized(){
