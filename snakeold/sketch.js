@@ -1,10 +1,16 @@
 // State Variable - Snake
 // Jordie Walter
-// Oct 27, 2019
+// October 21, 2019
 //
-// Extra for Experts: This program explores the idea of having
-// additional canvases on the screen.  This was a neccessity
-// to learn to be able to have the different views of the game
+// In this program, a state variable is used to determine what is on screen
+// based on what the user does, the state of the program will be in Menu, Options, Play, or Game Over 
+//
+// Extra for Experts: 
+// This game requires a strong understanding of translation. Since it is a 3D program,
+// there is no coordinate system for shapes (there is for line and the camera though)
+// my previous 3D art program was just a peek into 3D translation, this program requires 
+// so much more since there is now the translation for the snake aswell as the food
+// happening at the same time
 
 //global variables
 
@@ -43,14 +49,6 @@ function preload(){
 function setup() {
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
-    
-    //hides all additional canvases
-    document.getElementById("defaultCanvas0").style.visibility = "hidden";
-    document.getElementById("defaultCanvas1").style.visibility = "hidden";
-    document.getElementById("defaultCanvas2").style.visibility = "hidden";
-    document.getElementById("defaultCanvas3").style.visibility = "hidden";
-    document.getElementById("defaultCanvas4").style.visibility = "hidden";
-    document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
   }else if(state==="Play"){
@@ -59,29 +57,13 @@ function setup() {
     
     //sets camera position and where it looks
     camera(-300,-400,600,500,700,-500);
-    
+
     //sets initial position of food
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
-
-    //shows all additional canvases
-    document.getElementById("defaultCanvas0").style.visibility = "visible";
-    document.getElementById("defaultCanvas1").style.visibility = "visible";
-    document.getElementById("defaultCanvas2").style.visibility = "visible";
-    document.getElementById("defaultCanvas3").style.visibility = "visible";
-    document.getElementById("defaultCanvas4").style.visibility = "visible";
-    document.getElementById("defaultCanvas5").style.visibility = "visible";
   }else if(state==="Game Over"){
     createCanvas(windowWidth, windowHeight);
-    
-    //hides all additional canvases
-    document.getElementById("defaultCanvas0").style.visibility = "hidden";
-    document.getElementById("defaultCanvas1").style.visibility = "hidden";
-    document.getElementById("defaultCanvas2").style.visibility = "hidden";
-    document.getElementById("defaultCanvas3").style.visibility = "hidden";
-    document.getElementById("defaultCanvas4").style.visibility = "hidden";
-    document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }
 }
 
@@ -186,7 +168,7 @@ function resetAllValues(){
 
 //this function does everything on the options screen
 function optionMenu(){
-  background(200);
+  background(150);
   fill(0);
   
   //after the program is restarted, everything on the screen is displaced
@@ -205,19 +187,19 @@ function optionMenu(){
     text(instructions[i], 100, 100);
     translate(0, 25);
   }
-
+  
   //difficulty slider bar
   stroke(0);
   fill(255);
   rect(225, 300, 250, 20);
-
+  
   //notches on slider bar
   noStroke();
   fill(220);
   for(var j=0; j<9; j++){
     rect(125+25*j, 300, 5, 20);
   }
-
+  
   //text for difficulty
   fill(0);
   textAlign(CENTER, CENTER);
@@ -231,7 +213,7 @@ function optionMenu(){
   stroke(0);
   fill(150);
   rect(sliderX, 300, 9, 25);
-  
+
   //if the mouse is down on any part of the bar, the slider will move to that position
   if(mouseX>100&&mouseX<350&&mouseY>474-12&&mouseY<474+12&&mouseIsPressed){
     sliderX=mouseX;
@@ -287,7 +269,7 @@ function optionMenu(){
 
 //gameplay is split into two parts, board creation and the part that the user plays
 function gamePlay(){
-  background(220);
+  background(200);
   
   createBoard();
 
@@ -340,6 +322,7 @@ function gameStart(){
   //moves the snake
   moveSnake();
 }
+
 
 function moveSnake(){
   //resets the current position to 0
@@ -477,7 +460,7 @@ function deathScreen(){
   frameRate(60);
   textFont(inconsolata);
   textAlign(CENTER, CENTER);
-  background(200);
+  background(100);
   //screen is displaced, translation fixes it
   translate(-1/2*width,-1/2*height);
   
@@ -568,288 +551,6 @@ function keyPressed(){
     }
   }
 }
-
-//creates a new canvas to write the word 'Top View'
-let topViewWord = new p5(( sketch ) => {
-
-  let x = 150;
-  let y = 30;
-
-  //creats canvas
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes word
-  sketch.draw = () => {
-      sketch.background(220);
-      sketch.translate(30,15);
-      sketch.textAlign(BOTTOM, CENTER);
-      sketch.textSize(20);
-      sketch.text("Top View",0,0);
-  };
-});
-
-//each view creates a new canvas that shows the game frome a different angle
-let topView = new p5(( sketch ) => {
-  
-  //x and y = height/4
-  let x = 150;
-  let y = 150;
-  
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  sketch.draw = () => {
-    sketch.gamePlay();
-  };
-
-  //each view follows most of the same functions as the normal program
-  sketch.gamePlay = () => {
-    sketch.background(200);
-    
-    sketch.food();
-    
-    sketch.moveSnake();
-  };
-  
-  sketch.moveSnake = () => {
-    //by the time the program gets to this point, it has deleted a block of the end of the snake
-    //if I were to do nothing, the side views length would be one less then the 3d snake
-    if(arr[arr.length-(4*snakeLength-3)]===0){
-      arr[arr.length-(4*snakeLength-3)]=1;
-    }
-    //since the z coordinate is negative and the side views are positive
-    //this translation aligns the snake with the canvas
-    sketch.translate(0,y-y/20);
-    //resets position values
-    position[0]=0;
-    position[1]=0;
-    position[2]=0;
-    //reads the array and translates by x and z of the arr, 
-    //in the top view x is the same as 3d x, but y is the 3d z
-    for(var i=0; i<=arr.length; i+=4){
-      sketch.translate(arr[i]/50*x/20,arr[i+2]/50*y/20);
-      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
-        position[0]=position[0]+arr[i+0];
-        position[1]=position[1]+arr[i+1];
-        position[2]=position[2]+arr[i+2];
-      }
-      //places a box
-      if(arr[i+3]===1){
-        sketch.placeBox();
-      }
-    }
-    //returns the arr back to what it was
-    if(arr[arr.length-(4*snakeLength-3)]===1){
-      arr[arr.length-(4*snakeLength-3)]=0;
-    }
-  };
-  
-  //function is the same as 3d function
-  sketch.placeBox = () => {
-    let x1 = position[0];
-    let y1 = position[1];
-    let z1 = position[2];
-    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
-      sketch.fill(255,0,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
-      sketch.fill(0,0,255,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else{
-      sketch.fill(0,255,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }
-  };
-
-  //places the food at its correct position
-  sketch.food = () => {
-    sketch.fill(255,0,0);
-    sketch.rect(foodPosition[0]/50*x/20,(foodPosition[2]/50+19)*y/20,x/20,y/20);
-  };
-});
-
-//creates a new canvas to write the word 'Side View'
-let sideViewWord = new p5(( sketch ) => {
-
-  let x = 150;
-  let y = 30;
-
-  //creates canvas
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes word
-  sketch.draw = () => {
-      sketch.background(220);
-      sketch.translate(30,15);
-      sketch.textAlign(BOTTOM, CENTER);
-      sketch.textSize(20);
-      sketch.text("Side View",0,0);
-  };
-});
-
-//side view is mainly the same as top view
-let sideView = new p5(( sketch ) => {
-
-  let x = 150;
-  let y = 150;
-
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-  
-  sketch.draw = () => {
-    sketch.gamePlay();
-  };
-
-  sketch.gamePlay = () => {
-    sketch.background(200);
-    
-    sketch.food();
-    
-    sketch.moveSnake();
-  };
-  
-  sketch.moveSnake = () => {
-    if(arr[arr.length-(4*snakeLength-3)]===0){
-      arr[arr.length-(4*snakeLength-3)]=1;
-    }
-    //corrects x(z) axis
-    sketch.translate(y-y/20,0);
-    position[0]=0;
-    position[1]=0;
-    position[2]=0;
-    for(var i=0; i<=arr.length; i+=4){
-      //in side view, x is 3d z and y is the same as 3d y
-      sketch.translate(arr[i+2]/50*x/20,arr[i+1]/50*y/20);
-      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
-        position[0]=position[0]+arr[i+0];
-        position[1]=position[1]+arr[i+1];
-        position[2]=position[2]+arr[i+2];
-      }
-      if(arr[i+3]===1){
-        sketch.placeBox();
-      }
-    }
-    if(arr[arr.length-(4*snakeLength-3)]===1){
-      arr[arr.length-(4*snakeLength-3)]=0;
-    }
-  };
-  
-  sketch.placeBox = () => {
-    let x1 = position[0];
-    let y1 = position[1];
-    let z1 = position[2];
-    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
-      sketch.fill(255,0,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
-      sketch.fill(0,0,255,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else{
-      sketch.fill(0,255,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }
-  };
-
-  sketch.food = () => {
-    sketch.fill(255,0,0);
-    sketch.rect((foodPosition[2]/50+19)*x/20,foodPosition[1]/50*y/20,x/20,y/20);
-  };
-});
-  
-//creates a new canvas to write the word 'Front View'
-let frontViewWord = new p5(( sketch ) => {
-
-  let x = 150;
-  let y = 30;
-
-  //creates canvas
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes word
-  sketch.draw = () => {
-    sketch.background(220);
-    sketch.translate(30,15);
-    sketch.textAlign(BOTTOM, CENTER);
-    sketch.textSize(20);
-    sketch.text("Front View",0,0);
-  };
-});
-
-let frontView = new p5(( sketch ) => {
-  
-  let x = 150;
-  let y = 150;
-
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-  
-  sketch.draw = () => {
-    sketch.gamePlay();
-  };
-
-  sketch.gamePlay = () => {
-    sketch.background(200);
-    
-    sketch.food();
-    
-    sketch.moveSnake();
-  };
-  
-  sketch.moveSnake = () => {
-    if(arr[arr.length-(4*snakeLength-3)]===0){
-      arr[arr.length-(4*snakeLength-3)]=1;
-    }
-    //front view does not need to be translated since x and y are the same as 3d x and y
-    position[0]=0;
-    position[1]=0;
-    position[2]=0;
-    for(var i=0; i<=arr.length; i+=4){
-      //in front view, x and y are the same as 3d x and y
-      sketch.translate(arr[i]/50*x/20,arr[i+1]/50*y/20);
-      if(arr[i+0]===50||arr[i+0]===-50||arr[i+1]===50||arr[i+1]===-50||arr[i+2]===50||arr[i+2]===-50){
-        position[0]=position[0]+arr[i+0];
-        position[1]=position[1]+arr[i+1];
-        position[2]=position[2]+arr[i+2];
-      }
-      if(arr[i+3]===1){
-        sketch.placeBox();
-      }
-    }
-    if(arr[arr.length-(4*snakeLength-3)]===1){
-      arr[arr.length-(4*snakeLength-3)]=0;
-    }
-  };
-  
-  sketch.placeBox = () => {
-    let x1 = position[0];
-    let y1 = position[1];
-    let z1 = position[2];
-    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
-      sketch.fill(255,0,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
-      sketch.fill(0,0,255,50);
-      sketch.rect(0,0,x/20,y/20);
-    }else{
-      sketch.fill(0,255,0,50);
-      sketch.rect(0,0,x/20,y/20);
-    }
-  };
-
-  sketch.food = () => {
-    sketch.fill(255,0,0);
-    sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
-  };
-});
 
 //calls set up when window is resized
 function windowResized(){
