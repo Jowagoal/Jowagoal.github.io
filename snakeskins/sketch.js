@@ -36,6 +36,8 @@ let restarted = false;
 
 let skin = "none";
 
+let skins = [];
+
 //preloads text font
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
@@ -55,6 +57,8 @@ function setup() {
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
+  }else if(state==="Store"){
+    createCanvas(windowWidth, windowHeight)
   }else if(state==="Play"){
     //creates 3d canvas
     createCanvas(windowWidth, windowHeight, WEBGL);
@@ -104,6 +108,10 @@ function checkState(){
     optionMenu();
     pointerDot();
   }
+  if(state==="Store"){
+    storeMenu();
+    pointerDot();
+  }
   if(state==="Play"){
     gamePlay();
   }
@@ -146,7 +154,8 @@ function startScreen(){
   fill(200);
   //creates buttons
   rect(width/2, height/2, width/4, height/8);
-  rect(width/2, height/2+height/4, width/4, height/8);
+  rect(width/3, height/2+height/4, width/4, height/8);
+  rect(width/3*2, height/2+height/4, width/4, height/8);
   
   //sets stroke, size, and fill for buttons
   noStroke();
@@ -155,18 +164,22 @@ function startScreen(){
   //start game button
   text("Start Game",width/2, height/2);
   
-  fill(0);
   //options button
-  text("Options",width/2, height/2+height/4);
-  
+  text("Options",width/3, height/2+height/4);
+
+  text("Store",width/3*2, height/2+height/4);
   
   if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
     //when mouse clicks options button, sets state to play and calls setup again to start the game
     state="Play";
     setup();
-  }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+  }else if(mouseX>width/3-width/8&&mouseX<width/3+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
     //when mouse clicks options button, sets state to play and calls setup again to open options screen
     state="Options";
+    setup();
+  }else if(mouseX>width/3*2-width/8&&mouseX<width/3*2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to open options screen
+    state="Store";
     setup();
   }
 }
@@ -287,6 +300,22 @@ function optionMenu(){
   translate(0,-25*instructions.length);
 }
 
+function storeMenu(){
+  background(200);
+
+  //push skin objects
+
+  //red back rectangle, changes the state back to menu
+  fill(255,0,0);
+  rectMode(CENTER);
+  stroke(0);
+  rect(width*0.9, 50, 30, 20);
+  if(mouseX>width*0.9-15&&mouseX<width*0.9+15&&mouseY>38&&mouseY<60&&mouseIsPressed){
+    state="Menu";
+    setup();
+  }
+}
+
 //gameplay is split into two parts, board creation and the part that the user plays
 function gamePlay(){
   background(220);
@@ -372,7 +401,11 @@ function moveSnake(){
     }
     //if the fourth element of a bit is equal to 1, calls the placeBox function
     if(arr[i+3]===1){
-      placeBox();
+      if(i+3!==arr.length-1){
+        placeBox();
+      }else{
+        placeBox(true);
+      }
     }
     //checks a snakeLength bit back if the third element is equal to 1
     //if so, changes it to 0
@@ -404,32 +437,29 @@ function moveSnake(){
 }
 
 //function shows the snake on screen
-function placeBox(){
+function placeBox(head){
   let x = position[0];
   let y = position[1];
   let z = position[2];
   //if the position is 1 box away from the border, place a box with the color red
   if(x<=0||x>=950||y<=0||y>=950||z<=-950||z>=0){
     fill(255,0,0,50);
-    applySkin();
+    applySkin(head);
   }else 
   //if the position is 2-3 boxs away from the border, place a box with the color blue
   if(x<=100||x>=850||y<=100||y>=850||z<=-850||z>=-100){
     fill(0,0,255,50);
-    applySkin();
+    applySkin(head);
   }else{
     //otherwise, place a box with the color green
     fill(0,255,0,50);
-    applySkin();
+    applySkin(head);
   }
   //the color scheme is a warning system for the user, tells them how close they are to the border
 }
 
-function applySkin(){
-  skin = "none";
-  if(skin==="none"){
-    box(50);
-  }
+function applySkin(head){
+  skin = "eyes"
   if(skin==="line"){
     box(50);
     strokeWeight(2);
@@ -448,10 +478,54 @@ function applySkin(){
         line(i,-25,-25,i,25,-25);
       }
     }
+  }else if(skin==="isotope"){
+    sphere(30,5,5);
+  }else if(skin==="eyes"){
+    box(50);
+    if(head){
+      if(secondPosition[0]===position[0]-50){
+        drawEye(25,-30,10,0,90);
+        drawEye(25,-30,-10,0,90);
+      }
+      if(secondPosition[0]===position[0]+50){
+        drawEye(-25, -30, 10, 0, 90);
+        drawEye(-25, -30, -10, 0, 90);
+      }
+      if(secondPosition[2]===position[2]-50){
+        drawEye(10, -30, 25, 0, 0);
+        drawEye(-10, -30, 25, 0, 0);
+      }
+      if(secondPosition[2]===position[2]+50){
+        drawEye(10, -30, -25, 0, 0);
+        drawEye(-10, -30, -25, 0, 0);
+      }
+      if(secondPosition[1]===position[1]-50){
+        drawEye(10, 30, 25, 0, 0);
+        drawEye(-10, 30, 25, 0, 0);
+      }
+      if(secondPosition[1]===position[1]+50){
+        drawEye(10, -30, 25, 0, 0);
+        drawEye(-10, -30, 25, 0, 0);
+      }
+    }
+  }else{
+    box(50);
   }
-  if(skin==="ball"){
-    sphere(25,0,0);
-  }
+}
+
+function drawEye(x,y,z,rotX,rotY){
+  translate(x,y,z);
+  rotateX(rotX);
+  rotateY(rotY);
+  
+  fill(255);
+  ellipse(0,0,10,20);
+  fill(0);
+  ellipse(0,0,5,10);
+
+  rotateY(-1*rotY);
+  rotateX(-1*rotX);
+  translate(-1*x,-1*y,-1*z);
 }
 
 //food function places food on screen and checks if the snake has eaten it
