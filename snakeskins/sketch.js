@@ -36,7 +36,39 @@ let restarted = false;
 
 let skin = "none";
 
-let skins = [];
+let skins = [[],[]];
+//push skin objects
+let noSkin = {
+  name: 'No Skin',
+  shape: 'box',
+  cost: 'free',
+};
+
+let lineSkin = {
+  name: 'line',
+  shape: 'box',
+  cost: '25',
+};
+
+let isotopeSkin = {
+  name: 'isotope',
+  shape: 'sphere',
+  cost: '50',
+};
+
+let eyesSkin = {
+  name: 'eyes',
+  shape: 'box',
+  cost: '75',
+};
+
+skins[0].push(noSkin);
+skins[0].push(lineSkin);
+skins[1].push(isotopeSkin);
+skins[1].push(eyesSkin);
+
+let cols = 2;
+let rows = 2;
 
 //preloads text font
 function preload(){
@@ -303,7 +335,19 @@ function optionMenu(){
 function storeMenu(){
   background(200);
 
-  //push skin objects
+  rectMode(LEFT, TOP);
+  let cellSize = height / cols;
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (skins[y][x] === 0) {
+        fill(255);
+      }
+      else {
+        fill(255);
+      }
+      rect(x*cellSize+cellSize/2, y*cellSize+cellSize/2, cellSize, cellSize);
+    }
+  }
 
   //red back rectangle, changes the state back to menu
   fill(255,0,0);
