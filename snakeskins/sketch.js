@@ -35,8 +35,9 @@ let difficulty = 10;
 let restarted = false;
 
 let skin = "none";
+let storeSize = [];
 
-let skins = [[],[]];
+let skins = [];
 //push skin objects
 let noSkin = {
   name: 'No Skin',
@@ -62,13 +63,13 @@ let eyesSkin = {
   cost: '75',
 };
 
-skins[0].push(noSkin);
-skins[0].push(lineSkin);
-skins[1].push(isotopeSkin);
-skins[1].push(eyesSkin);
+skins.push(noSkin);
+skins.push(lineSkin);
+skins.push(isotopeSkin);
+skins.push(eyesSkin);
 
-let cols = 2;
-let rows = 2;
+let cols;
+let rows;
 
 //preloads text font
 function preload(){
@@ -335,17 +336,89 @@ function optionMenu(){
 function storeMenu(){
   background(200);
 
+  //ahhhhhhh
+  storeSize = [[],[],[],[]]
+  for(var k=0; k<skins.length; k++){
+    let h = 0;
+    for(var i=0; i<floor(skins.length/2); i++){
+      for(var j=0; j<ceil(skins.length/2); j++){
+        if(skins.length===k+1){
+          rows = j+1;
+          cols = i+1;
+
+          storeSize[j][i] = skins[h];
+          h++;
+        }
+      }
+    }
+  }
+  /*
+  if(skins.length===1){
+    rows = 1;
+    cols = 1;
+    storeSize[0] = [];
+    storeSize[0][0] = skins[0];
+  }
+  if(skins.length===2){
+    rows = 1;
+    cols = 2;
+    storeSize[0] = [];
+    storeSize[0][0] = skins[0];
+    storeSize[0][1] = skins[1];
+  }
+  if(skins.length===3){
+    rows = 2;
+    cols = 2;
+    storeSize[0] = [];
+    storeSize[1] = [];
+    storeSize[0][0] = skins[0];
+    storeSize[0][1] = skins[1];
+    storeSize[1][0] = skins[2];
+  }
+  if(skins.length===4){
+    rows = 2;
+    cols = 2;
+    storeSize[0] = [];
+    storeSize[1] = [];
+    storeSize[0][0] = skins[0];
+    storeSize[0][1] = skins[1];
+    storeSize[1][0] = skins[2];
+    storeSize[1][1] = skins[3];
+  }
+  if(skins.length===5){
+    rows = 2;
+    cols = 3;
+    storeSize[0] = [];
+    storeSize[1] = [];
+    storeSize[0][0] = skins[0];
+    storeSize[0][1] = skins[1];
+    storeSize[0][2] = skins[2];
+    storeSize[1][0] = skins[3];
+    storeSize[1][1] = skins[4];
+  }
+  if(skins.length===6){
+    rows = 2;
+    cols = 3;
+    storeSize[0] = [];
+    storeSize[1] = [];
+    storeSize[0][0] = skins[0];
+    storeSize[0][1] = skins[1];
+    storeSize[0][2] = skins[2];
+    storeSize[1][0] = skins[3];
+    storeSize[1][1] = skins[4];
+    storeSize[1][2] = skins[5];
+  }
+  */
+
   rectMode(LEFT, TOP);
-  let cellSize = height / cols;
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      if (skins[y][x] === 0) {
-        fill(255);
+  let cellSize = height/2 / cols;
+  for (let y = 0; y < rows*2-1; y++) {
+    for (let x = 0; x < cols*2-1; x++) {
+      if(y%2===0&&x%2===0){
+        stroke(0);
+        fill(220);
+        rect(x*cellSize+cellSize, y*cellSize+cellSize, cellSize, cellSize);
       }
-      else {
-        fill(255);
-      }
-      rect(x*cellSize+cellSize/2, y*cellSize+cellSize/2, cellSize, cellSize);
     }
   }
 
