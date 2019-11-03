@@ -336,12 +336,12 @@ function optionMenu(){
 function storeMenu(){
   background(200);
 
-  //ahhhhhhh
+  //creates a grid based on the number of skins available
   storeSize = [[],[],[],[]]
   for(var k=0; k<skins.length; k++){
     let h = 0;
-    for(var i=0; i<floor(skins.length/2); i++){
-      for(var j=0; j<ceil(skins.length/2); j++){
+    for(var i=0; i<ceil(sqrt(skins.length)); i++){
+      for(var j=0; j<floor(sqrt(skins.length)+0.4); j++){
         if(skins.length===k+1){
           rows = j+1;
           cols = i+1;
@@ -352,63 +352,6 @@ function storeMenu(){
       }
     }
   }
-  /*
-  if(skins.length===1){
-    rows = 1;
-    cols = 1;
-    storeSize[0] = [];
-    storeSize[0][0] = skins[0];
-  }
-  if(skins.length===2){
-    rows = 1;
-    cols = 2;
-    storeSize[0] = [];
-    storeSize[0][0] = skins[0];
-    storeSize[0][1] = skins[1];
-  }
-  if(skins.length===3){
-    rows = 2;
-    cols = 2;
-    storeSize[0] = [];
-    storeSize[1] = [];
-    storeSize[0][0] = skins[0];
-    storeSize[0][1] = skins[1];
-    storeSize[1][0] = skins[2];
-  }
-  if(skins.length===4){
-    rows = 2;
-    cols = 2;
-    storeSize[0] = [];
-    storeSize[1] = [];
-    storeSize[0][0] = skins[0];
-    storeSize[0][1] = skins[1];
-    storeSize[1][0] = skins[2];
-    storeSize[1][1] = skins[3];
-  }
-  if(skins.length===5){
-    rows = 2;
-    cols = 3;
-    storeSize[0] = [];
-    storeSize[1] = [];
-    storeSize[0][0] = skins[0];
-    storeSize[0][1] = skins[1];
-    storeSize[0][2] = skins[2];
-    storeSize[1][0] = skins[3];
-    storeSize[1][1] = skins[4];
-  }
-  if(skins.length===6){
-    rows = 2;
-    cols = 3;
-    storeSize[0] = [];
-    storeSize[1] = [];
-    storeSize[0][0] = skins[0];
-    storeSize[0][1] = skins[1];
-    storeSize[0][2] = skins[2];
-    storeSize[1][0] = skins[3];
-    storeSize[1][1] = skins[4];
-    storeSize[1][2] = skins[5];
-  }
-  */
 
   rectMode(LEFT, TOP);
   let cellSize = height/2 / cols;
