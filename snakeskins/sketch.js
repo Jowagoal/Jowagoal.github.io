@@ -337,30 +337,39 @@ function storeMenu(){
   background(200);
 
   //creates a grid based on the number of skins available
-  storeSize = [[],[],[],[]]
+  if(skins.length<3){
+    storeSize = [[]]
+  }else if(skins.length<7){
+    storeSize = [[],[]]
+  }else if(skins.length<13){
+    storeSize = [[],[],[]]
+  }else if(skins.length<21){
+    storeSize = [[],[],[],[]]
+  }else if(skins.length<31){
+    storeSize = [[],[],[],[],[]]
+  }
   for(var k=0; k<skins.length; k++){
     let h = 0;
     for(var i=0; i<ceil(sqrt(skins.length)); i++){
-      for(var j=0; j<floor(sqrt(skins.length)+0.4); j++){
-        if(skins.length===k+1){
-          rows = j+1;
-          cols = i+1;
+      for(var j=0; j<floor(sqrt(skins.length)+0.42); j++){
+        rows = j+1;
+        cols = i+1;
 
-          storeSize[j][i] = skins[h];
-          h++;
-        }
+        storeSize[j][i] = skins[h];
+        h++;
       }
     }
   }
 
   rectMode(LEFT, TOP);
-  let cellSize = height/2 / cols;
+  let cellSize = height/2/cols;
   for (let y = 0; y < rows*2-1; y++) {
     for (let x = 0; x < cols*2-1; x++) {
       if(y%2===0&&x%2===0){
         stroke(0);
         fill(220);
         rect(x*cellSize+cellSize, y*cellSize+cellSize, cellSize, cellSize);
+        enterItem(x, y, x*cellSize+cellSize, y*cellSize+cellSize, cellSize);
       }
     }
   }
@@ -374,6 +383,11 @@ function storeMenu(){
     state="Menu";
     setup();
   }
+}
+
+function enterItem(x, y, left, top, wh){
+  fill(100);
+  rect(left, top*3/4, wh*3/4, wh*1/4)
 }
 
 //gameplay is split into two parts, board creation and the part that the user plays
