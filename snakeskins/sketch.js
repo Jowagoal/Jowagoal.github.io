@@ -35,7 +35,7 @@ let difficulty = 10;
 let restarted = false;
 
 let skin = "none";
-let storeSize = [];
+let store;
 
 let skins = [];
 //push skin objects
@@ -338,15 +338,15 @@ function storeMenu(){
 
   //creates a grid based on the number of skins available
   if(skins.length<3){
-    storeSize = [[]]
+    store = [[]]
   }else if(skins.length<7){
-    storeSize = [[],[]]
+    store = [[],[]]
   }else if(skins.length<13){
-    storeSize = [[],[],[]]
+    store = [[],[],[]]
   }else if(skins.length<21){
-    storeSize = [[],[],[],[]]
+    store = [[],[],[],[]]
   }else if(skins.length<31){
-    storeSize = [[],[],[],[],[]]
+    store = [[],[],[],[],[]]
   }
   for(var k=0; k<skins.length; k++){
     let h = 0;
@@ -355,7 +355,11 @@ function storeMenu(){
         rows = j+1;
         cols = i+1;
 
-        storeSize[j][i] = skins[h];
+        if(store[i]===undefined){
+          store[j][i] = skins[h];
+        }else{
+          store[i][j] = skins[h];
+        }
         h++;
       }
     }
@@ -368,8 +372,8 @@ function storeMenu(){
       if(y%2===0&&x%2===0){
         stroke(0);
         fill(220);
-        rect(x*cellSize+cellSize, y*cellSize+cellSize, cellSize, cellSize);
-        enterItem(x, y, x*cellSize+cellSize, y*cellSize+cellSize, cellSize);
+        rect(x*cellSize+cellSize, y*cellSize+cellSize, cellSize*1.5, cellSize*1.5);
+        enterItem(x/2, y/2, x*cellSize+cellSize, y*cellSize+cellSize, cellSize*1.5);
       }
     }
   }
@@ -385,9 +389,32 @@ function storeMenu(){
   }
 }
 
-function enterItem(x, y, left, top, wh){
-  fill(100);
-  rect(left, top*3/4, wh*3/4, wh*1/4)
+function enterItem(col, row, centerX, centerY, wh){
+  textAlign(CENTER, CENTER);
+  textSize(wh*1/8);
+  
+  //cost
+  fill(150);
+  rect(centerX, centerY+wh*3/8, wh*5/8, wh*1/8);
+  fill(255, 255, 0);
+  if(store[row][col]!==undefined){
+    text("Cost: " + store[col][row].cost, centerX, centerY+wh*3/8);
+  }
+
+  //picture
+  fill(150);
+  rect(centerX, centerY+wh*3/16, wh*7/8, wh*1/8);
+  fill(0);
+  if(store[row][col]!==undefined){
+    text("Name: " + store[col][row].name, centerX, centerY+wh*3/16);
+  }
+
+  //if a part of the array is not filled, places a sqaure same colora as background over top
+  if(store[row][col]===undefined){
+    noStroke();
+    fill(200);
+    rect(centerX, centerY, wh+2, wh+2);
+  }
 }
 
 //gameplay is split into two parts, board creation and the part that the user plays
