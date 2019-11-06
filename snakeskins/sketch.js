@@ -27,9 +27,11 @@ let snakeLength;
 
 //these variables are for text and the difficulty slider in the options menu
 let inconsolata;
+let snakeEyes;
+let line;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
-let difficulty = 10;
+let difficulty = 1;
 
 //this variable kees track of if the game has been restarted
 let restarted = false;
@@ -41,25 +43,21 @@ let skins = [];
 //push skin objects
 let noSkin = {
   name: 'No Skin',
-  shape: 'box',
   cost: 'free',
 };
 
 let lineSkin = {
   name: 'line',
-  shape: 'box',
   cost: '25',
 };
 
 let isotopeSkin = {
   name: 'isotope',
-  shape: 'sphere',
   cost: '50',
 };
 
 let eyesSkin = {
   name: 'eyes',
-  shape: 'box',
   cost: '75',
 };
 
@@ -74,6 +72,8 @@ let rows;
 //preloads text font
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
+  snakeEyes = loadImage('assets/snake eyes.png');
+  line = loadImage('assets/lines.png');
 }
 
 //based on the state of the program, setup will create a new canvas
@@ -336,6 +336,10 @@ function optionMenu(){
 function storeMenu(){
   background(200);
 
+  if(restarted===true){
+    translate(-1/2*width,-1/2*height);
+  }
+
   //creates a grid based on the number of skins available
   if(skins.length<3){
     store = [[]]
@@ -398,16 +402,27 @@ function enterItem(col, row, centerX, centerY, wh){
   rect(centerX, centerY+wh*3/8, wh*5/8, wh*1/8);
   fill(255, 255, 0);
   if(store[row][col]!==undefined){
-    text("Cost: " + store[col][row].cost, centerX, centerY+wh*3/8);
+    text("Cost: " + store[row][col].cost, centerX, centerY+wh*3/8);
   }
 
-  //picture
+  //name
   fill(150);
   rect(centerX, centerY+wh*3/16, wh*7/8, wh*1/8);
   fill(0);
   if(store[row][col]!==undefined){
-    text("Name: " + store[col][row].name, centerX, centerY+wh*3/16);
+    text("Name: " + store[row][col].name, centerX, centerY+wh*3/16);
   }
+
+  //picture
+  if(store[row][col]!==undefined){
+    if(store[row][col].name === 'eyes'){
+      image(snakeEyes, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
+    }
+    if(store[row][col].name === 'line'){
+      image(line, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
+    }
+  }
+
 
   //if a part of the array is not filled, places a sqaure same colora as background over top
   if(store[row][col]===undefined){
@@ -560,7 +575,7 @@ function placeBox(head){
 }
 
 function applySkin(head){
-  skin = "eyes"
+  skin = "line"
   if(skin==="line"){
     box(50);
     strokeWeight(2);
