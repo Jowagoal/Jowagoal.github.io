@@ -27,8 +27,10 @@ let snakeLength;
 
 //these variables are for text and the difficulty slider in the options menu
 let inconsolata;
+let bare;
 let snakeEyes;
-let line;
+let lines;
+let iso;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
 let difficulty = 10;
@@ -38,27 +40,37 @@ let restarted = false;
 
 let skin = "none";
 let store;
+let money = 0;
+let moneyGained = 0;
 
 let skins = [];
 //push skin objects
 let noSkin = {
   name: 'No Skin',
   cost: 'free',
+  bought: 'yes',
+  active: 'yes',
 };
 
 let lineSkin = {
   name: 'line',
-  cost: '25',
+  cost: 25,
+  bought: 'no',
+  active: 'no',
 };
 
 let isotopeSkin = {
   name: 'isotope',
-  cost: '50',
+  cost: 50,
+  bought: 'no',
+  active: 'no',
 };
 
 let eyesSkin = {
   name: 'eyes',
-  cost: '75',
+  cost: 75,
+  bought: 'no',
+  active: 'no',
 };
 
 skins.push(noSkin);
@@ -72,8 +84,10 @@ let rows;
 //preloads text font
 function preload(){
   inconsolata = loadFont('assets/Inconsolata.otf');
+  bare = loadImage('assets/no skin.png')
+  lines = loadImage('assets/lines.png');
+  iso = loadImage('assets/iso.png');
   snakeEyes = loadImage('assets/snake eyes.png');
-  line = loadImage('assets/lines.png');
 }
 
 //based on the state of the program, setup will create a new canvas
@@ -81,6 +95,8 @@ function setup() {
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
     
+    money+=moneyGained;
+
     //hides all additional canvases
     document.getElementById("defaultCanvas0").style.visibility = "hidden";
     document.getElementById("defaultCanvas1").style.visibility = "hidden";
@@ -90,11 +106,14 @@ function setup() {
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
+    moneyGained = 0;
   }else if(state==="Store"){
-    createCanvas(windowWidth, windowHeight)
+    createCanvas(windowWidth, windowHeight);
+    moneyGained = 0;
   }else if(state==="Play"){
     //creates 3d canvas
     createCanvas(windowWidth, windowHeight, WEBGL);
+    moneyGained = 0;
     
     //sets camera position and where it looks
     camera(-300,-400,600,500,700,-500);
@@ -391,6 +410,8 @@ function storeMenu(){
     state="Menu";
     setup();
   }
+
+  //text("Money: " + money)
 }
 
 function enterItem(col, row, centerX, centerY, wh){
@@ -419,7 +440,13 @@ function enterItem(col, row, centerX, centerY, wh){
       image(snakeEyes, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
     }
     if(store[row][col].name === 'line'){
-      image(line, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
+      image(lines, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
+    }
+    if(store[row][col].name === 'isotope'){
+      image(iso, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
+    }
+    if(store[row][col].name === 'No Skin'){
+      image(bare, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
     }
   }
 
@@ -575,7 +602,6 @@ function placeBox(head){
 }
 
 function applySkin(head){
-  skin = "isotope"
   if(skin==="line"){
     box(50);
     strokeWeight(2);
@@ -711,6 +737,10 @@ function deathScreen(){
   fill(0);
   textSize(25);
   text("Score: " + snakeLength, width/2, height/4);
+
+  moneyGained = snakeLength-3
+
+  text("Money Gained: " + moneyGained, width/2, height*5/16);
 
   //makes Back to Menu button
   stroke(0);
