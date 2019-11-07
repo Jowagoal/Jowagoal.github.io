@@ -31,7 +31,7 @@ let snakeEyes;
 let line;
 let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
-let difficulty = 1;
+let difficulty = 10;
 
 //this variable kees track of if the game has been restarted
 let restarted = false;
@@ -575,7 +575,7 @@ function placeBox(head){
 }
 
 function applySkin(head){
-  skin = "line"
+  skin = "isotope"
   if(skin==="line"){
     box(50);
     strokeWeight(2);
