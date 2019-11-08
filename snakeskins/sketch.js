@@ -1,10 +1,13 @@
-// State Variable - Snake
+// 2D Grid - Snake
 // Jordie Walter
-// Oct 27, 2019
+// Nov 12, 2019
 //
-// Extra for Experts: This program explores the idea of having
-// additional canvases on the screen.  This was a neccessity
-// to learn to be able to have the different views of the game
+// Extra for Experts: I'm not sure how much this qualifies for
+// extra for experts but I'm really proud of the code for the size
+// of the grid.  How I wrote the code allows the program to create
+// the smallest possible grid for the number of skins there are.  
+// this also means that in the future I will be able to add more
+// skins to the store with a lot less code.  
 
 //global variables
 
