@@ -17,16 +17,15 @@ function draw() {
   background(220);
   orbitControl();
   
-  fill(0,0,255);
-  box(50);
-  translate(-100, 0, 0);
-
-  fill(255,0,0);
-  box(50);
-
-  fill(0,255,0);
-  translate(200, 0, 0);
-  box(50);
+  let locX = mouseX - width / 2;
+  let locY = mouseY - height / 2;
+  pointLight(250, 250, 250, 500, 500, 500);
+  pointLight(250, 250, 250, -500, 500, 500);
+  pointLight(250, 250, 250, 0, -500, 500);
+  
+  noStroke();
+  fill(0, 255,0,50);
+  cylinder(20, 50, 25, 25);
 }
 
 function windowResized(){

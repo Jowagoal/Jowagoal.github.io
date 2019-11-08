@@ -38,13 +38,13 @@ let difficulty = 10;
 //this variable kees track of if the game has been restarted
 let restarted = false;
 
+//variables for store and skins
 let skin = "none";
 let store;
 let money = 0;
 let moneyGained = 0;
-
+//skins array holds all skins
 let skins = [];
-//push skin objects
 let noSkin = {
   name: 'No Skin',
   cost: 'free',
@@ -53,22 +53,22 @@ let noSkin = {
 };
 
 let lineSkin = {
-  name: 'line',
-  cost: 25,
-  bought: 'no',
-  active: 'no',
-};
-
-let isotopeSkin = {
-  name: 'isotope',
+  name: 'Line',
   cost: 50,
   bought: 'no',
   active: 'no',
 };
 
+let isotopeSkin = {
+  name: 'Isotope',
+  cost: 150,
+  bought: 'no',
+  active: 'no',
+};
+
 let eyesSkin = {
-  name: 'eyes',
-  cost: 75,
+  name: 'Eyes',
+  cost: 250,
   bought: 'no',
   active: 'no',
 };
@@ -77,13 +77,14 @@ skins.push(noSkin);
 skins.push(lineSkin);
 skins.push(isotopeSkin);
 skins.push(eyesSkin);
-
+//variables for 2D array
 let cols;
 let rows;
 
-//preloads text font
 function preload(){
+  //preloads text font
   inconsolata = loadFont('assets/Inconsolata.otf');
+  //preloads pictures for store
   bare = loadImage('assets/no skin.png')
   lines = loadImage('assets/lines.png');
   iso = loadImage('assets/iso.png');
@@ -95,8 +96,6 @@ function setup() {
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
     
-    money+=moneyGained;
-
     //hides all additional canvases
     document.getElementById("defaultCanvas0").style.visibility = "hidden";
     document.getElementById("defaultCanvas1").style.visibility = "hidden";
@@ -106,14 +105,11 @@ function setup() {
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
-    moneyGained = 0;
   }else if(state==="Store"){
     createCanvas(windowWidth, windowHeight);
-    moneyGained = 0;
   }else if(state==="Play"){
     //creates 3d canvas
     createCanvas(windowWidth, windowHeight, WEBGL);
-    moneyGained = 0;
     
     //sets camera position and where it looks
     camera(-300,-400,600,500,700,-500);
@@ -122,7 +118,7 @@ function setup() {
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
-
+    
     //shows all additional canvases
     document.getElementById("defaultCanvas0").style.visibility = "visible";
     document.getElementById("defaultCanvas1").style.visibility = "visible";
@@ -132,6 +128,11 @@ function setup() {
     document.getElementById("defaultCanvas5").style.visibility = "visible";
   }else if(state==="Game Over"){
     createCanvas(windowWidth, windowHeight);
+
+    //calculates money gained for round
+    moneyGained = (snakeLength-3)*difficulty;
+    //adds money gained to total money(it adds twice for some reason)
+    money+=moneyGained/2;
     
     //hides all additional canvases
     document.getElementById("defaultCanvas0").style.visibility = "hidden";
@@ -355,11 +356,13 @@ function optionMenu(){
 function storeMenu(){
   background(200);
 
+  //after the program is restarted, everything on the screen is displaced
+  //this corrects that displacement
   if(restarted===true){
     translate(-1/2*width,-1/2*height);
   }
 
-  //creates a grid based on the number of skins available
+  //creates creates the smallest possible rectangular grid based on the number of skins available
   if(skins.length<3){
     store = [[]]
   }else if(skins.length<7){
@@ -371,27 +374,30 @@ function storeMenu(){
   }else if(skins.length<31){
     store = [[],[],[],[],[]]
   }
-  for(var k=0; k<skins.length; k++){
-    let h = 0;
-    for(var i=0; i<ceil(sqrt(skins.length)); i++){
-      for(var j=0; j<floor(sqrt(skins.length)+0.42); j++){
-        rows = j+1;
-        cols = i+1;
+  let h = 0;
+  for(var i=0; i<ceil(sqrt(skins.length)); i++){
+    for(var j=0; j<floor(sqrt(skins.length)+0.42); j++){
+      //sets number of rows and columns in grid
+      rows = j+1;
+      cols = i+1;
 
-        if(store[i]===undefined){
-          store[j][i] = skins[h];
-        }else{
-          store[i][j] = skins[h];
-        }
-        h++;
+      //pushes skins into the grid
+      if(store[i]===undefined){
+        store[j][i] = skins[h];
+      }else{
+        store[i][j] = skins[h];
       }
+      h++;
     }
   }
 
+  //displays grid
   rectMode(LEFT, TOP);
   let cellSize = height/2/cols;
+  //nested for loop doubles grid size(-1) to allow for spaces between items
   for (let y = 0; y < rows*2-1; y++) {
     for (let x = 0; x < cols*2-1; x++) {
+      //only displays enough for the size of the grid
       if(y%2===0&&x%2===0){
         stroke(0);
         fill(220);
@@ -411,38 +417,83 @@ function storeMenu(){
     setup();
   }
 
-  //text("Money: " + money)
+  //displays money on right side
+  fill(255, 255, 0);
+  text("Money: " + money, width*0.9, height*0.2);
 }
 
+//displays a skin and its information into the store
 function enterItem(col, row, centerX, centerY, wh){
   textAlign(CENTER, CENTER);
   textSize(wh*1/8);
   
-  //cost
+  //displays if the item is active, bought, or the cost of the item
   fill(150);
+  //rectangle for button
   rect(centerX, centerY+wh*3/8, wh*5/8, wh*1/8);
   fill(255, 255, 0);
-  if(store[row][col]!==undefined){
+  //displays text
+  if(store[row][col]!==undefined&&store[row][col].bought==='no'){
     text("Cost: " + store[row][col].cost, centerX, centerY+wh*3/8);
+  }else if(store[row][col]!==undefined&&store[row][col].bought==='yes'&&store[row][col].active==='no'){
+    text("Bought", centerX, centerY+wh*3/8);
+  }else{
+    text("Active", centerX, centerY+wh*3/8);
+  }
+  //checks if the mouse is clicked on the button
+  if(mouseX>centerX-(wh*5/8)/2&&mouseX<centerX+(wh*5/8)/2&&mouseY>centerY+wh*3/8-(wh*1/8)/2&&mouseY<centerY+wh*3/8+(wh*1/8)/2&&mouseIsPressed){
+    //if the skin is not bought and the user has enough to buy it...
+    if(store[row][col].bought==='no'&&money>=store[row][col].cost){
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          //sets all other skins to not active
+          if(store[y][x]!==undefined){
+            store[y][x].active='no';
+          }
+        }
+      }
+      //subtracts money
+      money-=store[row][col].cost;
+      //set current skin to its name
+      skin = store[row][col].name;
+      //changes skin's bought and active to 'yes'
+      store[row][col].bought='yes';
+      store[row][col].active='yes';
+    }else 
+    //if the skin is bought...
+    if(store[row][col].bought==='yes'){
+      for (let a = 0; a < rows; a++) {
+        for (let b = 0; b < cols; b++) {
+          if(store[a][b]!==undefined){
+            //sets all other skins to not active
+            store[a][b].active='no';
+          }
+        }
+      }
+      //set current skin to its name
+      skin = store[row][col].name;
+      //changes skin's active to 'yes'
+      store[row][col].active='yes';
+    }
   }
 
-  //name
+  //displays the name of the skin
   fill(150);
   rect(centerX, centerY+wh*3/16, wh*7/8, wh*1/8);
   fill(0);
   if(store[row][col]!==undefined){
-    text("Name: " + store[row][col].name, centerX, centerY+wh*3/16);
+    text(store[row][col].name, centerX, centerY+wh*3/16);
   }
 
-  //picture
+  //displays picture of the skin
   if(store[row][col]!==undefined){
-    if(store[row][col].name === 'eyes'){
+    if(store[row][col].name === 'Eyes'){
       image(snakeEyes, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
     }
-    if(store[row][col].name === 'line'){
+    if(store[row][col].name === 'Line'){
       image(lines, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
     }
-    if(store[row][col].name === 'isotope'){
+    if(store[row][col].name === 'Isotope'){
       image(iso, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
     }
     if(store[row][col].name === 'No Skin'){
@@ -450,8 +501,7 @@ function enterItem(col, row, centerX, centerY, wh){
     }
   }
 
-
-  //if a part of the array is not filled, places a sqaure same colora as background over top
+  //if a part of the array is not filled, places a sqaure same color as background over top
   if(store[row][col]===undefined){
     noStroke();
     fill(200);
@@ -601,11 +651,14 @@ function placeBox(head){
   //the color scheme is a warning system for the user, tells them how close they are to the border
 }
 
+//applys the skin with the input of which box is the head
 function applySkin(head){
-  if(skin==="line"){
+  //creates line skin on box
+  if(skin==="Line"){
     box(50);
     strokeWeight(2);
     stroke(0);
+    //determines direction of snake and places three lines
     for(var i=-15; i<=15; i+=10){
       if(secondPosition[2]===position[2]+50||secondPosition[2]===position[2]-50){
         line(i,-25,-25,i,-25,25);
@@ -620,10 +673,12 @@ function applySkin(head){
         line(i,-25,-25,i,25,-25);
       }
     }
-  }else if(skin==="isotope"){
+  }else if(skin==="Isotope"){
+    //each bady part is a sphere
     sphere(30,5,5);
-  }else if(skin==="eyes"){
+  }else if(skin==="Eyes"){
     box(50);
+    //places eyes on the head of the snake based on the direction it's going
     if(head){
       if(secondPosition[0]===position[0]-50){
         drawEye(25,-30,10,0,90);
@@ -651,20 +706,24 @@ function applySkin(head){
       }
     }
   }else{
+    //no skin
     box(50);
   }
 }
 
 function drawEye(x,y,z,rotX,rotY){
+  //translates and rotates to position of eye
   translate(x,y,z);
   rotateX(rotX);
   rotateY(rotY);
   
+  //places eyes
   fill(255);
   ellipse(0,0,10,20);
   fill(0);
   ellipse(0,0,5,10);
 
+  //rotates and translates back
   rotateY(-1*rotY);
   rotateX(-1*rotX);
   translate(-1*x,-1*y,-1*z);
@@ -738,8 +797,7 @@ function deathScreen(){
   textSize(25);
   text("Score: " + snakeLength, width/2, height/4);
 
-  moneyGained = snakeLength-3
-
+  //displays money gained for the round
   text("Money Gained: " + moneyGained, width/2, height*5/16);
 
   //makes Back to Menu button
