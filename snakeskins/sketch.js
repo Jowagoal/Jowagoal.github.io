@@ -88,10 +88,10 @@ function preload(){
   //preloads text font
   inconsolata = loadFont('assets/Inconsolata.otf');
   //preloads pictures for store
-  bare = loadImage('assets/no skin.png')
-  lines = loadImage('assets/lines.png');
-  iso = loadImage('assets/iso.png');
-  snakeEyes = loadImage('assets/snake eyes.png');
+  bare = loadImage('assets/no skin.PNG')
+  lines = loadImage('assets/lines.PNG');
+  iso = loadImage('assets/iso.PNG');
+  snakeEyes = loadImage('assets/snake eyes.PNG');
 }
 
 //based on the state of the program, setup will create a new canvas

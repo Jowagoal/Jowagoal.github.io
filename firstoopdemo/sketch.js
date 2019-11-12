@@ -5,21 +5,22 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let george;
-let jenna;
+let walkers = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  george = new Walker(100, 200);
-  jenna = new Walker(300, 400);
   background(0);
 }
 
 function draw() {
-  george.move();
-  george.display();
-  jenna.move();
-  jenna.display();
+  for(var i=0; i<walkers.length; i++){
+    walkers[i].move();
+    walkers[i].display();
+  }
+  if(keyIsDown(82)){
+    background(0);
+    walkers = [];
+  }
 }
 
 class Walker{
@@ -49,4 +50,8 @@ class Walker{
       this.x+=this.stepSize;
     }
   }
+}
+
+function mouseClicked(){
+  walkers.push(new Walker(mouseX, mouseY));
 }
