@@ -880,6 +880,9 @@ function keyPressed(){
       position[1]=position[1]+50;
     }
   }
+  if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
+    money+=1000;
+  }
 }
 
 //creates a new canvas to write the word 'Top View'
