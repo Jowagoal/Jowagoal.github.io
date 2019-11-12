@@ -166,7 +166,6 @@ function checkState(){
   }
   if(state==="Store"){
     storeMenu();
-    pointerDot();
   }
   if(state==="Play"){
     gamePlay();
@@ -423,6 +422,8 @@ function storeMenu(){
   //displays money on right side
   fill(255, 255, 0);
   text("Money: " + money, width*0.9, height*0.2);
+  
+  pointerDot();
 }
 
 //displays a skin and its information into the store
