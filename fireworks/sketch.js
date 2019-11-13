@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 let theFireworks = [];
+let third = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -25,7 +26,7 @@ function draw() {
 }
 
 function mousePressed() {
-  for(var i=0; i<50; i++){
+  for(var i=0; i<25; i++){
     /*
     let xDir = map(cos(i*4), -1, 1, -3, 3);
     let yDir = map(sin(i*4), -1, 1, 3, -3);
@@ -55,8 +56,16 @@ class Particle {
   display() {
     fill(255,0,0,this.alpha);
     circle(this.x, this.y, this.radius * 2);
-    let myFirework = new Trail(this.x, this.y, this.dx/2, this.dy/2, 3);
-    theFireworks.push(myFirework);
+
+    if(third===0){
+      let myFirework = new Trail(this.x, this.y, this.dx/2, this.dy/2, 3);
+      theFireworks.push(myFirework);
+      third++;
+    }else if(third===2){
+      third=0;
+    }else{
+      third++;
+    }
   }
 
   move() {
@@ -91,7 +100,7 @@ class Trail {
     this.dy += this.gravity;
     this.x += this.dx;
     this.y += this.dy;
-    this.alpha -= 8;
+    this.alpha -= 15;
   }
 
   isDone() {
