@@ -15,7 +15,7 @@
 let state = "Menu";
 
 //these variables are the memory of the program
-let arr = [0,0,0,0];
+let arr = [];
 let position = [0,0,0];
 let secondPosition = [0,0,0];
 let foodPosition = [0,0,0];
@@ -604,6 +604,15 @@ function moveSnake(){
         placeBox(true);
       }
     }
+    /*
+    else if(arr[i+3]===0&&i!==0){
+      arr[i-4]+=arr[i];
+      arr[i-3]+=arr[i+1];
+      arr[i-2]+=arr[i+2];
+      arr[i-1]+=arr[i+3];
+      arr.splice(i,4);
+    }
+    */
     //checks a snakeLength bit back if the third element is equal to 1
     //if so, changes it to 0
     //this keeps the length of the snake equal to snakelength

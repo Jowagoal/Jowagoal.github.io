@@ -27,17 +27,17 @@ function draw() {
 
 function mousePressed() {
   for(var i=0; i<25; i++){
-    /*
+    
     let xDir = map(cos(i*4), -1, 1, -3, 3);
     let yDir = map(sin(i*4), -1, 1, 3, -3);
 
-    xDir += random(-0.5, 0.5);
-    yDir += random(-0.5, 0.5);
-    */
+    //xDir += random(-0.5, 0.5);
+    //yDir += random(-0.5, 0.5);
+    
 
-    //let myFirework = new Particle(mouseX, mouseY, xDir, yDir, 3);
+    let myFirework = new Particle(mouseX, mouseY, xDir, yDir, 3);
 
-    let myFirework = new Particle(mouseX, mouseY, random(-3,3), random(-3,3), 3);
+    //let myFirework = new Particle(mouseX, mouseY, random(-3,3), random(-3,3), 3);
     theFireworks.push(myFirework);
   }
 }
