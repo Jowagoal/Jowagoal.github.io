@@ -88,10 +88,10 @@ function preload(){
   //preloads text font
   inconsolata = loadFont('assets/Inconsolata.otf');
   //preloads pictures for store
-  bare = loadImage('assets/no skin.png')
-  lines = loadImage('assets/lines.png');
-  iso = loadImage('assets/iso.png');
-  snakeEyes = loadImage('assets/snake eyes.png');
+  bare = loadImage('assets/no skin.PNG')
+  lines = loadImage('assets/lines.PNG');
+  iso = loadImage('assets/iso.PNG');
+  snakeEyes = loadImage('assets/snake eyes.PNG');
 }
 
 //based on the state of the program, setup will create a new canvas
@@ -166,7 +166,6 @@ function checkState(){
   }
   if(state==="Store"){
     storeMenu();
-    pointerDot();
   }
   if(state==="Play"){
     gamePlay();
@@ -423,6 +422,8 @@ function storeMenu(){
   //displays money on right side
   fill(255, 255, 0);
   text("Money: " + money, width*0.9, height*0.2);
+  
+  pointerDot();
 }
 
 //displays a skin and its information into the store
@@ -878,6 +879,9 @@ function keyPressed(){
       //updates current position
       position[1]=position[1]+50;
     }
+  }
+  if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
+    money+=1000;
   }
 }
 
