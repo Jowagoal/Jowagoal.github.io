@@ -48,38 +48,11 @@ let money = 0;
 let moneyGained = 0;
 //skins array holds all skins
 let skins = [];
-let noSkin = {
-  name: 'No Skin',
-  cost: 'free',
-  bought: 'yes',
-  active: 'yes',
-};
+let noSkin;
+let lineSkin;
+let isotopeSkin;
+let eyesSkin;
 
-let lineSkin = {
-  name: 'Line',
-  cost: 50,
-  bought: 'no',
-  active: 'no',
-};
-
-let isotopeSkin = {
-  name: 'Isotope',
-  cost: 150,
-  bought: 'no',
-  active: 'no',
-};
-
-let eyesSkin = {
-  name: 'Eyes',
-  cost: 250,
-  bought: 'no',
-  active: 'no',
-};
-
-skins.push(noSkin);
-skins.push(lineSkin);
-skins.push(isotopeSkin);
-skins.push(eyesSkin);
 //variables for 2D array
 let cols;
 let rows;
@@ -92,10 +65,47 @@ function preload(){
   lines = loadImage('assets/lines.PNG');
   iso = loadImage('assets/iso.PNG');
   snakeEyes = loadImage('assets/snake eyes.PNG');
+  eyesSkin = {
+    name: 'Eyes',
+    cost: 250,
+    bought: 'no',
+    active: 'no',
+    picture: bare,
+  };
+  
+  isotopeSkin = {
+    name: 'Isotope',
+    cost: 150,
+    bought: 'no',
+    active: 'no',
+    picture: lines,
+  };
+  
+  lineSkin = {
+    name: 'Line',
+    cost: 50,
+    bought: 'no',
+    active: 'no',
+    picture: iso,
+  };
+  
+  noSkin = {
+    name: 'No Skin',
+    cost: 'free',
+    bought: 'yes',
+    active: 'yes',
+    picture: snakeEyes,
+  };
+  
+  skins.push(noSkin);
+  skins.push(lineSkin);
+  skins.push(isotopeSkin);
+  skins.push(eyesSkin);
 }
 
 //based on the state of the program, setup will create a new canvas
 function setup() {
+  
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
     
@@ -491,18 +501,7 @@ function enterItem(col, row, centerX, centerY, wh){
 
   //displays picture of the skin
   if(store[row][col]!==undefined){
-    if(store[row][col].name === 'Eyes'){
-      image(snakeEyes, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
-    }
-    if(store[row][col].name === 'Line'){
-      image(lines, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
-    }
-    if(store[row][col].name === 'Isotope'){
-      image(iso, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
-    }
-    if(store[row][col].name === 'No Skin'){
-      image(bare, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
-    }
+    image(store[row][col].picture, centerX-wh*1/2+1, centerY+wh*-1/2, wh-2, wh*5/8);
   }
 
   //if a part of the array is not filled, places a sqaure same color as background over top
