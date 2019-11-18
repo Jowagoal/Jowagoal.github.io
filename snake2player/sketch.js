@@ -14,6 +14,8 @@
 //this variable determines the state of the program
 let state = "Menu";
 
+let gameMode;
+
 //these variables are the memory of the program
 let arr = [];
 let position = [0,0,0];
@@ -65,7 +67,6 @@ function preload(){
   lines = loadImage('assets/lines.PNG');
   iso = loadImage('assets/iso.PNG');
   snakeEyes = loadImage('assets/snake eyes.PNG');
-  
   eyesSkin = {
     name: 'Eyes',
     cost: 250,
