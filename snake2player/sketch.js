@@ -12,7 +12,7 @@
 //global variables
 
 //this variable determines the state of the program
-let state = "Menu";
+let state = "Main Menu";
 
 let gameMode;
 
@@ -36,9 +36,24 @@ let bare;
 let snakeEyes;
 let lines;
 let iso;
-let instructions = ["Controls:", "A          = left", "D          = right", "W          = forward", "S          = back", "Up Arrow   = up", "Down Arrow = down"];
 let sliderX = 225;
 let difficulty = 10;
+
+let p1Controls = {
+  left: 'a',
+  lKeyCode: 65,
+  right: 'd',
+  rKeyCode: 68,
+  forward: 'w',
+  fKeyCode: 87,
+  back: 's',
+  bKeyCode: 83,
+  up: 'Up Arrow',
+  uKeyCode: 38,
+  down: 'Down Arrow',
+  dKeyCode: 40,
+}
+let instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
 
 //this variable kees track of if the game has been restarted
 let restarted = false;
@@ -67,12 +82,13 @@ function preload(){
   lines = loadImage('assets/lines.PNG');
   iso = loadImage('assets/iso.PNG');
   snakeEyes = loadImage('assets/snake eyes.PNG');
+  
   eyesSkin = {
     name: 'Eyes',
     cost: 250,
     bought: 'no',
     active: 'no',
-    picture: bare,
+    picture: snakeEyes,
   };
   
   isotopeSkin = {
@@ -80,7 +96,7 @@ function preload(){
     cost: 150,
     bought: 'no',
     active: 'no',
-    picture: lines,
+    picture: iso,
   };
   
   lineSkin = {
@@ -88,7 +104,7 @@ function preload(){
     cost: 50,
     bought: 'no',
     active: 'no',
-    picture: iso,
+    picture: lines,
   };
   
   noSkin = {
@@ -96,7 +112,7 @@ function preload(){
     cost: 'free',
     bought: 'yes',
     active: 'yes',
-    picture: snakeEyes,
+    picture: bare,
   };
   
   skins.push(noSkin);
@@ -107,6 +123,16 @@ function preload(){
 
 //based on the state of the program, setup will create a new canvas
 function setup() {
+  if(state==="Main Menu"){
+    createCanvas(windowWidth, windowHeight);
+
+    document.getElementById("defaultCanvas0").style.visibility = "hidden";
+    document.getElementById("defaultCanvas1").style.visibility = "hidden";
+    document.getElementById("defaultCanvas2").style.visibility = "hidden";
+    document.getElementById("defaultCanvas3").style.visibility = "hidden";
+    document.getElementById("defaultCanvas4").style.visibility = "hidden";
+    document.getElementById("defaultCanvas5").style.visibility = "hidden";
+  }
   
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
@@ -120,7 +146,7 @@ function setup() {
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
-  }else if(state==="Store"){
+  }else if(state==="Store"&&gameMode!=="Two Player"){
     createCanvas(windowWidth, windowHeight);
   }else if(state==="Play"){
     //creates 3d canvas
@@ -166,6 +192,10 @@ function draw() {
 
 //after state is determined, it will call its corresponding function
 function checkState(){
+  if(state==="Main Menu"){
+    mainMenu();
+    pointerDot();
+  }
   if(state==="Menu"){
     //after user resets, all values that changed need to be reset
     resetAllValues();
@@ -197,6 +227,64 @@ function pointerDot(){
 }
 
 //this function does everything on the start screen
+function mainMenu(){
+  //after the program is restarted, everything on the screen is displaced
+  //this corrects that displacement
+  if(restarted===true){
+    translate(-1/2*width,-1/2*height);
+  }
+
+  background(100);
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  textFont(inconsolata);
+  
+  //sets stroke, size, and fill for title
+  noStroke();
+  textSize(150);
+  fill(0,255,100);
+  //title
+  text("3D Snake",width/2, height*2/8);
+  
+  //sets stroke and fill for the buttons
+  stroke(0);
+  fill(200);
+  //creates buttons
+  rect(width/2, height/2+height*1/8, width/4, height/8);
+  rect(width/3, height/2+height*3/8, width/4, height/8);
+  rect(width/3*2, height/2+height*3/8, width/4, height/8);
+  
+  //sets stroke, size, and fill for buttons
+  noStroke();
+  textSize(25);
+  fill(0);
+  //start game button
+  text("Single Player",width/2, height/2+height*1/8);
+  
+  //options button
+  text("Two Player",width/3, height/2+height*3/8);
+
+  text("Online",width/3*2, height/2+height*3/8);
+  
+  if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2+height*1/8-height/16&&mouseY<height/2+height*1/8+height/16&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to start the game
+    gameMode="Single Player";
+    state="Menu";
+    setup();
+  }else if(mouseX>width/3-width/8&&mouseX<width/3+width/8&&mouseY>height/2+height*1/8-height/16+height/4&&mouseY<height/2+height*1/8+height/16+height/4&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to open options screen
+    gameMode="Two Player";
+    state="Menu";
+    setup();
+  }else if(mouseX>width/3*2-width/8&&mouseX<width/3*2+width/8&&mouseY>height/2+height*1/8-height/16+height/4&&mouseY<height/2+height*1/8+height/16+height/4&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to open options screen
+    gameMode="Online";
+    state="Menu";
+    setup();
+  }
+}
+
+//this function does everything on the start screen
 function startScreen(){
   //after the program is restarted, everything on the screen is displaced
   //this corrects that displacement
@@ -213,41 +301,66 @@ function startScreen(){
   noStroke();
   textSize(100);
   fill(0,255,100);
+
   //title
   text("3D Snake",width/2, height/8);
   
   //sets stroke and fill for the buttons
   stroke(0);
   fill(200);
-  //creates buttons
-  rect(width/2, height/2, width/4, height/8);
-  rect(width/3, height/2+height/4, width/4, height/8);
-  rect(width/3*2, height/2+height/4, width/4, height/8);
+
+  if(gameMode!=="Two Player"){
+    //creates buttons
+    rect(width/2, height/2, width/4, height/8);
+    rect(width/3, height/2+height/4, width/4, height/8);
+    rect(width/3*2, height/2+height/4, width/4, height/8);
+  }else{
+    rect(width/2, height/2, width/4, height/8);
+    rect(width/2, height/2+height/4, width/4, height/8);
+  }
   
   //sets stroke, size, and fill for buttons
   noStroke();
   textSize(25);
   fill(0);
-  //start game button
-  text("Start Game",width/2, height/2);
-  
-  //options button
-  text("Options",width/3, height/2+height/4);
 
-  text("Store",width/3*2, height/2+height/4);
-  
-  if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
-    //when mouse clicks options button, sets state to play and calls setup again to start the game
-    state="Play";
-    setup();
-  }else if(mouseX>width/3-width/8&&mouseX<width/3+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
-    //when mouse clicks options button, sets state to play and calls setup again to open options screen
-    state="Options";
-    setup();
-  }else if(mouseX>width/3*2-width/8&&mouseX<width/3*2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
-    //when mouse clicks options button, sets state to play and calls setup again to open options screen
-    state="Store";
-    setup();
+  if(gameMode!=="Two Player"){
+    //start game button
+    text("Start Game",width/2, height/2);
+    //options button
+    text("Options",width/3, height/2+height/4);
+    //store button
+    text("Store",width/3*2, height/2+height/4);
+  }else{
+//start game button
+  text("Start Game",width/2, height/2);
+  //options button
+  text("Options",width/2, height/2+height/4);
+  }
+  if(gameMode!=="Two Player"){
+    if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
+      //when mouse clicks options button, sets state to play and calls setup again to start the game
+      state="Play";
+      setup();
+    }else if(mouseX>width/3-width/8&&mouseX<width/3+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+      //when mouse clicks options button, sets state to play and calls setup again to open options screen
+      state="Options";
+      setup();
+    }else if(mouseX>width/3*2-width/8&&mouseX<width/3*2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+      //when mouse clicks options button, sets state to play and calls setup again to open options screen
+      state="Store";
+      setup();
+    }
+  }else{
+    if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
+      //when mouse clicks options button, sets state to play and calls setup again to start the game
+      state="Play";
+      setup();
+    }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
+      //when mouse clicks options button, sets state to play and calls setup again to open options screen
+      state="Options";
+      setup();
+    }
   }
 }
 
@@ -830,68 +943,193 @@ function deathScreen(){
 }
 
 function keyPressed(){
-  //'d', changes direction to right unless snake is going left
-  if(keyIsDown(68)){
-    if(secondPosition[0]!==position[0]+50){
-      push0=50;
-      push1=0;
-      push2=0;
-      //updates current position
-      position[0]=position[0]+50;
+  if(gameMode!=="Two Player"){
+    //'d', changes direction to right unless snake is going left
+    if(keyIsDown(68)){
+      if(secondPosition[0]!==position[0]+50){
+        push0=50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]+50;
+      }
+    }else 
+    //'a', changes direction to left unless snake is going right
+    if(keyIsDown(65)){
+      if(secondPosition[0]!==position[0]-50){
+        push0=-50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]-50;
+      }
+    }else 
+    //'w', changes direction to forward unless snake is going back
+    if(keyIsDown(87)){
+      if(secondPosition[2]!==position[2]-50){
+        push0=0;
+        push1=0;
+        push2=-50;
+        //updates current position
+        position[2]=position[2]-50;
+      }
+    }else 
+    //'s', changes direction to back unless snake is going forward
+    if(keyIsDown(83)){
+      if(secondPosition[2]!==position[2]+50){
+        push0=0;
+        push1=0;
+        push2=50;
+        //updates current position
+        position[2]=position[2]+50;
+      }
+    }else 
+    //'UP_ARROW', changes direction to up unless snake is going down
+    if(keyIsDown(38)){
+      if(secondPosition[1]!==position[1]-50){
+        push0=0;
+        push1=-50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]-50;
+      }
+    }else 
+    //'DOWN_ARROW', changes direction to down unless snake is going up
+    if(keyIsDown(40)){
+      if(secondPosition[1]!==position[1]+50){
+        push0=0;
+        push1=50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]+50;
+      }
     }
-  }else 
-  //'a', changes direction to left unless snake is going right
-  if(keyIsDown(65)){
-    if(secondPosition[0]!==position[0]-50){
-      push0=-50;
-      push1=0;
-      push2=0;
-      //updates current position
-      position[0]=position[0]-50;
+    if(gameMode==="Single Player"){
+      if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
+        money+=1000;
+      }
     }
-  }else 
-  //'w', changes direction to forward unless snake is going back
-  if(keyIsDown(87)){
-    if(secondPosition[2]!==position[2]-50){
-      push0=0;
-      push1=0;
-      push2=-50;
-      //updates current position
-      position[2]=position[2]-50;
+  }else{
+    //'d', changes direction to right unless snake is going left
+    if(keyIsDown(68)){
+      if(secondPosition[0]!==position[0]+50){
+        push0=50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]+50;
+      }
+    }else 
+    //'a', changes direction to left unless snake is going right
+    if(keyIsDown(65)){
+      if(secondPosition[0]!==position[0]-50){
+        push0=-50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]-50;
+      }
+    }else 
+    //'w', changes direction to forward unless snake is going back
+    if(keyIsDown(87)){
+      if(secondPosition[2]!==position[2]-50){
+        push0=0;
+        push1=0;
+        push2=-50;
+        //updates current position
+        position[2]=position[2]-50;
+      }
+    }else 
+    //'s', changes direction to back unless snake is going forward
+    if(keyIsDown(83)){
+      if(secondPosition[2]!==position[2]+50){
+        push0=0;
+        push1=0;
+        push2=50;
+        //updates current position
+        position[2]=position[2]+50;
+      }
+    }else 
+    //'t', changes direction to up unless snake is going down
+    if(keyIsDown(84)){
+      if(secondPosition[1]!==position[1]-50){
+        push0=0;
+        push1=-50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]-50;
+      }
+    }else 
+    //'g', changes direction to down unless snake is going up
+    if(keyIsDown(71)){
+      if(secondPosition[1]!==position[1]+50){
+        push0=0;
+        push1=50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]+50;
+      }
     }
-  }else 
-  //'s', changes direction to back unless snake is going forward
-  if(keyIsDown(83)){
-    if(secondPosition[2]!==position[2]+50){
-      push0=0;
-      push1=0;
-      push2=50;
-      //updates current position
-      position[2]=position[2]+50;
+    //'RIGHT_ARROW', changes direction to right unless snake is going left
+    if(keyIsDown(39)){
+      if(secondPosition[0]!==position[0]+50){
+        push0=50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]+50;
+      }
+    }else 
+    //'LEFT_ARROW', changes direction to left unless snake is going right
+    if(keyIsDown(37)){
+      if(secondPosition[0]!==position[0]-50){
+        push0=-50;
+        push1=0;
+        push2=0;
+        //updates current position
+        position[0]=position[0]-50;
+      }
+    }else 
+    //'UP_ARROW', changes direction to forward unless snake is going back
+    if(keyIsDown(38)){
+      if(secondPosition[2]!==position[2]-50){
+        push0=0;
+        push1=0;
+        push2=-50;
+        //updates current position
+        position[2]=position[2]-50;
+      }
+    }else 
+    //'DOWN_ARROW', changes direction to back unless snake is going forward
+    if(keyIsDown(40)){
+      if(secondPosition[2]!==position[2]+50){
+        push0=0;
+        push1=0;
+        push2=50;
+        //updates current position
+        position[2]=position[2]+50;
+      }
+    }else 
+    //'NUMPAD1', changes direction to up unless snake is going down
+    if(keyIsDown(35)){
+      if(secondPosition[1]!==position[1]-50){
+        push0=0;
+        push1=-50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]-50;
+      }
+    }else 
+    //'NUMPAD2', changes direction to down unless snake is going up
+    if(keyIsDown(45)){
+      if(secondPosition[1]!==position[1]+50){
+        push0=0;
+        push1=50;
+        push2=0;
+        //updates current position
+        position[1]=position[1]+50;
+      }
     }
-  }else 
-  //'UP_ARROW', changes direction to up unless snake is going down
-  if(keyIsDown(38)){
-    if(secondPosition[1]!==position[1]-50){
-      push0=0;
-      push1=-50;
-      push2=0;
-      //updates current position
-      position[1]=position[1]-50;
-    }
-  }else 
-  //'DOWN_ARROW', changes direction to down unless snake is going up
-  if(keyIsDown(40)){
-    if(secondPosition[1]!==position[1]+50){
-      push0=0;
-      push1=50;
-      push2=0;
-      //updates current position
-      position[1]=position[1]+50;
-    }
-  }
-  if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
-    money+=1000;
   }
 }
 

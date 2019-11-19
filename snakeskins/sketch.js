@@ -71,7 +71,7 @@ function preload(){
     cost: 250,
     bought: 'no',
     active: 'no',
-    picture: bare,
+    picture: snakeEyes,
   };
   
   isotopeSkin = {
@@ -79,7 +79,7 @@ function preload(){
     cost: 150,
     bought: 'no',
     active: 'no',
-    picture: lines,
+    picture: iso,
   };
   
   lineSkin = {
@@ -87,7 +87,7 @@ function preload(){
     cost: 50,
     bought: 'no',
     active: 'no',
-    picture: iso,
+    picture: lines,
   };
   
   noSkin = {
@@ -95,7 +95,7 @@ function preload(){
     cost: 'free',
     bought: 'yes',
     active: 'yes',
-    picture: snakeEyes,
+    picture: bare,
   };
   
   skins.push(noSkin);
