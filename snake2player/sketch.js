@@ -32,13 +32,15 @@ let snakeLength;
 
 //these variables are for text and the difficulty slider in the options menu
 let inconsolata;
-let bare;
-let snakeEyes;
-let lines;
-let iso;
 let sliderX = 225;
 let difficulty = 10;
-
+let changingBingings = false;
+let leftBind = false;
+let rightBind = false;
+let forwardBind = false;
+let backBind = false;
+let upBind = false;
+let downBind = false;
 let p1Controls = {
   left: 'a',
   lKeyCode: 65,
@@ -48,9 +50,9 @@ let p1Controls = {
   fKeyCode: 87,
   back: 's',
   bKeyCode: 83,
-  up: 'Up Arrow',
+  up: 'ArrowUP',
   uKeyCode: 38,
-  down: 'Down Arrow',
+  down: 'ArrowDown',
   dKeyCode: 40,
 }
 let instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
@@ -73,6 +75,11 @@ let eyesSkin;
 //variables for 2D array
 let cols;
 let rows;
+
+let bare;
+let snakeEyes;
+let lines;
+let iso;
 
 function preload(){
   //preloads text font
@@ -400,10 +407,177 @@ function optionMenu(){
     text(instructions[i], 100, 100);
     translate(0, 25);
   }
+  
+  if(changingBingings===false){
+    //button for key bindings
+    stroke(100);
+    fill(255);
+    rect(200, 150, 200, 30);
+    fill(0);
+    stroke(255);
+    text("Change Bindings", 105, 135);
+  }else{
+    text("Click box to", 105, 135);
+    text("set new binding.", 105, 165);
 
-  //difficulty slider bar
+    //left binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>150-19&&mouseY<150-5&&mouseIsPressed){
+      leftBind=true;
+      rightBind=false;
+      forwardBind=false;
+      backBind=false;
+      upBind=false;
+      downBind=false;
+    }
+    if(leftBind===true){
+      fill(255,255,0);
+      rect(75, -25-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.lKeyCode = k;
+          p1Controls.left = key;
+          leftBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, -25-12, 14, 14);
+    }
+
+    //right binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>175-19&&mouseY<175-5&&mouseIsPressed){
+      leftBind=false;
+      rightBind=true;
+      forwardBind=false;
+      backBind=false;
+      upBind=false;
+      downBind=false;
+    }
+    if(rightBind===true){
+      fill(255,255,0);
+      rect(75, 0-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.rKeyCode = k;
+          p1Controls.right = key;
+          rightBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, 0-12, 14, 14);
+    }
+
+    //forward binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>200-19&&mouseY<200-5&&mouseIsPressed){
+      leftBind=false;
+      rightBind=false;
+      forwardBind=true;
+      backBind=false;
+      upBind=false;
+      downBind=false;
+    }
+    if(forwardBind===true){
+      fill(255,255,0);
+      rect(75, 25-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.fKeyCode = k;
+          p1Controls.forward = key;
+          forwardBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, 25-12, 14, 14);
+    }
+
+    //back binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>225-19&&mouseY<225-5&&mouseIsPressed){
+      leftBind=false;
+      rightBind=false;
+      forwardBind=false;
+      backBind=true;
+      upBind=false;
+      downBind=false;
+    }
+    if(backBind===true){
+      fill(255,255,0);
+      rect(75, 50-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.bKeyCode = k;
+          p1Controls.back = key;
+          backBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, 50-12, 14, 14);
+    }
+
+    //up binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>250-19&&mouseY<250-5&&mouseIsPressed){
+      leftBind=false;
+      rightBind=false;
+      forwardBind=false;
+      backBind=false;
+      upBind=true;
+      downBind=false;
+    }
+    if(upBind===true){
+      fill(255,255,0);
+      rect(75, 75-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.uKeyCode = k;
+          p1Controls.up = key;
+          upBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, 75-12, 14, 14);
+    }
+
+    //down binding
+    if(mouseX>75-7&&mouseX<75+7&&mouseY>275-19&&mouseY<275-5&&mouseIsPressed){
+      leftBind=false;
+      rightBind=false;
+      forwardBind=false;
+      backBind=false;
+      upBind=false;
+      downBind=true;
+    }
+    if(downBind===true){
+      fill(255,255,0);
+      rect(75, 100-12, 14, 14);
+      for(var k=0; k<=222; k++){
+        if(keyIsDown(k)){
+          p1Controls.dKeyCode = k;
+          p1Controls.down = key;
+          downBind=false;
+          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+        }
+      }
+    }else{
+      fill(255,0,0);
+      rect(75, 100-12, 14, 14);
+    }
+  }
+
+  if(mouseX>100&&mouseX<300&&mouseY>135+175&&mouseY<165+175&&mouseIsPressed){
+    changingBingings=true;
+  }
+
   stroke(0);
   fill(255);
+  //difficulty slider bar
   rect(225, 300, 250, 20);
 
   //notches on slider bar
@@ -943,192 +1117,63 @@ function deathScreen(){
 }
 
 function keyPressed(){
-  if(gameMode!=="Two Player"){
-    //'d', changes direction to right unless snake is going left
-    if(keyIsDown(68)){
-      if(secondPosition[0]!==position[0]+50){
-        push0=50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]+50;
-      }
-    }else 
-    //'a', changes direction to left unless snake is going right
-    if(keyIsDown(65)){
-      if(secondPosition[0]!==position[0]-50){
-        push0=-50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]-50;
-      }
-    }else 
-    //'w', changes direction to forward unless snake is going back
-    if(keyIsDown(87)){
-      if(secondPosition[2]!==position[2]-50){
-        push0=0;
-        push1=0;
-        push2=-50;
-        //updates current position
-        position[2]=position[2]-50;
-      }
-    }else 
-    //'s', changes direction to back unless snake is going forward
-    if(keyIsDown(83)){
-      if(secondPosition[2]!==position[2]+50){
-        push0=0;
-        push1=0;
-        push2=50;
-        //updates current position
-        position[2]=position[2]+50;
-      }
-    }else 
-    //'UP_ARROW', changes direction to up unless snake is going down
-    if(keyIsDown(38)){
-      if(secondPosition[1]!==position[1]-50){
-        push0=0;
-        push1=-50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]-50;
-      }
-    }else 
-    //'DOWN_ARROW', changes direction to down unless snake is going up
-    if(keyIsDown(40)){
-      if(secondPosition[1]!==position[1]+50){
-        push0=0;
-        push1=50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]+50;
+  for(var i=0; i<=222; i++){
+    if(gameMode!=="Two Player"){
+      if(keyIsDown(i)&&i===p1Controls.rKeyCode){
+        if(secondPosition[0]!==position[0]+50){
+          push0=50;
+          push1=0;
+          push2=0;
+          //updates current position
+          position[0]=position[0]+50;
+        }
+      }else if(keyIsDown(i)&&i===p1Controls.lKeyCode){
+        if(secondPosition[0]!==position[0]-50){
+          push0=-50;
+          push1=0;
+          push2=0;
+          //updates current position
+          position[0]=position[0]-50;
+        }
+      }else if(keyIsDown(i)&&i===p1Controls.fKeyCode){
+        if(secondPosition[2]!==position[2]-50){
+          push0=0;
+          push1=0;
+          push2=-50;
+          //updates current position
+          position[2]=position[2]-50;
+        }
+      }else if(keyIsDown(i)&&i===p1Controls.bKeyCode){
+        if(secondPosition[2]!==position[2]+50){
+          push0=0;
+          push1=0;
+          push2=50;
+          //updates current position
+          position[2]=position[2]+50;
+        }
+      }else if(keyIsDown(i)&&i===p1Controls.uKeyCode){
+        if(secondPosition[1]!==position[1]-50){
+          push0=0;
+          push1=-50;
+          push2=0;
+          //updates current position
+          position[1]=position[1]-50;
+        }
+      }else if(keyIsDown(i)&&i===p1Controls.dKeyCode){
+        if(secondPosition[1]!==position[1]+50){
+          push0=0;
+          push1=50;
+          push2=0;
+          //updates current position
+          position[1]=position[1]+50;
+        }
       }
     }
-    if(gameMode==="Single Player"){
-      if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
-        money+=1000;
-      }
-    }
-  }else{
-    //'d', changes direction to right unless snake is going left
-    if(keyIsDown(68)){
-      if(secondPosition[0]!==position[0]+50){
-        push0=50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]+50;
-      }
-    }else 
-    //'a', changes direction to left unless snake is going right
-    if(keyIsDown(65)){
-      if(secondPosition[0]!==position[0]-50){
-        push0=-50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]-50;
-      }
-    }else 
-    //'w', changes direction to forward unless snake is going back
-    if(keyIsDown(87)){
-      if(secondPosition[2]!==position[2]-50){
-        push0=0;
-        push1=0;
-        push2=-50;
-        //updates current position
-        position[2]=position[2]-50;
-      }
-    }else 
-    //'s', changes direction to back unless snake is going forward
-    if(keyIsDown(83)){
-      if(secondPosition[2]!==position[2]+50){
-        push0=0;
-        push1=0;
-        push2=50;
-        //updates current position
-        position[2]=position[2]+50;
-      }
-    }else 
-    //'t', changes direction to up unless snake is going down
-    if(keyIsDown(84)){
-      if(secondPosition[1]!==position[1]-50){
-        push0=0;
-        push1=-50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]-50;
-      }
-    }else 
-    //'g', changes direction to down unless snake is going up
-    if(keyIsDown(71)){
-      if(secondPosition[1]!==position[1]+50){
-        push0=0;
-        push1=50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]+50;
-      }
-    }
-    //'RIGHT_ARROW', changes direction to right unless snake is going left
-    if(keyIsDown(39)){
-      if(secondPosition[0]!==position[0]+50){
-        push0=50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]+50;
-      }
-    }else 
-    //'LEFT_ARROW', changes direction to left unless snake is going right
-    if(keyIsDown(37)){
-      if(secondPosition[0]!==position[0]-50){
-        push0=-50;
-        push1=0;
-        push2=0;
-        //updates current position
-        position[0]=position[0]-50;
-      }
-    }else 
-    //'UP_ARROW', changes direction to forward unless snake is going back
-    if(keyIsDown(38)){
-      if(secondPosition[2]!==position[2]-50){
-        push0=0;
-        push1=0;
-        push2=-50;
-        //updates current position
-        position[2]=position[2]-50;
-      }
-    }else 
-    //'DOWN_ARROW', changes direction to back unless snake is going forward
-    if(keyIsDown(40)){
-      if(secondPosition[2]!==position[2]+50){
-        push0=0;
-        push1=0;
-        push2=50;
-        //updates current position
-        position[2]=position[2]+50;
-      }
-    }else 
-    //'NUMPAD1', changes direction to up unless snake is going down
-    if(keyIsDown(35)){
-      if(secondPosition[1]!==position[1]-50){
-        push0=0;
-        push1=-50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]-50;
-      }
-    }else 
-    //'NUMPAD2', changes direction to down unless snake is going up
-    if(keyIsDown(45)){
-      if(secondPosition[1]!==position[1]+50){
-        push0=0;
-        push1=50;
-        push2=0;
-        //updates current position
-        position[1]=position[1]+50;
-      }
+  }
+  
+  if(gameMode==="Single Player"){
+    if(keyIsDown(68)&&keyIsDown(65)&&keyIsDown(87)&&keyIsDown(83)&&keyIsDown(38)&&keyIsDown(40)){
+      money+=1000;
     }
   }
 }
