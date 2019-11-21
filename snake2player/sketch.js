@@ -34,13 +34,20 @@ let snakeLength;
 let inconsolata;
 let sliderX = 225;
 let difficulty = 10;
-let changingBingings = false;
-let leftBind = false;
-let rightBind = false;
-let forwardBind = false;
-let backBind = false;
-let upBind = false;
-let downBind = false;
+let changingBingingsP1 = false;
+let changingBingingsP2 = false;
+let leftBindP1 = false;
+let rightBindP1 = false;
+let forwardBindP1 = false;
+let backBindP1 = false;
+let upBindP1 = false;
+let downBindP1 = false;
+let leftBindP2 = false;
+let rightBindP2 = false;
+let forwardBindP2 = false;
+let backBindP2 = false;
+let upBindP2 = false;
+let downBindP2 = false;
 let p1Controls = {
   left: 'a',
   lKeyCode: 65,
@@ -50,12 +57,27 @@ let p1Controls = {
   fKeyCode: 87,
   back: 's',
   bKeyCode: 83,
-  up: 'ArrowUP',
+  up: 'ArrowUp',
   uKeyCode: 38,
   down: 'ArrowDown',
   dKeyCode: 40,
 }
-let instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+let p2Controls = {
+  left: 'ArrowLeft',
+  lKeyCode: 37,
+  right: 'ArrowRight',
+  rKeyCode: 39,
+  forward: 'ArrowUp',
+  fKeyCode: 38,
+  back: 'ArrowDown',
+  bKeyCode: 40,
+  up: 'Enter',
+  uKeyCode: 13,
+  down: 'Shift',
+  dKeyCode: 16,
+}
+let instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+let instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
 
 //this variable kees track of if the game has been restarted
 let restarted = false;
@@ -402,191 +424,20 @@ function optionMenu(){
   textFont(inconsolata);
   noStroke();
   textSize(25);
-  //for loop allows for easy changes to the instructions
-  for(var i=0; i<instructions.length; i++){
-    text(instructions[i], 100, 100);
-    translate(0, 25);
-  }
+  controls();
   
-  if(changingBingings===false){
-    //button for key bindings
-    stroke(100);
-    fill(255);
-    rect(200, 150, 200, 30);
-    fill(0);
-    stroke(255);
-    text("Change Bindings", 105, 135);
-  }else{
-    text("Click box to", 105, 135);
-    text("set new binding.", 105, 165);
-
-    //left binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>150-19&&mouseY<150-5&&mouseIsPressed){
-      leftBind=true;
-      rightBind=false;
-      forwardBind=false;
-      backBind=false;
-      upBind=false;
-      downBind=false;
-    }
-    if(leftBind===true){
-      fill(255,255,0);
-      rect(75, -25-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.lKeyCode = k;
-          p1Controls.left = key;
-          leftBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, -25-12, 14, 14);
-    }
-
-    //right binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>175-19&&mouseY<175-5&&mouseIsPressed){
-      leftBind=false;
-      rightBind=true;
-      forwardBind=false;
-      backBind=false;
-      upBind=false;
-      downBind=false;
-    }
-    if(rightBind===true){
-      fill(255,255,0);
-      rect(75, 0-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.rKeyCode = k;
-          p1Controls.right = key;
-          rightBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, 0-12, 14, 14);
-    }
-
-    //forward binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>200-19&&mouseY<200-5&&mouseIsPressed){
-      leftBind=false;
-      rightBind=false;
-      forwardBind=true;
-      backBind=false;
-      upBind=false;
-      downBind=false;
-    }
-    if(forwardBind===true){
-      fill(255,255,0);
-      rect(75, 25-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.fKeyCode = k;
-          p1Controls.forward = key;
-          forwardBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, 25-12, 14, 14);
-    }
-
-    //back binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>225-19&&mouseY<225-5&&mouseIsPressed){
-      leftBind=false;
-      rightBind=false;
-      forwardBind=false;
-      backBind=true;
-      upBind=false;
-      downBind=false;
-    }
-    if(backBind===true){
-      fill(255,255,0);
-      rect(75, 50-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.bKeyCode = k;
-          p1Controls.back = key;
-          backBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, 50-12, 14, 14);
-    }
-
-    //up binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>250-19&&mouseY<250-5&&mouseIsPressed){
-      leftBind=false;
-      rightBind=false;
-      forwardBind=false;
-      backBind=false;
-      upBind=true;
-      downBind=false;
-    }
-    if(upBind===true){
-      fill(255,255,0);
-      rect(75, 75-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.uKeyCode = k;
-          p1Controls.up = key;
-          upBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, 75-12, 14, 14);
-    }
-
-    //down binding
-    if(mouseX>75-7&&mouseX<75+7&&mouseY>275-19&&mouseY<275-5&&mouseIsPressed){
-      leftBind=false;
-      rightBind=false;
-      forwardBind=false;
-      backBind=false;
-      upBind=false;
-      downBind=true;
-    }
-    if(downBind===true){
-      fill(255,255,0);
-      rect(75, 100-12, 14, 14);
-      for(var k=0; k<=222; k++){
-        if(keyIsDown(k)){
-          p1Controls.dKeyCode = k;
-          p1Controls.down = key;
-          downBind=false;
-          instructions = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
-        }
-      }
-    }else{
-      fill(255,0,0);
-      rect(75, 100-12, 14, 14);
-    }
-  }
-
-  if(mouseX>100&&mouseX<300&&mouseY>135+175&&mouseY<165+175&&mouseIsPressed){
-    changingBingings=true;
-  }
-
   stroke(0);
   fill(255);
   //difficulty slider bar
   rect(225, 300, 250, 20);
-
+  
   //notches on slider bar
   noStroke();
   fill(220);
   for(var j=0; j<9; j++){
     rect(125+25*j, 300, 5, 20);
   }
-
+  
   //text for difficulty
   fill(0);
   textAlign(CENTER, CENTER);
@@ -648,10 +499,613 @@ function optionMenu(){
   rect(width*0.9,-125, 30, 20);
   if(mouseX>width*0.9-15&&mouseX<width*0.9+15&&mouseY>38&&mouseY<60&&mouseIsPressed){
     state="Menu";
+    changingBingingsP1=false;
     setup();
   }
+
   //translates the origin back to the top left of the screen
-  translate(0,-25*instructions.length);
+  translate(0,-25*instructionsP1.length);
+}
+
+function controls(){
+  if(gameMode!=="Two Player"){
+    if(mouseX>100&&mouseX<300&&mouseY>135+175&&mouseY<165+175&&mouseIsPressed){
+      changingBingingsP1=true;
+    }
+
+    //for loop allows for easy changes to the instructions
+    for(var i=0; i<instructionsP1.length; i++){
+      text(instructionsP1[i], 100, 100);
+      translate(0, 25);
+    }
+    
+    if(changingBingingsP1===false){
+      //button for key bindings
+      stroke(100);
+      fill(255);
+      rect(200, 150, 200, 30);
+      fill(0);
+      stroke(255);
+      text("Change Bindings", 105, 135);
+    }else{
+      text("Click box to", 105, 135);
+      text("set new binding.", 105, 165);
+    
+      //left binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>150-19&&mouseY<150-5&&mouseIsPressed){
+        leftBindP1=true;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(leftBindP1===true){
+        fill(255,255,0);
+        rect(75, -25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.lKeyCode = k;
+            p1Controls.left = key;
+            leftBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, -25-12, 14, 14);
+      }
+    
+      //right binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>175-19&&mouseY<175-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=true;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(rightBindP1===true){
+        fill(255,255,0);
+        rect(75, 0-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.rKeyCode = k;
+            p1Controls.right = key;
+            rightBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 0-12, 14, 14);
+      }
+    
+      //forward binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>200-19&&mouseY<200-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=true;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(forwardBindP1===true){
+        fill(255,255,0);
+        rect(75, 25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.fKeyCode = k;
+            p1Controls.forward = key;
+            forwardBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 25-12, 14, 14);
+      }
+    
+      //back binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>225-19&&mouseY<225-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=true;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(backBindP1===true){
+        fill(255,255,0);
+        rect(75, 50-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.bKeyCode = k;
+            p1Controls.back = key;
+            backBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 50-12, 14, 14);
+      }
+    
+      //up binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>250-19&&mouseY<250-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=true;
+        downBindP1=false;
+      }
+      if(upBindP1===true){
+        fill(255,255,0);
+        rect(75, 75-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.uKeyCode = k;
+            p1Controls.up = key;
+            upBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 75-12, 14, 14);
+      }
+    
+      //down binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>275-19&&mouseY<275-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=true;
+      }
+      if(downBindP1===true){
+        fill(255,255,0);
+        rect(75, 100-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.dKeyCode = k;
+            p1Controls.down = key;
+            downBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 100-12, 14, 14);
+      }
+    }
+  }else{
+    if(mouseX>100&&mouseX<300&&mouseY>135+175&&mouseY<165+175&&mouseIsPressed){
+      changingBingingsP1=true;
+    }
+    if(mouseX>100+250&&mouseX<300+250&&mouseY>135+175&&mouseY<165+175&&mouseIsPressed){
+      changingBingingsP2=true;
+    }
+
+    //for loop allows for easy changes to the instructions
+    for(var i=0; i<instructionsP1.length; i++){
+      text(instructionsP1[i], 100, 100);
+      translate(0, 25);
+    }
+    
+    if(changingBingingsP1===false){
+      //button for key bindings
+      stroke(100);
+      fill(255);
+      rect(200, 150, 200, 30);
+      fill(0);
+      stroke(255);
+      text("Change Bindings", 105, 135);
+    }else{
+      text("Click box to", 105, 135);
+      text("set new binding.", 105, 165);
+    
+      //left binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>150-19&&mouseY<150-5&&mouseIsPressed){
+        leftBindP1=true;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(leftBindP1===true){
+        fill(255,255,0);
+        rect(75, -25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.lKeyCode = k;
+            p1Controls.left = key;
+            leftBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, -25-12, 14, 14);
+      }
+    
+      //right binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>175-19&&mouseY<175-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=true;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(rightBindP1===true){
+        fill(255,255,0);
+        rect(75, 0-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.rKeyCode = k;
+            p1Controls.right = key;
+            rightBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 0-12, 14, 14);
+      }
+    
+      //forward binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>200-19&&mouseY<200-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=true;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(forwardBindP1===true){
+        fill(255,255,0);
+        rect(75, 25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.fKeyCode = k;
+            p1Controls.forward = key;
+            forwardBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 25-12, 14, 14);
+      }
+    
+      //back binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>225-19&&mouseY<225-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=true;
+        upBindP1=false;
+        downBindP1=false;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(backBindP1===true){
+        fill(255,255,0);
+        rect(75, 50-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.bKeyCode = k;
+            p1Controls.back = key;
+            backBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 50-12, 14, 14);
+      }
+    
+      //up binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>250-19&&mouseY<250-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=true;
+        downBindP1=false;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(upBindP1===true){
+        fill(255,255,0);
+        rect(75, 75-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.uKeyCode = k;
+            p1Controls.up = key;
+            upBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 75-12, 14, 14);
+      }
+    
+      //down binding
+      if(mouseX>75-7&&mouseX<75+7&&mouseY>275-19&&mouseY<275-5&&mouseIsPressed){
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=true;
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+      }
+      if(downBindP1===true){
+        fill(255,255,0);
+        rect(75, 100-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p1Controls.dKeyCode = k;
+            p1Controls.down = key;
+            downBindP1=false;
+            instructionsP1 = ["Controls:", p1Controls.left + ' = Left', p1Controls.right + ' = Right', p1Controls.forward + ' = Forward', p1Controls.back + ' = Back', p1Controls.up + ' = Up', p1Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 100-12, 14, 14);
+        fill(0);
+      }
+    }
+
+    translate(250, -25*instructionsP1.length);
+    textAlign(LEFT, TOP);
+    textFont(inconsolata);
+    noStroke();
+    textSize(25);
+
+    for(var i=0; i<instructionsP2.length; i++){
+      text(instructionsP2[i], 100, 100);
+      translate(0, 25);
+    }
+    
+    if(changingBingingsP2===false){
+      //button for key bindings
+      stroke(100);
+      fill(255);
+      rect(200, 150, 200, 30);
+      fill(0);
+      stroke(255);
+      text("Change Bindings", 105, 135);
+    }else{
+      text("Click box to", 105, 135);
+      text("set new binding.", 105, 165);
+    
+      //left binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>150-19&&mouseY<150-5&&mouseIsPressed){
+        leftBindP2=true;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(leftBindP2===true){
+        fill(255,255,0);
+        rect(75, -25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.lKeyCode = k;
+            p2Controls.left = key;
+            leftBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, -25-12, 14, 14);
+      }
+    
+      //right binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>175-19&&mouseY<175-5&&mouseIsPressed){
+        leftBindP2=false;
+        rightBindP2=true;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(rightBindP2===true){
+        fill(255,255,0);
+        rect(75, 0-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.rKeyCode = k;
+            p2Controls.right = key;
+            rightBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 0-12, 14, 14);
+      }
+    
+      //forward binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>200-19&&mouseY<200-5&&mouseIsPressed){
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=true;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=false;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(forwardBindP2===true){
+        fill(255,255,0);
+        rect(75, 25-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.fKeyCode = k;
+            p2Controls.forward = key;
+            forwardBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 25-12, 14, 14);
+      }
+    
+      //back binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>225-19&&mouseY<225-5&&mouseIsPressed){
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=true;
+        upBindP2=false;
+        downBindP2=false;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(backBindP2===true){
+        fill(255,255,0);
+        rect(75, 50-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.bKeyCode = k;
+            p2Controls.back = key;
+            backBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 50-12, 14, 14);
+      }
+    
+      //up binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>250-19&&mouseY<250-5&&mouseIsPressed){
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=true;
+        downBindP2=false;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(upBindP2===true){
+        fill(255,255,0);
+        rect(75, 75-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.uKeyCode = k;
+            p2Controls.up = key;
+            upBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 75-12, 14, 14);
+      }
+    
+      //down binding
+      if(mouseX>75-7+250&&mouseX<75+7+250&&mouseY>275-19&&mouseY<275-5&&mouseIsPressed){
+        leftBindP2=false;
+        rightBindP2=false;
+        forwardBindP2=false;
+        backBindP2=false;
+        upBindP2=false;
+        downBindP2=true;
+        leftBindP1=false;
+        rightBindP1=false;
+        forwardBindP1=false;
+        backBindP1=false;
+        upBindP1=false;
+        downBindP1=false;
+      }
+      if(downBindP2===true){
+        fill(255,255,0);
+        rect(75, 100-12, 14, 14);
+        for(var k=0; k<=222; k++){
+          if(keyIsDown(k)){
+            p2Controls.dKeyCode = k;
+            p2Controls.down = key;
+            downBindP2=false;
+            instructionsP2 = ["Controls:", p2Controls.left + ' = Left', p2Controls.right + ' = Right', p2Controls.forward + ' = Forward', p2Controls.back + ' = Back', p2Controls.up + ' = Up', p2Controls.down + ' = Down'];
+          }
+        }
+      }else{
+        fill(255,0,0);
+        rect(75, 100-12, 14, 14);
+      }
+    }
+    translate(-250,0);
+  }
 }
 
 function storeMenu(){
