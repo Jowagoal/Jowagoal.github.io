@@ -437,8 +437,8 @@ function resetAllValues(){
   push3 = 1;
   snakeLength = 3;
 
-  arrP2 = [0,0,0,0];
-  positionP2 = [0,0,0];
+  arrP2 = [0,950,0,0];
+  positionP2 = [0,950,0];
   secondPositionP2 = [0,0,0];
   foodPositionP2 = [0,0,0];
   bodyPositionP2 = [];
@@ -1225,6 +1225,7 @@ function moveSnake(){
       setup();
     }
   }
+  translate(-1*position[0],-1*position[1],-1*position[2]);
 }
 
 //function shows the snake on screen
@@ -1252,7 +1253,7 @@ function placeBox(head){
 function moveSnakeP2(){
   //resets the current position to 0
   positionP2[0]=0;
-  positionP2[1]=0;
+  positionP2[1]=950;
   positionP2[2]=0;
   //resets second position to 0
   secondPositionP2[0]=0;
