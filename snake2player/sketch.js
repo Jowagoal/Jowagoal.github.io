@@ -42,6 +42,8 @@ let push2P2 = 0;
 let push3P2 = 1;
 let snakeLengthP2;
 
+let movePlayer = 1;
+
 //these variables are for text and the difficulty slider in the options menu
 let inconsolata;
 let sliderX = 225;
@@ -1141,30 +1143,36 @@ function gameStart(){
   strokeWeight(2);
   stroke(0);
   
+  
   //food function makes the food
   food();
-
-  //arr is the memory of the moves
-  //push0 through push3 tells the array which of 6 directions to move
-  arr.push(push0);
-  arr.push(push1);
-  arr.push(push2);
-  arr.push(push3);
-  
-  //moves the snake
-  moveSnake();
-  if(gameMode==="Two Player"){
+  if(gameMode!=="Two Player"){
+    //arr is the memory of the moves
+    //push0 through push3 tells the array which of 6 directions to move
+    arr.push(push0);
+    arr.push(push1);
+    arr.push(push2);
+    arr.push(push3);
+    //moves the snake
+    moveSnake();
+  }else{
+    push();
+    arr.push(push0);
+    arr.push(push1);
+    arr.push(push2);
+    arr.push(push3);
+    moveSnake();
+    pop();
     arrP2.push(push0P2);
     arrP2.push(push1P2);
     arrP2.push(push2P2);
     arrP2.push(push3P2);
-    
     moveSnakeP2();
   }
 }
-
+    
 function moveSnake(){
-  //resets the current position to 0
+   //resets the current position to 0
   position[0]=0;
   position[1]=0;
   position[2]=0;
@@ -1188,6 +1196,7 @@ function moveSnake(){
     //if the position is outside the border, state changes to game over and calls setup
     if(position[0]<0||position[0]>950||position[1]<0||position[1]>950||position[2]>0||position[2]<-950){
       state = "Game Over";
+      pop();
       setup();
     }
     //if the fourth element of a bit is equal to 1, calls the placeBox function
@@ -1222,10 +1231,12 @@ function moveSnake(){
   for(var j=0; j<=bodyPosition.length; j+=3){
     if(position[0]===bodyPosition[j]&&position[1]===bodyPosition[j+1]&&position[2]===bodyPosition[j+2]){
       state = "Game Over";
+      pop();
       setup();
     }
   }
-  translate(-1*position[0],-1*position[1],-1*position[2]);
+
+  movePlayer*=-1;
 }
 
 //function shows the snake on screen
@@ -1275,6 +1286,7 @@ function moveSnakeP2(){
     //if the position is outside the border, state changes to game over and calls setup
     if(positionP2[0]<0||positionP2[0]>950||positionP2[1]<0||positionP2[1]>950||positionP2[2]>0||positionP2[2]<-950){
       state = "Game Over";
+      pop();
       setup();
     }
     //if the fourth element of a bit is equal to 1, calls the placeBox function
@@ -1309,9 +1321,12 @@ function moveSnakeP2(){
   for(var j=0; j<=bodyPositionP2.length; j+=3){
     if(positionP2[0]===bodyPositionP2[j]&&positionP2[1]===bodyPositionP2[j+1]&&positionP2[2]===bodyPositionP2[j+2]){
       state = "Game Over";
+      pop();
       setup();
     }
   }
+
+  movePlayer*=-1;
 }
 
 //function shows the snake on screen
@@ -1441,6 +1456,32 @@ function food(){
     snakeLength++;
     for(var j=0; j<=bodyPosition.length-3; j+=3){
       if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
+        //incase this scenario misses the food on the position, checks if the food is in the body
+        foodPosition[0]=ceil(random(0,19))*50;
+        foodPosition[1]=ceil(random(0,19))*50;
+        foodPosition[2]=ceil(random(-19,0))*50;
+      }
+    }
+  }else if(positionP2[0]+push0P2===foodPositionP2[0]&&positionP2[1]+push1P2===foodPositionP2[1]&&positionP2[2]+push2P2===foodPositionP2[2]){
+    foodPosition[0]=ceil(random(0,19))*50;
+    foodPosition[1]=ceil(random(0,19))*50;
+    foodPosition[2]=ceil(random(-19,0))*50;
+    snakeLengthP2++;
+    for(var i=0; i<=bodyPositionP2.length-3; i+=3){
+      //incase this scenario misses the food on the position, checks if the food is in the body
+      if(foodPosition[0]===bodyPositionP2[i]&&foodPosition[1]===bodyPositionP2[i+1]&&foodPosition[2]===bodyPositionP2[i+2]){
+        foodPosition[0]=ceil(random(0,19))*50;
+        foodPosition[1]=ceil(random(0,19))*50;
+        foodPosition[2]=ceil(random(-19,0))*50;
+      }
+    }
+  }else if(positionP2[0]===foodPosition[0]&&positionP2[1]===foodPosition[1]&&positionP2[2]===foodPosition[2]){
+    foodPosition[0]=ceil(random(0,19))*50;
+    foodPosition[1]=ceil(random(0,19))*50;
+    foodPosition[2]=ceil(random(-19,0))*50;
+    snakeLengthP2++;
+    for(var j=0; j<=bodyPosition.length-3; j+=3){
+      if(foodPosition[0]===bodyPositionP2[j]&&foodPosition[1]===bodyPositionP2[j+1]&&foodPosition[2]===bodyPositionP2[j+2]){
         //incase this scenario misses the food on the position, checks if the food is in the body
         foodPosition[0]=ceil(random(0,19))*50;
         foodPosition[1]=ceil(random(0,19))*50;
