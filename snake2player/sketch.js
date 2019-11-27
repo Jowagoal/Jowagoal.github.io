@@ -42,8 +42,6 @@ let push2P2 = 0;
 let push3P2 = 1;
 let snakeLengthP2;
 
-let movePlayer = 1;
-
 //these variables are for text and the difficulty slider in the options menu
 let inconsolata;
 let sliderX = 225;
@@ -199,9 +197,9 @@ function setup() {
     camera(-300,-400,600,500,700,-500);
     
     //sets initial position of food
-    foodPosition[0]=ceil(random(0,19))*50;
-    foodPosition[1]=ceil(random(0,19))*50;
-    foodPosition[2]=ceil(random(-19,0))*50;
+    foodPosition[0]=ceil(random(-0.9,19))*50;
+    foodPosition[1]=ceil(random(-0.9,19))*50;
+    foodPosition[2]=ceil(random(-19,-0.9))*50;
     
     //shows all additional canvases
     document.getElementById("defaultCanvas0").style.visibility = "visible";
@@ -1235,8 +1233,6 @@ function moveSnake(){
       setup();
     }
   }
-
-  movePlayer*=-1;
 }
 
 //function shows the snake on screen
@@ -1325,8 +1321,6 @@ function moveSnakeP2(){
       setup();
     }
   }
-
-  movePlayer*=-1;
 }
 
 //function shows the snake on screen
@@ -1441,67 +1435,57 @@ function food(){
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
-    for(var i=0; i<=bodyPosition.length-3; i+=3){
-      //incase this scenario misses the food on the position, checks if the food is in the body
-      if(foodPosition[0]===bodyPosition[i]&&foodPosition[1]===bodyPosition[i+1]&&foodPosition[2]===bodyPosition[i+2]){
-        foodPosition[0]=ceil(random(0,19))*50;
-        foodPosition[1]=ceil(random(0,19))*50;
-        foodPosition[2]=ceil(random(-19,0))*50;
-      }
-    }
-  }else if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
+  }
+  if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
-    for(var j=0; j<=bodyPosition.length-3; j+=3){
-      if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
-        //incase this scenario misses the food on the position, checks if the food is in the body
-        foodPosition[0]=ceil(random(0,19))*50;
-        foodPosition[1]=ceil(random(0,19))*50;
-        foodPosition[2]=ceil(random(-19,0))*50;
-      }
-    }
-  }else if(positionP2[0]+push0P2===foodPositionP2[0]&&positionP2[1]+push1P2===foodPositionP2[1]&&positionP2[2]+push2P2===foodPositionP2[2]){
-    foodPosition[0]=ceil(random(0,19))*50;
-    foodPosition[1]=ceil(random(0,19))*50;
-    foodPosition[2]=ceil(random(-19,0))*50;
-    snakeLengthP2++;
-    for(var i=0; i<=bodyPositionP2.length-3; i+=3){
-      //incase this scenario misses the food on the position, checks if the food is in the body
-      if(foodPosition[0]===bodyPositionP2[i]&&foodPosition[1]===bodyPositionP2[i+1]&&foodPosition[2]===bodyPositionP2[i+2]){
-        foodPosition[0]=ceil(random(0,19))*50;
-        foodPosition[1]=ceil(random(0,19))*50;
-        foodPosition[2]=ceil(random(-19,0))*50;
-      }
-    }
-  }else if(positionP2[0]===foodPosition[0]&&positionP2[1]===foodPosition[1]&&positionP2[2]===foodPosition[2]){
-    foodPosition[0]=ceil(random(0,19))*50;
-    foodPosition[1]=ceil(random(0,19))*50;
-    foodPosition[2]=ceil(random(-19,0))*50;
-    snakeLengthP2++;
-    for(var j=0; j<=bodyPosition.length-3; j+=3){
-      if(foodPosition[0]===bodyPositionP2[j]&&foodPosition[1]===bodyPositionP2[j+1]&&foodPosition[2]===bodyPositionP2[j+2]){
-        //incase this scenario misses the food on the position, checks if the food is in the body
-        foodPosition[0]=ceil(random(0,19))*50;
-        foodPosition[1]=ceil(random(0,19))*50;
-        foodPosition[2]=ceil(random(-19,0))*50;
-      }
-    }
-  }else{
-    //places the food on screen
-    let x = foodPosition[0];
-    let y = foodPosition[1];
-    let z = foodPosition[2];
-    fill(255,0,0);
-    noStroke();
-    //moves origin to food position
-    translate(x, y, z);
-    box(50);
-    //returns origin to 0,0,0
-    translate(-1*x, -1*y, -1*z);
-    stroke(2);
   }
+  for(var j=0; j<=bodyPosition.length-3; j+=3){
+    if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
+      //incase this scenario misses the food on the position, checks if the food is in the body
+      foodPosition[0]=ceil(random(0,19))*50;
+      foodPosition[1]=ceil(random(0,19))*50;
+      foodPosition[2]=ceil(random(-19,0))*50;
+      snakeLength++;
+    }
+  }
+
+  if(positionP2[0]+push0P2===foodPosition[0]&&positionP2[1]+push1P2===foodPosition[1]&&positionP2[2]+push2P2===foodPosition[2]){
+    foodPosition[0]=ceil(random(0,19))*50;
+    foodPosition[1]=ceil(random(0,19))*50;
+    foodPosition[2]=ceil(random(-19,0))*50;
+    snakeLengthP2++;
+  }
+  if(positionP2[0]===foodPosition[0]&&positionP2[1]===foodPosition[1]&&positionP2[2]===foodPosition[2]){
+    foodPosition[0]=ceil(random(0,19))*50;
+    foodPosition[1]=ceil(random(0,19))*50;
+    foodPosition[2]=ceil(random(-19,0))*50;
+    snakeLengthP2++;
+  }
+  for(var j=0; j<=bodyPositionP2.length-3; j+=3){
+    if(foodPosition[0]===bodyPositionP2[j]&&foodPosition[1]===bodyPositionP2[j+1]&&foodPosition[2]===bodyPositionP2[j+2]){
+      //incase this scenario misses the food on the position, checks if the food is in the body
+      foodPosition[0]=ceil(random(0,19))*50;
+      foodPosition[1]=ceil(random(0,19))*50;
+      foodPosition[2]=ceil(random(-19,0))*50;
+      snakeLengthP2++;
+    }
+  }
+
+  //places the food on screen
+  let x = foodPosition[0];
+  let y = foodPosition[1];
+  let z = foodPosition[2];
+  fill(255,0,0);
+  noStroke();
+  //moves origin to food position
+  translate(x, y, z);
+  box(50);
+  //returns origin to 0,0,0
+  translate(-1*x, -1*y, -1*z);
+  stroke(2);
 }
 
 //when the user dies the death screen is shown
@@ -1694,7 +1678,14 @@ let topView = new p5(( sketch ) => {
     
     sketch.food();
     
-    sketch.moveSnake();
+    if(gameMode!=="Two Player"){
+      sketch.moveSnake();
+    }else{
+      sketch.push();
+      sketch.moveSnake();
+      sketch.pop();
+      sketch.moveSnakeP2();
+    }
   };
   
   sketch.moveSnake = () => {
@@ -1735,6 +1726,56 @@ let topView = new p5(( sketch ) => {
     let x1 = position[0];
     let y1 = position[1];
     let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
+  sketch.moveSnakeP2 = () => {
+    //by the time the program gets to this point, it has deleted a block of the end of the snake
+    //if I were to do nothing, the side views length would be one less then the 3d snake
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===0){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=1;
+    }
+    //since the z coordinate is negative and the side views are positive
+    //this translation aligns the snake with the canvas
+    sketch.translate(0,y-y/20);
+    //resets position values
+    positionP2[0]=0;
+    positionP2[1]=0;
+    positionP2[2]=0;
+    //reads the array and translates by x and z of the arr, 
+    //in the top view x is the same as 3d x, but y is the 3d z
+    for(var i=0; i<=arrP2.length; i+=4){
+      sketch.translate(arrP2[i]/50*x/20,arrP2[i+2]/50*y/20);
+      if(arrP2[i+0]===50||arrP2[i+0]===-50||arrP2[i+1]===50||arrP2[i+1]===-50||arrP2[i+2]===50||arrP2[i+2]===-50){
+        positionP2[0]=positionP2[0]+arrP2[i+0];
+        positionP2[1]=positionP2[1]+arrP2[i+1];
+        positionP2[2]=positionP2[2]+arrP2[i+2];
+      }
+      //places a box
+      if(arrP2[i+3]===1){
+        sketch.placeBoxP2();
+      }
+    }
+    //returns the arr back to what it was
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===1){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=0;
+    }
+  };
+  
+  //function is the same as 3d function
+  sketch.placeBoxP2 = () => {
+    let x1 = positionP2[0];
+    let y1 = positionP2[1];
+    let z1 = positionP2[2];
     if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
       sketch.fill(255,0,0,50);
       sketch.rect(0,0,x/20,y/20);
@@ -1794,7 +1835,14 @@ let sideView = new p5(( sketch ) => {
     
     sketch.food();
     
-    sketch.moveSnake();
+    if(gameMode!=="Two Player"){
+      sketch.moveSnake();
+    }else{
+      sketch.push();
+      sketch.moveSnake();
+      sketch.pop();
+      sketch.moveSnakeP2();
+    }
   };
   
   sketch.moveSnake = () => {
@@ -1827,6 +1875,48 @@ let sideView = new p5(( sketch ) => {
     let x1 = position[0];
     let y1 = position[1];
     let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
+  sketch.moveSnakeP2 = () => {
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===0){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=1;
+    }
+    //corrects x(z) axis
+    sketch.translate(y-y/20,0);
+    positionP2[0]=0;
+    positionP2[1]=0;
+    positionP2[2]=0;
+    for(var i=0; i<=arrP2.length; i+=4){
+      //in side view, x is 3d z and y is the same as 3d y
+      sketch.translate(arrP2[i+2]/50*x/20,arrP2[i+1]/50*y/20);
+      if(arrP2[i+0]===50||arrP2[i+0]===-50||arrP2[i+1]===50||arrP2[i+1]===-50||arrP2[i+2]===50||arrP2[i+2]===-50){
+        positionP2[0]=positionP2[0]+arrP2[i+0];
+        positionP2[1]=positionP2[1]+arrP2[i+1];
+        positionP2[2]=positionP2[2]+arrP2[i+2];
+      }
+      if(arrP2[i+3]===1){
+        sketch.placeBoxP2();
+      }
+    }
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===1){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=0;
+    }
+  };
+  
+  sketch.placeBoxP2 = () => {
+    let x1 = positionP2[0];
+    let y1 = positionP2[1];
+    let z1 = positionP2[2];
     if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
       sketch.fill(255,0,0,50);
       sketch.rect(0,0,x/20,y/20);
@@ -1884,7 +1974,14 @@ let frontView = new p5(( sketch ) => {
     
     sketch.food();
     
-    sketch.moveSnake();
+    if(gameMode!=="Two Player"){
+      sketch.moveSnake();
+    }else{
+      sketch.push();
+      sketch.moveSnake();
+      sketch.pop();
+      sketch.moveSnakeP2();
+    }
   };
   
   sketch.moveSnake = () => {
@@ -1916,6 +2013,47 @@ let frontView = new p5(( sketch ) => {
     let x1 = position[0];
     let y1 = position[1];
     let z1 = position[2];
+    if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
+      sketch.fill(255,0,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else if(x1<=100||x1>=850||y1<=100||y1>=850||z1<=-850||z1>=-100){
+      sketch.fill(0,0,255,50);
+      sketch.rect(0,0,x/20,y/20);
+    }else{
+      sketch.fill(0,255,0,50);
+      sketch.rect(0,0,x/20,y/20);
+    }
+  };
+
+  sketch.moveSnakeP2 = () => {
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===0){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=1;
+    }
+    //front view does not need to be translated since x and y are the same as 3d x and y
+    positionP2[0]=0;
+    positionP2[1]=0;
+    positionP2[2]=0;
+    for(var i=0; i<=arrP2.length; i+=4){
+      //in front view, x and y are the same as 3d x and y
+      sketch.translate(arrP2[i]/50*x/20,arrP2[i+1]/50*y/20);
+      if(arrP2[i+0]===50||arrP2[i+0]===-50||arrP2[i+1]===50||arrP2[i+1]===-50||arrP2[i+2]===50||arrP2[i+2]===-50){
+        positionP2[0]=positionP2[0]+arrP2[i+0];
+        positionP2[1]=positionP2[1]+arrP2[i+1];
+        positionP2[2]=positionP2[2]+arrP2[i+2];
+      }
+      if(arrP2[i+3]===1){
+        sketch.placeBoxP2();
+      }
+    }
+    if(arrP2[arrP2.length-(4*snakeLengthP2-3)]===1){
+      arrP2[arrP2.length-(4*snakeLengthP2-3)]=0;
+    }
+  };
+  
+  sketch.placeBoxP2 = () => {
+    let x1 = positionP2[0];
+    let y1 = positionP2[1];
+    let z1 = positionP2[2];
     if(x1<=0||x1>=950||y1<=0||y1>=950||z1<=-950||z1>=0){
       sketch.fill(255,0,0,50);
       sketch.rect(0,0,x/20,y/20);
