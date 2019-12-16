@@ -15,6 +15,7 @@
 let state = "Main Menu";
 
 let gameMode;
+let gameType;
 
 //these variables are the memory of the program
 let arr = [];
@@ -22,12 +23,20 @@ let position = [0,0,0];
 let secondPosition = [0,0,0];
 let foodPosition = [0,0,0];
 let bodyPosition = [];
+let points;
 
 let arrP2 = [];
 let positionP2 = [0,950,0];
 let secondPositionP2 = [0,0,0];
 let foodPositionP2 = [0,0,0];
 let bodyPositionP2 = [];
+let pointsP2;
+
+let playerDeath;
+
+let firstIteration = true;
+let gameTimeStarted;
+let time;
 
 //these variables determine how the snake moves aswell as how long the snake is
 let push0 = 50;
@@ -173,18 +182,15 @@ function setup() {
     document.getElementById("defaultCanvas3").style.visibility = "hidden";
     document.getElementById("defaultCanvas4").style.visibility = "hidden";
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
+    document.getElementById("defaultCanvas6").style.visibility = "hidden";
+    document.getElementById("defaultCanvas7").style.visibility = "hidden";
+    document.getElementById("defaultCanvas8").style.visibility = "hidden";
   }
   
   if(state==="Menu"){
     createCanvas(windowWidth, windowHeight);
-    
-    //hides all additional canvases
-    document.getElementById("defaultCanvas0").style.visibility = "hidden";
-    document.getElementById("defaultCanvas1").style.visibility = "hidden";
-    document.getElementById("defaultCanvas2").style.visibility = "hidden";
-    document.getElementById("defaultCanvas3").style.visibility = "hidden";
-    document.getElementById("defaultCanvas4").style.visibility = "hidden";
-    document.getElementById("defaultCanvas5").style.visibility = "hidden";
+  }else if(state==="Select Game Type"){
+    createCanvas(windowWidth, windowHeight);
   }else if(state==="Options"){
     createCanvas(windowWidth, windowHeight);
   }else if(state==="Store"&&gameMode!=="Two Player"){
@@ -208,6 +214,11 @@ function setup() {
     document.getElementById("defaultCanvas3").style.visibility = "visible";
     document.getElementById("defaultCanvas4").style.visibility = "visible";
     document.getElementById("defaultCanvas5").style.visibility = "visible";
+    document.getElementById("defaultCanvas6").style.visibility = "visible";
+    if(gameType==="Points"){
+      document.getElementById("defaultCanvas7").style.visibility = "visible";
+      document.getElementById("defaultCanvas8").style.visibility = "visible";
+    }
   }else if(state==="Game Over"){
     createCanvas(windowWidth, windowHeight);
 
@@ -223,6 +234,9 @@ function setup() {
     document.getElementById("defaultCanvas3").style.visibility = "hidden";
     document.getElementById("defaultCanvas4").style.visibility = "hidden";
     document.getElementById("defaultCanvas5").style.visibility = "hidden";
+    document.getElementById("defaultCanvas6").style.visibility = "hidden";
+    document.getElementById("defaultCanvas7").style.visibility = "hidden";
+    document.getElementById("defaultCanvas8").style.visibility = "hidden";
   }
 }
 
@@ -241,6 +255,10 @@ function checkState(){
     //after user resets, all values that changed need to be reset
     resetAllValues();
     startScreen();
+    pointerDot();
+  }
+  if(state==="Select Game Type"){
+    selectGameType();
     pointerDot();
   }
   if(state==="Options"){
@@ -364,63 +382,99 @@ function startScreen(){
   //title
   text("3D Snake",width/2, height/8);
   
-  //sets stroke and fill for the buttons
+  //buttons
   stroke(0);
+  strokeWeight(1);
   fill(200);
+  rect(width/2, height/2, width/4, height/8);
+  rect(width/2, height/2+height*1/4, width/4, height/8);
 
-  if(gameMode!=="Two Player"){
-    //creates buttons
-    rect(width/2, height/2, width/4, height/8);
-    rect(width/3, height/2+height/4, width/4, height/8);
-    rect(width/3*2, height/2+height/4, width/4, height/8);
-  }else{
-    rect(width/2, height/2, width/4, height/8);
-    rect(width/2, height/2+height/4, width/4, height/8);
-  }
-  
-  //sets stroke, size, and fill for buttons
+  //displays words
   noStroke();
   textSize(25);
   fill(0);
-
-  if(gameMode!=="Two Player"){
-    //start game button
-    text("Start Game",width/2, height/2);
-    //options button
-    text("Options",width/3, height/2+height/4);
-    //store button
-    text("Store",width/3*2, height/2+height/4);
-  }else{
-//start game button
   text("Start Game",width/2, height/2);
-  //options button
-  text("Options",width/2, height/2+height/4);
-  }
-  if(gameMode!=="Two Player"){
-    if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
-      //when mouse clicks options button, sets state to play and calls setup again to start the game
+  text("Main Menu",width/2, height/2+height*1/4);
+
+  if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to start the game
+    if(gameMode==="Two Player"){
+      state="Select Game Type"
+      setup();
+    }else{
       state="Play";
       setup();
-    }else if(mouseX>width/3-width/8&&mouseX<width/3+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
-      //when mouse clicks options button, sets state to play and calls setup again to open options screen
+    }
+  }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2+height*1/4-height/16&&mouseY<height/2+height*1/4+height/16&&mouseIsPressed){
+    //when mouse clicks options button, sets state to play and calls setup again to start the game
+    state="Main Menu";
+    setup();
+  }
+
+  //settings
+  if(mouseX>width*1/16-25&&mouseX<width*1/16+25&&mouseY>height*1/8-25&&mouseY<height*1/8+25){
+    settingIcon(true);
+    if(mouseIsPressed){
+      //when mouse clicks options icon, sets state to options and calls setup again to open options screen
       state="Options";
-      setup();
-    }else if(mouseX>width/3*2-width/8&&mouseX<width/3*2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
-      //when mouse clicks options button, sets state to play and calls setup again to open options screen
-      state="Store";
       setup();
     }
   }else{
-    if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16&&mouseY<height/2+height/16&&mouseIsPressed){
-      //when mouse clicks options button, sets state to play and calls setup again to start the game
-      state="Play";
-      setup();
-    }else if(mouseX>width/2-width/8&&mouseX<width/2+width/8&&mouseY>height/2-height/16+height/4&&mouseY<height/2+height/16+height/4&&mouseIsPressed){
-      //when mouse clicks options button, sets state to play and calls setup again to open options screen
-      state="Options";
-      setup();
+    settingIcon(false);
+  }
+
+  //store
+  if(gameMode!=="Two Player"){
+    if(mouseX>width*15/16-25&&mouseX<width*15/16+25&&mouseY>height*1/8-25&&mouseY<height*1/8+25){
+      StoreIcon(true);
+      if(mouseIsPressed){
+        //when mouse clicks store icon, sets state to store and calls setup again to open store screen
+        state="Store";
+        setup();
+      }
+    }else{
+      StoreIcon(false);
     }
   }
+}
+
+//draws the setting icon
+function settingIcon(on){
+  push();
+  translate(width*1/16, height*1/8);
+  noStroke();
+  if(!on){
+    fill(50);
+  }else{
+    fill(0,0,150);
+  }
+  for(var i=0; i<12; i++){
+    ellipse(0, 0, 50, 10);
+    rotate(10);
+  }
+  fill(100);
+  circle(0, 0, 34);
+  pop();
+}
+
+//draws the store icon
+function StoreIcon(on){
+  push();
+  translate(width*15/16, height*1/8);
+  if(!on){
+    fill(50);
+    stroke(50);
+  }else{
+    fill(0,0,150);
+    stroke(0,0,150);
+  }
+  quad(-15,-15,25,-10,20,15,-10,15);
+  strokeWeight(3);
+  line(-15,-15,-18,-22);
+  line(-18,-22,-25,-25);
+  circle(-2,20,8,8);
+  circle(12,20,8,8);
+  pop();
 }
 
 //after user resets, all values that changed need to be reset
@@ -430,24 +484,87 @@ function resetAllValues(){
   secondPosition = [0,0,0];
   foodPosition = [0,0,0];
   bodyPosition = [];
+  points = 0;
   
   push0 = 50;
   push1 = 0;
   push2 = 0;
   push3 = 1;
   snakeLength = 3;
-
+  
   arrP2 = [0,950,0,0];
   positionP2 = [0,950,0];
   secondPositionP2 = [0,0,0];
   foodPositionP2 = [0,0,0];
   bodyPositionP2 = [];
+  pointsP2 = 0;
   
   push0P2 = 50;
   push1P2 = 0;
   push2P2 = 0;
   push3P2 = 1;
   snakeLengthP2 = 3;
+
+  firstIteration = true;
+  gameType;
+}
+
+function selectGameType(){
+
+  if(restarted===true){
+    translate(-1/2*width,-1/2*height);
+  }
+
+  background(200);
+  fill(50,255,50);
+  textSize(75);
+  text("Select Game Mode", width/2, height/10);
+
+  noStroke();
+  if(mouseX>width/2-width/4-width/8&&mouseX<width/2-width/4+width/8&&mouseY>height/2-height/8-height/16&&mouseY<height/2-height/8+height/16){
+    fill(255,255,0);
+    rect(width/2-width/4, height/2-height/8, width/4, height/8);
+    fill(200,0,200);
+    rect(width/2+width/4, height/2-height/8, width/4, height/8);
+    if(mouseIsPressed){
+      gameType = "Survival";
+      state = "Play";
+      setup();
+    }
+  }else if(mouseX>width/2+width/4-width/8&&mouseX<width/2+width/4+width/8&&mouseY>height/2-height/8-height/16&&mouseY<height/2-height/8+height/16){
+    fill(255,255,0);
+    rect(width/2+width/4, height/2-height/8, width/4, height/8);
+    fill(200,0,200);
+    rect(width/2-width/4, height/2-height/8, width/4, height/8);
+    if(mouseIsPressed){
+      gameType = "Points"
+      state = "Play";
+      setup();
+    }
+  }else{
+    fill(200,0,200);
+    rect(width/2-width/4, height/2-height/8, width/4, height/8);
+    rect(width/2+width/4, height/2-height/8, width/4, height/8);
+  }
+  
+  textSize(40);
+  fill(25);
+  text("Survival", width/2-width/4, height/2-height/8);
+  text("Points", width/2+width/4, height/2-height/8);
+
+  textSize(30);
+  text("Play aginst your", width/2-width/4, height*16/32);
+  text("opponent until", width/2-width/4, height*18/32);
+  text("one of you perishes.", width/2-width/4, height*20/32);
+
+  textSize(30);
+  text("Play aginst your opponent", width/2+width/4, height*16/32);
+  text("to see who can eat the", width/2+width/4, height*18/32);
+  text("most food in a limited", width/2+width/4, height*20/32);
+  text("amount of time.", width/2+width/4, height*22/32);
+
+  text("Players lose 3 points if", width/2+width/4, height*26/32);
+  text("they die, then respawn.", width/2+width/4, height*28/32);
 }
 
 //this function does everything on the options screen
@@ -1136,6 +1253,13 @@ function createBoard(){
 function gameStart(){
   //the difficulty changes the framerate
   frameRate(difficulty);
+
+  if(firstIteration&&gameType==="Points"){
+    gameTimeStarted = frameCount;
+    time = 101;
+    points=50;
+  }
+
   
   orbitControl();
   strokeWeight(2);
@@ -1166,6 +1290,21 @@ function gameStart(){
     arrP2.push(push2P2);
     arrP2.push(push3P2);
     moveSnakeP2();
+    if(gameType==="Points"){
+      timer();
+      firstIteration=false;
+    }
+  }
+}
+
+function timer(){
+  if((frameCount-gameTimeStarted)%difficulty===0){
+    time--;
+  }
+  if(time<=0){
+    state = "Game Over";
+    pop();
+    setup();
   }
 }
     
@@ -1193,9 +1332,32 @@ function moveSnake(){
     }
     //if the position is outside the border, state changes to game over and calls setup
     if(position[0]<0||position[0]>950||position[1]<0||position[1]>950||position[2]>0||position[2]<-950){
-      state = "Game Over";
-      pop();
-      setup();
+      if(gameType==="Survival"){
+        state = "Game Over";
+        playerDeath = 1;
+        pop();
+        setup();
+      }else if(gameType==="Points"){
+        arr = [0,0,0,0];
+        position = [0,0,0];
+        secondPosition = [0,0,0];
+        bodyPosition = [];
+
+        push0 = 50;
+        push1 = 0;
+        push2 = 0;
+        push3 = 1;
+        snakeLength = 3;
+
+        points-=0.5;
+        if(points<0){
+          points=0;
+        }
+      }else{
+        state = "Game Over";
+        pop();
+        setup();
+      }
     }
     //if the fourth element of a bit is equal to 1, calls the placeBox function
     if(arr[i+3]===1){
@@ -1227,10 +1389,33 @@ function moveSnake(){
   //checks if the position is equal to any of the body positions
   //if so, state changes to game over and calls setup
   for(var j=0; j<=bodyPosition.length; j+=3){
-    if(position[0]===bodyPosition[j]&&position[1]===bodyPosition[j+1]&&position[2]===bodyPosition[j+2]){
-      state = "Game Over";
-      pop();
-      setup();
+    if((position[0]===bodyPosition[j]&&position[1]===bodyPosition[j+1]&&position[2]===bodyPosition[j+2])||(position[0]===bodyPositionP2[j]&&position[1]===bodyPositionP2[j+1]&&position[2]===bodyPositionP2[j+2])||(position[0]===positionP2[0]&&position[1]===positionP2[1]&&position[2]===positionP2[2])){
+      if(gameType==="Survival"){
+        state = "Game Over";
+        playerDeath = 1;
+        pop();
+        setup();
+      }else if(gameType==="Points"){
+        arr = [0,0,0,0];
+        position = [0,0,0];
+        secondPosition = [0,0,0];
+        bodyPosition = [];
+
+        push0 = 50;
+        push1 = 0;
+        push2 = 0;
+        push3 = 1;
+        snakeLength = 3;
+
+        points-=3;
+        if(points<0){
+          points=0;
+        }
+      }else{
+        state = "Game Over";
+        pop();
+        setup();
+      }
     }
   }
 }
@@ -1281,9 +1466,32 @@ function moveSnakeP2(){
     }
     //if the position is outside the border, state changes to game over and calls setup
     if(positionP2[0]<0||positionP2[0]>950||positionP2[1]<0||positionP2[1]>950||positionP2[2]>0||positionP2[2]<-950){
-      state = "Game Over";
-      pop();
-      setup();
+      if(gameType==="Survival"){
+        state = "Game Over";
+        playerDeath = 2;
+        pop();
+        setup();
+      }else if(gameType==="Points"){
+        arrP2 = [0,950,0,0];
+        positionP2 = [0,950,0];
+        secondPositionP2 = [0,0,0];
+        bodyPositionP2 = [];
+
+        push0P2 = 50;
+        push1P2 = 0;
+        push2P2 = 0;
+        push3P2 = 1;
+        snakeLengthP2 = 3;
+
+        pointsP2-=3;
+        if(pointsP2<0){
+          pointsP2=0;
+        }
+      }else{
+        state = "Game Over";
+        pop();
+        setup();
+      }
     }
     //if the fourth element of a bit is equal to 1, calls the placeBox function
     if(arrP2[i+3]===1){
@@ -1315,10 +1523,33 @@ function moveSnakeP2(){
   //checks if the position is equal to any of the body positions
   //if so, state changes to game over and calls setup
   for(var j=0; j<=bodyPositionP2.length; j+=3){
-    if(positionP2[0]===bodyPositionP2[j]&&positionP2[1]===bodyPositionP2[j+1]&&positionP2[2]===bodyPositionP2[j+2]){
-      state = "Game Over";
-      pop();
-      setup();
+    if((positionP2[0]===bodyPositionP2[j]&&positionP2[1]===bodyPositionP2[j+1]&&positionP2[2]===bodyPositionP2[j+2])||(positionP2[0]===bodyPosition[j]&&positionP2[1]===bodyPosition[j+1]&&positionP2[2]===bodyPosition[j+2])){
+      if(gameType==="Survival"){
+        state = "Game Over";
+        playerDeath = 2;
+        pop();
+        setup();
+      }else if(gameType==="Points"){
+        arrP2 = [0,950,0,0];
+        positionP2 = [0,950,0];
+        secondPositionP2 = [0,0,0];
+        bodyPositionP2 = [];
+
+        push0P2 = 50;
+        push1P2 = 0;
+        push2P2 = 0;
+        push3P2 = 1;
+        snakeLengthP2 = 3;
+        
+        pointsP2-=3;
+        if(pointsP2<0){
+          pointsP2=0;
+        }
+      }else{
+        state = "Game Over";
+        pop();
+        setup();
+      }
     }
   }
 }
@@ -1435,12 +1666,14 @@ function food(){
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
+    points++;
   }
   if(position[0]===foodPosition[0]&&position[1]===foodPosition[1]&&position[2]===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLength++;
+    points++;
   }
   for(var j=0; j<=bodyPosition.length-3; j+=3){
     if(foodPosition[0]===bodyPosition[j]&&foodPosition[1]===bodyPosition[j+1]&&foodPosition[2]===bodyPosition[j+2]){
@@ -1449,6 +1682,7 @@ function food(){
       foodPosition[1]=ceil(random(0,19))*50;
       foodPosition[2]=ceil(random(-19,0))*50;
       snakeLength++;
+      points++;
     }
   }
 
@@ -1457,12 +1691,14 @@ function food(){
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLengthP2++;
+    pointsP2++;
   }
   if(positionP2[0]===foodPosition[0]&&positionP2[1]===foodPosition[1]&&positionP2[2]===foodPosition[2]){
     foodPosition[0]=ceil(random(0,19))*50;
     foodPosition[1]=ceil(random(0,19))*50;
     foodPosition[2]=ceil(random(-19,0))*50;
     snakeLengthP2++;
+    pointsP2++;
   }
   for(var j=0; j<=bodyPositionP2.length-3; j+=3){
     if(foodPosition[0]===bodyPositionP2[j]&&foodPosition[1]===bodyPositionP2[j+1]&&foodPosition[2]===bodyPositionP2[j+2]){
@@ -1471,6 +1707,7 @@ function food(){
       foodPosition[1]=ceil(random(0,19))*50;
       foodPosition[2]=ceil(random(-19,0))*50;
       snakeLengthP2++;
+      pointsP2++;
     }
   }
 
@@ -1500,19 +1737,37 @@ function deathScreen(){
   //says 'You Died!' at top of screen
   fill(255,0,0);
   textSize(50);
-  text("You Died!", width/2, height/8);
+  if(gameMode!=="Two Player"){
+    text("You Died!", width/2, height/8);
+    
+    //displays the users score
+    fill(0);
+    textSize(25);
+    text("Score: " + snakeLength, width/2, height/4);
   
-  //displays the users score
-  fill(0);
-  textSize(25);
-  text("Score: " + snakeLength, width/2, height/4);
-
-  //displays money gained for the round
-  text("Money Gained: " + moneyGained, width/2, height*5/16);
+    //displays money gained for the round
+    text("Money Gained: " + moneyGained, width/2, height*5/16);
+  }else{
+    if(gameType==="Survival"){
+      text("Player " + playerDeath + " Died!", width/2, height/8);
+    }else{
+      textSize(75);
+      fill(220,0,220);
+      text("Time's Up!", width/2, height/8);
+      textSize(50);
+      fill(255,40,0);
+      text("Player 1 Score:", width/4, height*5/16);
+      text(points, width/4, height*7/16);
+      fill(0,0,200);
+      text("Player 2 Score:", width*3/4, height*5/16);
+      text(pointsP2, width*3/4, height*7/16);
+    }
+  }
 
   //makes Back to Menu button
   stroke(0);
   fill(255);
+  textSize(25);
   rectMode(CENTER);
   rect(width/2,height/2+height/8, width/4, height/8);
   fill(0);
@@ -2069,6 +2324,74 @@ let frontView = new p5(( sketch ) => {
   sketch.food = () => {
     sketch.fill(255,0,0);
     sketch.rect(foodPosition[0]/50*x/20,foodPosition[1]/50*y/20,x/20,y/20);
+  };
+});
+
+let timerDisplay = new p5(( sketch ) => {
+
+  let x = 150;
+  let y = 50;
+
+  //creates canvas
+  sketch.setup = () => {
+    sketch.createCanvas(x, y);
+  };
+
+  //writes word
+  sketch.draw = () => {
+    sketch.background(220);
+    sketch.translate(30,15);
+    sketch.textAlign(BOTTOM, CENTER);
+    sketch.textSize(50);
+    if(gameMode==="Two Player"){
+      sketch.text(time,0,10);
+    }
+  };
+});
+
+let p1Points = new p5(( sketch ) => {
+
+  let x = 100;
+  let y = 50;
+
+  //creates canvas
+  sketch.setup = () => {
+    sketch.createCanvas(x, y);
+  };
+
+  //writes word
+  sketch.draw = () => {
+    sketch.background(220);
+    sketch.translate(30,15);
+    sketch.textAlign(BOTTOM, CENTER);
+    sketch.textSize(50);
+    sketch.fill(255,40,0);
+    if(gameMode==="Two Player"){
+      sketch.text(points,0,10);
+    }
+  };
+});
+
+let p2Points = new p5(( sketch ) => {
+
+  let x = 100;
+  let y = 50;
+
+  //creates canvas
+  sketch.setup = () => {
+    sketch.createCanvas(x, y);
+  };
+
+  //writes word
+  sketch.draw = () => {
+    sketch.background(220);
+    sketch.translate(30,15);
+    sketch.textAlign(BOTTOM, CENTER);
+    sketch.textSize(50);
+    sketch.fill(0,0,200);
+    if(gameMode==="Two Player"){
+      sketch.text(pointsP2,0,10);
+    }
   };
 });
 
