@@ -4,42 +4,111 @@
 //
 // Extra for Experts:
 
-let gravity = 1;
-let shapes = [];
+let hi;
+let theSmoke = [];
+let translator = 0;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  hi = new Smoke();
 }
 
 function draw() {
   background(220);
-  placeShapes();
-}
-
-function placeShapes(){
-  for(var i=0; i<shapes.length; i++){
-    circle(shapes[i].x, shapes[i].y, shapes[i].radius);
-    shapes[i].y-=shapes[i].velocity;
-    shapes[i].velocity-=gravity;
-    if(shapes[i].y<=height-shapes[i].radius&&shapes[i].y>=height-shapes[i].radius-1&&shapes[i].velocity<=-1){
-      shapes[i].velocity*=0;
+  orbitControl();
+  normalMaterial();
+  translate(-100,0,0);
+  box(50);
+  translate(100,0,0);
+  hi.display();
+  hi.update();
+  for (let i = theSmoke.length-1; i>=0; i--) {
+    theSmoke[i].update();
+    if (theSmoke[i].isDone()) {
+      theSmoke.splice(i, 1);
     }
-    if(shapes[i].y>=height-shapes[i].radius){
-      shapes[i].velocity*=-0.8;
+    else {
+      theSmoke[i].display();
     }
   }
 }
 
-function mousePressed(){
-  let newShape = {
-    x: mouseX,
-    y: mouseY,
-    velocity: 2,
-    radius: 10,
-    color: color(random(0,255),random(0,255),random(0,255),random(0,255)),
-  };
-  shapes.push(newShape);
+class Smoke {
+  constructor(mover) {
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.radius = 5*10;
+    this.alpha = 255;
+    this.mover = mover;
+  }
+
+  display() {
+    noStroke();
+    fill(100,this.alpha);
+    push();
+    translate(this.mover,this.y,0);
+    sphere(this.radius);
+    translate(5*10,-2.5*10,0);
+    sphere(this.radius);
+    translate(0,5*10,-2.5*10);
+    sphere(this.radius);
+    translate(-2.5*10,0,5*10);
+    sphere(this.radius);
+    pop();
+  }
+
+  update() {
+    this.y-=0.1;
+    this.radius-=0.1;
+    this.alpha-=1;
+  }
+
+  isDone() {
+    return this.alpha <= 0;
+  }
 }
+
+function mouseClicked(){
+  translator+=50;
+  let mySmoke = new Smoke(translator);
+  theSmoke.push(mySmoke);
+}
+
+/*
+class Smoke {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.radius = 5;
+    this.alpha = 255;
+  }
+
+  display() {
+    fill(50,this.alpha);
+    push();
+    translate(0,this.y,0);
+    for(var i=0; i<5; i++){
+      rotate(PI/i);
+      translate(2.5);
+      sphere(this.radius);
+      translate(-2.5);
+    }
+    pop();
+  }
+
+  update() {
+    this.y+=0.1;
+    this.radius-=0.1;
+    this.alpha-=1;
+  }
+
+  isDone() {
+    return this.alpha <= 0;
+  }
+}
+*/
 
 function windowResized(){
   setup();
