@@ -16,7 +16,18 @@ let doneLineToShot;
 let counter = 0;
 let doneChord;
 let doneChordToCenter;
+let doneShotTimeX = false;
+let triangleX = 0;
+let triangleXChange = 5;
+let doneShotTimeY = false;
+let triangleY = 0;
+let triangleYChange = 5;
 let c = -1;
+let shotPoint = false;
+let pointX = 0;
+let pointY = 0;
+let miss = false;
+let score = 0;
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -25,7 +36,11 @@ function setup(){
 
 function draw(){
   createBoard();
-  displayShot();
+  if(miss){
+    console.log(score);
+    resetValues();
+    boardSize = height;
+  }
   if(!shotTime){
     if(newBoard){
       doneLineToShot = false;
@@ -33,8 +48,22 @@ function draw(){
       doneChordToCenter = false;
       newBoard = false;
     }
-    calculateNewBoard();
-    displayNewBoard();
+    if(shotPoint){
+      animatePoint();
+    }else{
+      displayShot();
+      calculateNewBoard();
+      displayNewBoard();
+    }
+  }else{
+    strokeWeight(1);
+    line(0,-boardSize/2,0,boardSize/2);
+    line(-boardSize/2,0,boardSize/2,0);
+    if(!doneShotTimeY){
+      shotTimeY();
+    }else{
+      shotTimeX();
+    }
   }
 }
 
@@ -46,6 +75,39 @@ function createBoard(){
   fill(255);
   circle(0,0,boardSize);
   circle(0,0,1);
+}
+
+function animatePoint(){
+  strokeWeight(1);
+  line(0,-boardSize/2,0,boardSize/2);
+  line(-boardSize/2,0,boardSize/2,0);
+  fill(255,0,0);
+  triangle(triangleX, 0, triangleX-5, -10, triangleX+5, -10);
+  triangle(0, triangleY, -10, triangleY-5, -10, triangleY+5);
+
+  if(shotX<0){
+    pointX -= dist(0,shotY,shotX,shotY)/100;
+  }else{
+    pointX += dist(0,shotY,shotX,shotY)/100;
+  }
+  if(shotY<0){
+    pointY -= dist(shotX,0,shotX,shotY)/100;
+  }else{
+    pointY += dist(shotX,0,shotX,shotY)/100;
+  }
+  counter++;
+  line(0,shotY,pointX,shotY);
+  line(shotX,0,shotX,pointY);
+
+  if(counter===100){
+    shotPoint = false;
+    counter = 0;
+    pointX = 0;
+    pointY = 0;
+    if(dist(0,0,shotX,shotY)>boardSize/2){
+      miss = true;
+    }
+  }
 }
 
 function displayShot(){
@@ -209,19 +271,58 @@ function resetValues(){
   newBoard = false;
   counter = 0;
   c = -1;
+  doneShotTimeX = false;
+  triangleX = 0;
+  triangleXChange = 5;
+  doneShotTimeY = false;
+  triangleY = 0;
+  triangleYChange = 5;
+  miss = false;
+}
+
+function shotTimeY(){
+  moveY();
+}
+
+function moveY(){
+  fill(255,0,0);
+  triangle(0, triangleY, -10, triangleY-5, -10, triangleY+5);
+  if(Math.abs(triangleY)>=boardSize/2){
+    triangleYChange *= -1;
+  }
+  triangleY += triangleYChange;
+}
+
+function shotTimeX(){
+  moveX();
+}
+
+function moveX(){
+  fill(255,0,0);
+  triangle(triangleX, 0, triangleX-5, -10, triangleX+5, -10);
+  triangle(0, triangleY, -10, triangleY-5, -10, triangleY+5);
+  if(Math.abs(triangleX)>=boardSize/2){
+    triangleXChange *= -1;
+  }
+  triangleX += triangleXChange;
 }
 
 function mouseReleased(){
   if(shotTime){
-    shotX = mouseX - width/2;
-    shotY = mouseY - height/2;
-    shotTime = false;
-    newBoard = true;
-    if(dist(0,0,shotX,shotY)>boardSize/2){
-      hit = false;
+    if(doneShotTimeY){
+      score++;
+      shotX = triangleX;
+      shotTime = false;
+      shotPoint = true;
+      if(dist(0,0,shotX,shotY)>boardSize/2){
+        hit = false;
+      }else{
+        hit = true;
+        display = true;
+      }
     }else{
-      hit = true;
-      display = true;
+      shotY = triangleY;
+      doneShotTimeY = true;
     }
   }
 }
