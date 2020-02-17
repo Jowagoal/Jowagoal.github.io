@@ -39,6 +39,7 @@ function draw(){
   if(miss){
     console.log(score);
     resetValues();
+    score = 0;
     boardSize = height;
   }
   if(!shotTime){
