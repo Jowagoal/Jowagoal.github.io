@@ -13,6 +13,8 @@ function setup() {
 }
 
 function draw() {
-  line(mouseX,mouseY,pmouseX,pmouseY);
-  console.log(event);
+  if(mouseIsPressed){
+    line(mouseX,mouseY,pmouseX,pmouseY);
+  }
+  //console.log(event);
 }

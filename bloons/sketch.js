@@ -1,5 +1,8 @@
 let theBloons = [];
 let theTrack = [];
+let theDartMonkeys = [];
+let theDarts = [];
+let addingDartMonkey = false;
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -9,11 +12,21 @@ function setup(){
 
 function draw(){
   background(0,255,0);
+  displayTrack();
+  displayBloons();
+  displayTowers();
+  displayProjectiles();
+}
+
+function displayTrack(){
   for(var i=0; i<theTrack.length; i++){
     if(i!==theTrack.length-1){
       line(theTrack[i].x,theTrack[i].y,theTrack[i+1].x,theTrack[i+1].y);
     }
   }
+}
+
+function displayBloons(){
   for(var i=theBloons.length-1; i>=0; i--){
     theBloons[i].move();
     theBloons[i].display();
@@ -23,10 +36,131 @@ function draw(){
   }
 }
 
+function displayTowers(){
+  displayDartMonkeys();
+}
+
+function displayDartMonkeys(){
+  if(addingDartMonkey){
+    fill(0,0,0,50);
+    circle(mouseX,mouseY,400);
+    fill(150,75,0);
+    circle(mouseX,mouseY,40);
+    line(mouseX,mouseY,mouseX+30,mouseY);
+  }
+  for(var i=theDartMonkeys.length-1; i>=0; i--){
+    let bloonInRange = [];
+    theDartMonkeys[i].display();
+    for(var j=0; j<theBloons.length; j++){
+      if(dist(theBloons[j].x,theBloons[j].y,theDartMonkeys[i].x,theDartMonkeys[i].y)<200){
+        bloonInRange.push(theBloons[j]);
+      }
+    }
+    if(bloonInRange.length!==0){
+      let first = findFirst(bloonInRange);
+      theDartMonkeys[i].faceBloon(first);
+      if(frameCount%60===0){
+        theDartMonkeys[i].shoot();
+      }
+    }
+  }
+}
+
+function findFirst(arr){
+  let furthest = arr[0];
+  for(var i=1; i<arr.length; i++){
+    if(arr[i].checkpoint>furthest.checkpoint){
+      furthest = arr[i];
+    }else if(arr[i].checkpoint===furthest.checkpoint){
+      if(arr[i].checkpoint!==theTrack.length-1){
+        if(theTrack[arr[i].checkpoint].x-theTrack[arr[i].checkpoint+1].x!==0){
+          if(theTrack[arr[i].checkpoint].x-theTrack[arr[i].checkpoint+1].x<0){
+            if(arr[i].x>furthest.x){
+              furthest = arr[i];
+            }
+          }else{
+            if(arr[i].x<furthest.x){
+              furthest = arr[i];
+            }
+          }
+        }else{
+          if(theTrack[arr[i].checkpoint].y-theTrack[arr[i].checkpoint+1].y<0){
+            if(arr[i].y>furthest.y){
+              furthest = arr[i];
+            }
+          }else{
+            if(arr[i].y<furthest.y){
+              furthest = arr[i];
+            }
+          }
+        }
+      }else{
+        if(arr[i].x>furthest.x){
+          furthest = arr[i];
+        }
+      }
+    }
+  }
+  return furthest;
+}
+
+function displayProjectiles(){
+  for(var i=theDarts.length-1; i>=0; i--){
+    theDarts[i].move();
+    let done = theDarts[i].isDone();
+    if(done){
+      theDarts.splice(i,1);
+    }
+  }
+}
+
 function mousePressed(){
-  for(var i=theBloons.length-1; i>=0; i--){
-    if(dist(mouseX,mouseY,theBloons[i].x,theBloons[i].y)<theBloons[i].diameter/2){
-      theBloons[i].pop(i);
+  if(addingDartMonkey){
+    checkIfOpen('Dart Monkey');
+  }else{
+    for(var i=0; i<theDartMonkeys.length; i++){
+      if(dist(mouseX,mouseY,theDartMonkeys[i].x,theDartMonkeys[i].y)<40){
+        theDartMonkeys[i].showingUpgrades = true;
+      }else{
+        theDartMonkeys[i].showingUpgrades = false;
+      }
+    }
+  }
+}
+
+function checkIfOpen(tower){
+  let open = true;
+  for(var i=0; i<theTrack.length; i++){
+    if(i!==theTrack.length-1){
+      if(theTrack[i].x-theTrack[i+1].x!==0){
+        if(mouseX>theTrack[i].x&&mouseX<theTrack[i+1].x||mouseX<theTrack[i].x&&mouseX>theTrack[i+1].x){
+          if(mouseY<theTrack[i].y+20&&mouseY>theTrack[i].y-20){
+            open = false;
+          }
+        }
+      }else{
+        if(mouseY>theTrack[i].y&&mouseY<theTrack[i+1].y||mouseY<theTrack[i].y&&mouseY>theTrack[i+1].y){
+          if(mouseX<theTrack[i].x+20&&mouseX>theTrack[i].x-20){
+            open = false;
+          }
+        }
+      }
+    }
+    if(dist(theTrack[i].x,theTrack[i].y,mouseX,mouseY)<20){
+      open = false;
+    }
+  }
+
+  for(var i=0; i<theDartMonkeys.length; i++){
+    if(dist(theDartMonkeys[i].x,theDartMonkeys[i].y,mouseX,mouseY)<40){
+      open = false;
+    }
+  }
+
+  if(open){
+    if(tower==='Dart Monkey'){
+      addingDartMonkey = false;
+      theDartMonkeys.push(new DartMonkey(mouseX,mouseY));
     }
   }
 }
@@ -53,9 +187,74 @@ function keyPressed(){
   if(keyIsDown(87)){
     theBloons.push(new WhiteBloon(0,theTrack[0].y,0));
   }
+  if(keyIsDown(68)&&keyIsDown(77)){
+    addingDartMonkey = true;
+  }
 }
 
+class DartMonkey{
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.angle = 0;
+    this.showingUpgrades = false;
+  }
 
+  display(){
+    push();
+    translate(this.x,this.y)
+    rotate(this.angle);
+    fill(150,75,0);
+    circle(0,0,40);
+    line(0,0,30,0);
+    if(this.showingUpgrades){
+      fill(0,0,0,50);
+      circle(0,0,400);
+    }
+    pop();
+  }
+
+  faceBloon(bloon){
+    push();
+    translate(this.x,this.y)
+    this.angle = atan2(bloon.y - this.y, bloon.x - this.x);
+    pop();
+  }
+
+  shoot(){
+    theDarts.push(new Dart(this.x,this.y,this.angle));
+  }
+}
+
+class Dart{
+  constructor(x,y,angle){
+    this.x = x;
+    this.y = y;
+    this.angle = angle;
+    this.hostTowerX = x;
+    this.hostTowerY = y;
+  }
+
+  move(){
+    this.y+=30*sin(this.angle);
+    this.x+=30*cos(this.angle);
+    circle(this.x,this.y,3);
+  }
+
+  isDone(){
+    let done = false;
+    for(var i=0; i<theBloons.length; i++){
+      if(dist(this.x,this.y,theBloons[i].x,theBloons[i].y)<theBloons[i].diameter/2+1.5){
+        done = true;
+        theBloons[i].pop(i);
+      }
+    }
+    if(dist(this.x,this.y,this.hostTowerX,this.hostTowerY)>200){
+      done = true;
+    }
+    return done;
+  }
+}
 
 function createTrack(){
   fill(165,42,42);
@@ -140,7 +339,7 @@ class RedBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -188,7 +387,7 @@ class BlueBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -236,7 +435,7 @@ class GreenBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -284,7 +483,7 @@ class YellowBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -332,7 +531,7 @@ class PinkBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -380,7 +579,7 @@ class BlackBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -392,8 +591,13 @@ class BlackBloon{
   }
 
   pop(i){
-    theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
-    theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
+    if(this.checkpoint%2===0){
+      theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
+      theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
+    }else{
+      theBloons.splice(i,1,new PinkBloon(this.x,this.y-5,this.checkpoint));
+      theBloons.push(new PinkBloon(this.x,this.y+5,this.checkpoint));
+    }
   }
 
   through(i){
@@ -429,7 +633,7 @@ class WhiteBloon{
       this.x+=this.speed;
     }
     for(var i=0; i<theTrack.length; i++){
-      if(this.x<=theTrack[i].x+this.speed&&this.x>=theTrack[i].x-this.speed&&this.y<=theTrack[i].y+this.speed&&this.y>=theTrack[i].y-this.speed){
+      if(this.x<=theTrack[i].x+7&&this.x>=theTrack[i].x-7&&this.y<=theTrack[i].y+7&&this.y>=theTrack[i].y-7){
         this.checkpoint = i;
       }
     }
@@ -441,8 +645,13 @@ class WhiteBloon{
   }
 
   pop(i){
-    theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
-    theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
+    if(this.checkpoint%2===0){
+      theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
+      theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
+    }else{
+      theBloons.splice(i,1,new PinkBloon(this.x,this.y-5,this.checkpoint));
+      theBloons.push(new PinkBloon(this.x,this.y+5,this.checkpoint));
+    }
   }
 
   through(i){

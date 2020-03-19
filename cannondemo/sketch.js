@@ -36,12 +36,6 @@ function displayCannon(){
   rect(0, -cannonWidth/2, cannonLength, cannonWidth);
   circle(0,0, cannonWidth);
   pop();
-  if(keyIsDown(68)){
-    cannonX+=5;
-  }
-  if(keyIsDown(65)){
-    cannonX-=5;
-  }
 }
 
 function mouseClicked(){
