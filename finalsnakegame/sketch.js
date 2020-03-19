@@ -2974,7 +2974,7 @@ function calculateMove(moveArr){
 }
 
 //checks if a path is open based on its neighboring positions
-function pathOpen(array, option){
+function pathOpen(array){
   let pathNotFound = true;
   let pathTest = array.length-1;
   let pathIsBad = false;
@@ -2985,6 +2985,7 @@ function pathOpen(array, option){
     pathIsBad = false;
     if(array[pathTest]<positionPlaceCounter){
       //checks if there is a body in the positions to be skipped
+      /*
       for(var i=0; i<=bodyPosition.length; i+=3){
         for(var j=positionPlaceCounter+1; j<Math.pow(gameSize+1,3); j++){
           if(bodyPosition[i]===orderOfPositions[j][0]&&bodyPosition[i+1]===orderOfPositions[j][1]&&bodyPosition[i+2]===orderOfPositions[j][2]){
@@ -2992,7 +2993,14 @@ function pathOpen(array, option){
           }
         }
       }
+      */
+      for(var j=positionPlaceCounter+1; j<Math.pow(gameSize+1,3); j++){
+        if(bodyPosition[0]===orderOfPositions[j][0]&&bodyPosition[1]===orderOfPositions[j][1]&&bodyPosition[2]===orderOfPositions[j][2]){
+          pathIsBad = true;
+        }
+      }
       //checks if there is a body in the positions to be skipped (looped back to start)
+      /*
       if(!pathIsBad){
         for(var i=0; i<=bodyPosition.length; i+=3){
           for(var j=0; j<array[pathTest]; j++){
@@ -3002,27 +3010,26 @@ function pathOpen(array, option){
           }
         }
       }
+      */
+      for(var j=0; j<array[pathTest]; j++){
+        if(bodyPosition[0]===orderOfPositions[j][0]&&bodyPosition[1]===orderOfPositions[j][1]&&bodyPosition[2]===orderOfPositions[j][2]){
+          pathIsBad = true;
+        }
+      }
       //if path is open, checks if the food will be missed
       if(!pathIsBad){
         let missFood = willIMissFood("Double", array, pathTest);
-        if(option==="Next Best"){
-          if(!missFood&&pathTest!==array.length-1){
-            return array[pathTest];
-          }else{
-            pathTest--;
-          }
+        if(!missFood){
+          return array[pathTest];
         }else{
-          if(!missFood){
-            return array[pathTest];
-          }else{
-            pathTest--;
-          }
+          pathTest--;
         }
       }else{
         pathTest--;
       }
     }else{
       //checks if there is a body in the positions to be skipped
+      /*
       for(var i=0; i<=bodyPosition.length; i+=3){
         for(var j=positionPlaceCounter+1; j<array[pathTest]; j++){
           if(bodyPosition[i]===orderOfPositions[j][0]&&bodyPosition[i+1]===orderOfPositions[j][1]&&bodyPosition[i+2]===orderOfPositions[j][2]){
@@ -3030,21 +3037,19 @@ function pathOpen(array, option){
           }
         }
       }
+      */
+      for(var j=positionPlaceCounter+1; j<array[pathTest]; j++){
+        if(bodyPosition[0]===orderOfPositions[j][0]&&bodyPosition[1]===orderOfPositions[j][1]&&bodyPosition[2]===orderOfPositions[j][2]){
+          pathIsBad = true;
+        }
+      }
       //if path is open, checks if the food will be missed
       if(!pathIsBad){
         let missFood = willIMissFood("Single", array, pathTest);
-        if(option==="Next Best"){
-          if(!missFood&&pathTest!==array.length-1){
-            return array[pathTest];
-          }else{
-            pathTest--;
-          }
+        if(!missFood){
+          return array[pathTest];
         }else{
-          if(!missFood){
-            return array[pathTest];
-          }else{
-            pathTest--;
-          }
+          pathTest--;
         }
       }else{
         pathTest--;
@@ -3066,15 +3071,14 @@ function willIMissFood(x, array, pathTest){
         return true;
       }
     }
-    return false;
   }else{
     for(var j=positionPlaceCounter+1; j<array[pathTest]; j++){
       if(shadowFoodPosition[0]===orderOfPositions[j][0]&&shadowFoodPosition[1]===orderOfPositions[j][1]&&shadowFoodPosition[2]===orderOfPositions[j][2]){
         return true;
       }
     }
-    return false;
   }
+  return false;
 }
 
 //when the user dies the death screen is shown
