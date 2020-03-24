@@ -189,7 +189,7 @@ function preload(){
   //preloads pictures for store
   bare = loadImage('assets/no skin.PNG')
   lines = loadImage('assets/lines.PNG');
-  iso = loadImage('assets/iso.png');
+  iso = loadImage('assets/iso.PNG');
   snakeEyes = loadImage('assets/snake eyes.PNG');
   topHat = loadImage('assets/top hat.PNG');
   train = loadImage('assets/train.PNG');
