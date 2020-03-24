@@ -8,6 +8,7 @@ body, html {
     display: none;
 }
 
+
 #defaultCanvas0 {
     position: absolute;
     top: 5%;
@@ -44,11 +45,14 @@ body, html {
     left: 7.5%;
 }
 
+
 #defaultCanvas6 {
     position: absolute;
     top: 5%;
-    left: 80%;
+    left: 75%;
 }
+
+
 #defaultCanvas7 {
     position: absolute;
     top: 5%;

@@ -10,8 +10,9 @@ let state = "Main Menu";
 let gameMode;
 let gameType;
 
-//these variables are the memory of the program
 let gameSize = 13;
+let speed = 1;
+let optimize = false;
 
 //player 1
 let position = [0,0,0];
@@ -188,7 +189,7 @@ function preload(){
   //preloads pictures for store
   bare = loadImage('assets/no skin.PNG')
   lines = loadImage('assets/lines.PNG');
-  iso = loadImage('assets/iso.PNG');
+  iso = loadImage('assets/iso.png');
   snakeEyes = loadImage('assets/snake eyes.PNG');
   topHat = loadImage('assets/top hat.PNG');
   train = loadImage('assets/train.PNG');
@@ -342,6 +343,7 @@ function setup() {
   if(state==="Main Menu"){
     createCanvas(windowWidth, windowHeight);
     //hides all additional canvases
+    
     document.getElementById("defaultCanvas0").style.visibility = "hidden";
     document.getElementById("defaultCanvas1").style.visibility = "hidden";
     document.getElementById("defaultCanvas2").style.visibility = "hidden";
@@ -1824,10 +1826,31 @@ function gamePlay(){
     image(gameBackground, 6500/-2, 3600/-2, 6500, 3600);
   }
   pop();
-  
+
   createBoard();
 
-  gameStart();
+  if(gameMode!=="AI"){
+    gameStart();
+  }else{
+    if(snakeLength>=Math.pow(gameSize+1,3)){
+      state = "Game Over";
+      setup();
+    }
+    if(speed>=1){
+      let thing = true;
+      for(var i=0; i<speed; i++){
+        if(state==="Game Over"){
+          break;
+        }
+        gameStart(thing);
+        thing = false;
+      }
+    }else{
+      difficulty = 60*speed;
+      gameStart(true);
+    }
+      
+  }
 }
 
 //the board is simply 12 lines to make a large box, the game is played within
@@ -1855,7 +1878,7 @@ function createBoard(){
 }
 
 //every part of the game the user plays is in this function
-function gameStart(){
+function gameStart(thing){
   //the difficulty changes the framerate
   frameRate(difficulty);
   
@@ -1888,6 +1911,7 @@ function gameStart(){
   //food function makes the food
   food();
   if(gameMode==="AI"){
+    difficulty = 60;
     //memory system has been entirely restructured, 
     //the old array filled up too fast
     if(firstIteration){
@@ -1909,7 +1933,7 @@ function gameStart(){
       position[1]+=push1;
       position[2]+=push2;
     }
-    moveSnake();
+    moveSnake(thing);
     
     //finds neighboring positions
     let arrayOfNeighborPositions = neighboringPositions();
@@ -1940,7 +1964,7 @@ function gameStart(){
         position[2]+=push2;
       }
       //moves the snake
-      moveSnake();
+      moveSnake(true);
     }else{
       if(firstIteration){
         position[0]+=push0;
@@ -1961,7 +1985,7 @@ function gameStart(){
         position[1]+=push1;
         position[2]+=push2;
       }
-      moveSnake();
+      moveSnake(true);
       if(firstIteration){
         positionP2[0]+=push0P2
         positionP2[1]+=push1P2;
@@ -2006,7 +2030,7 @@ function timer(){
 }
 
 //moves snake
-function moveSnake(){
+function moveSnake(thing){
   //if the position is outside the border, state changes to game over and calls setup
   if(position[0]<0||position[0]>gameSize*50||position[1]<0||position[1]>gameSize*50||position[2]>0||position[2]<-gameSize*50){
     playerHasDied(1);
@@ -2023,17 +2047,28 @@ function moveSnake(){
     playerHasDied(1);
     playerHasDied(2); 
   }
-  for(var i=bodyPosition.length-3; i>=0; i-=3){
-    push();
-    translate(bodyPosition[i+0], bodyPosition[i+1], bodyPosition[i+2]);
-    //places body
-    placeBox(bodyPosition[i+0],bodyPosition[i+1],bodyPosition[i+2]);
-    pop();
+  if(gameMode!=="AI"||!optimize){
+    for(var i=bodyPosition.length-3; i>=0; i-=3){
+      push();
+      translate(bodyPosition[i+0], bodyPosition[i+1], bodyPosition[i+2]);
+      //places body
+      placeBox(bodyPosition[i+0],bodyPosition[i+1],bodyPosition[i+2]);
+      pop();
+    }
   }
+  push();
+  translate(bodyPosition[0], bodyPosition[1], bodyPosition[2]);
+  //places body
+  if(thing){
+    placeBox(bodyPosition[0],bodyPosition[1],bodyPosition[2]);
+  }
+  pop();
   push();
   translate(position[0], position[1], position[2]);
   //places head
-  placeBox(position[0],position[1],position[2],true);  
+  if(thing){
+    placeBox(position[0],position[1],position[2],true);
+  }
   pop();
   //applies axis help if activated
   if(gameMode!=="AI"&&axisHelp){
@@ -3848,11 +3883,11 @@ function keyPressed(){
   }
   //increase and decrease speed of Ai
   if(gameMode==="AI"&&state==="Play"){
-    if(keyIsDown(38)&&difficulty!==60){
-      difficulty++;
+    if(keyIsDown(38)){
+      speed*=2;
     }
-    if(keyIsDown(40)&&difficulty!==1){
-      difficulty--;
+    if(keyIsDown(40)&&speed>=1/8){
+      speed/=2;
     }
   }
 }
@@ -3870,45 +3905,46 @@ function mouseReleased(){
 
 //creates a new canvas to write the word 'Top View'
 let topViewWord = new p5(( sketch ) => {
-
   let x = 150;
   let y = 30;
-
+  
   //creats canvas
   sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes word
-  sketch.draw = () => {
+      sketch.createCanvas(x, y);
+    };
+  
+    //writes word
+    sketch.draw = () => {
       sketch.background(0);
-      sketch.fill(255,0,255);
-      sketch.translate(30,15);
-      sketch.textAlign(BOTTOM, CENTER);
-      sketch.textSize(20);
-      sketch.text("Top View",0,0);
-  };
+      if(gameMode!=="AI"||!optimize){
+        sketch.fill(255,0,255);
+        sketch.translate(30,15);
+        sketch.textAlign(BOTTOM, CENTER);
+        sketch.textSize(20);
+        sketch.text("Top View",0,0);
+      }
+    };
 });
 
 //each view creates a new canvas that shows the game frome a different angle
 let topView = new p5(( sketch ) => {
-  
   //x and y = height/4
   let x = 150;
   let y = 150;
-  
+    
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
-
+  
   sketch.draw = () => {
-    sketch.gamePlay();
+    sketch.background(0);
+    if(gameMode!=="AI"||!optimize){
+      sketch.gamePlay();
+    }
   };
-
+  
   //each view follows most of the same functions as the normal program
   sketch.gamePlay = () => {
-    sketch.background(0);
-
     sketch.push();
     sketch.stroke(255,0,0);
     sketch.strokeWeight(1);
@@ -3929,7 +3965,7 @@ let topView = new p5(( sketch ) => {
       sketch.moveSnakeP2();
     }
   };
-  
+    
   sketch.moveSnake = () => {    
     //since the z coordinate is negative and the side views are positive
     //this translation aligns the snake with the canvas
@@ -3946,7 +3982,7 @@ let topView = new p5(( sketch ) => {
       sketch.pop();
     }
   };
-  
+    
   //function is the same as 3d function
   sketch.placeBox = (x2,y2,z2) => {
     let x1 = x2;
@@ -3963,7 +3999,7 @@ let topView = new p5(( sketch ) => {
       sketch.rect(0,0,x/(gameSize+1),y/(gameSize+1));
     }
   };
-
+  
   sketch.moveSnakeP2 = () => {
     //since the z coordinate is negative and the side views are positive
     //this translation aligns the snake with the canvas
@@ -3980,7 +4016,7 @@ let topView = new p5(( sketch ) => {
       sketch.pop();
     }
   };
-  
+    
   //function is the same as 3d function
   sketch.placeBoxP2 = (x2,y2,z2) => {
     let x1 = x2;
@@ -3997,17 +4033,16 @@ let topView = new p5(( sketch ) => {
       sketch.rect(0,0,x/(gameSize+1),y/(gameSize+1));
     }
   };
-
+  
   //places the food at its correct position
   sketch.food = () => {
     sketch.fill(255,0,0);
     sketch.rect(foodPosition[0]/50*x/(gameSize+1),(foodPosition[2]/50+gameSize)*y/(gameSize+1),x/(gameSize+1),y/(gameSize+1));
   };
 });
-
-//creates a new canvas to write the word 'Side View'
+  
+  //creates a new canvas to write the word 'Side View'
 let sideViewWord = new p5(( sketch ) => {
-
   let x = 150;
   let y = 30;
 
@@ -4015,21 +4050,22 @@ let sideViewWord = new p5(( sketch ) => {
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
-
+  
   //writes word
   sketch.draw = () => {
     sketch.background(0);
-    sketch.fill(255,0,255);
-    sketch.translate(30,15);
-    sketch.textAlign(BOTTOM, CENTER);
-    sketch.textSize(20);
-    sketch.text("Side View",0,0);
+    if(gameMode!=="AI"||!optimize){
+      sketch.fill(255,0,255);
+      sketch.translate(30,15);
+      sketch.textAlign(BOTTOM, CENTER);
+      sketch.textSize(20);
+      sketch.text("Side View",0,0);
+    }
   };
 });
 
-//side view is mainly the same as top view
+  //side view is mainly the same as top view
 let sideView = new p5(( sketch ) => {
-
   let x = 150;
   let y = 150;
 
@@ -4038,11 +4074,13 @@ let sideView = new p5(( sketch ) => {
   };
   
   sketch.draw = () => {
-    sketch.gamePlay();
+    sketch.background(0);
+    if(gameMode!=="AI"||!optimize){
+      sketch.gamePlay();
+    }
   };
 
   sketch.gamePlay = () => {
-    sketch.background(0);
 
     sketch.push();
     sketch.stroke(255,0,0);
@@ -4137,41 +4175,43 @@ let sideView = new p5(( sketch ) => {
   
 //creates a new canvas to write the word 'Front View'
 let frontViewWord = new p5(( sketch ) => {
-
   let x = 150;
   let y = 30;
-
+  
   //creates canvas
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
-
+  
   //writes word
   sketch.draw = () => {
     sketch.background(0);
-    sketch.fill(255,0,255);
-    sketch.translate(30,15);
-    sketch.textAlign(BOTTOM, CENTER);
-    sketch.textSize(20);
-    sketch.text("Front View",0,0);
+    if(gameMode!=="AI"||!optimize){
+      sketch.fill(255,0,255);
+      sketch.translate(30,15);
+      sketch.textAlign(BOTTOM, CENTER);
+      sketch.textSize(20);
+      sketch.text("Front View",0,0);
+    }
   };
 });
 
 let frontView = new p5(( sketch ) => {
-  
   let x = 150;
   let y = 150;
-
+  
   sketch.setup = () => {
     sketch.createCanvas(x, y);
   };
   
   sketch.draw = () => {
-    sketch.gamePlay();
-  };
-  
-  sketch.gamePlay = () => {
     sketch.background(0);
+    if(gameMode!=="AI"||!optimize){
+      sketch.gamePlay();
+    }
+  };
+    
+  sketch.gamePlay = () => {
 
     sketch.push();
     sketch.stroke(255,0,0);
@@ -4262,9 +4302,9 @@ let frontView = new p5(( sketch ) => {
 
 //display has different uses based on the game mode
 let display = new p5(( sketch ) => {
-
-  let x = 250;
-  let y = 150;
+  let x = 300;
+  let y = 210;
+  let scoreHold = 0;
 
   //creates canvas
   sketch.setup = () => {
@@ -4285,10 +4325,16 @@ let display = new p5(( sketch ) => {
     if(gameMode==="AI"){
       sketch.text("Score: " + snakeLength.toString(10),-30,10);
       sketch.textSize(30);
-      sketch.text("Speed: " + difficulty.toString(10),0,60);
+      sketch.text("Speed: " + speed.toString(10) + "x",0,60);
       sketch.fill(0,0,255);
       sketch.rect(-30,85,200,50);
+      sketch.rect(-30,140,200,50);
       sketch.fill(255,165,0);
+      if(optimize){
+        sketch.text("Full Snake",0,170);
+      }else{
+        sketch.text("Optimize",0,170);
+      }
       //creates a button to end the program
       sketch.text("Terminate",0,115);
       if(state==="Play"&&sketch.mouseX>0&&sketch.mouseX<200&&sketch.mouseY>100&&sketch.mouseY<150&&mouseIsPressed){
@@ -4297,57 +4343,70 @@ let display = new p5(( sketch ) => {
         setup();
       }
     }
+
     //writes score for single player
     if(gameMode==="Single Player"){
       sketch.text("Score: " + (snakeLength).toString(10),-30,10);
+    }
+  }
+
+  sketch.mouseReleased = () => {
+    if(state==="Play"&&sketch.mouseX>0&&sketch.mouseX<200&&sketch.mouseY>155&&sketch.mouseY<205&&mouseIsPressed){
+      if(optimize){
+        optimize = false;
+      }else{
+        optimize = true;
+      }
     }
   };
 });
 
 let p1Points = new p5(( sketch ) => {
+  if(gameMode!=="AI"){
+    let x = 100;
+    let y = 50;
 
-  let x = 100;
-  let y = 50;
+    //creates canvas
+    sketch.setup = () => {
+      sketch.createCanvas(x, y);
+    };
 
-  //creates canvas
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes points for player 1
-  sketch.draw = () => {
-    sketch.background(0);
-    sketch.translate(30,15);
-    sketch.textAlign(BOTTOM, CENTER);
-    sketch.textSize(50);
-    sketch.fill(255,40,0);
-    if(gameMode==="Two Player"){
-      sketch.text(points,0,10);
-    }
-  };
+    //writes points for player 1
+    sketch.draw = () => {
+      sketch.background(0);
+      sketch.translate(30,15);
+      sketch.textAlign(BOTTOM, CENTER);
+      sketch.textSize(50);
+      sketch.fill(255,40,0);
+      if(gameMode==="Two Player"){
+        sketch.text(points,0,10);
+      }
+    };
+  }
 });
 
 let p2Points = new p5(( sketch ) => {
+  if(gameMode!=="AI"){
+    let x = 100;
+    let y = 50;
 
-  let x = 100;
-  let y = 50;
+    //creates canvas
+    sketch.setup = () => {
+      sketch.createCanvas(x, y);
+    };
 
-  //creates canvas
-  sketch.setup = () => {
-    sketch.createCanvas(x, y);
-  };
-
-  //writes points for player 2
-  sketch.draw = () => {
-    sketch.background(0);
-    sketch.translate(30,15);
-    sketch.textAlign(BOTTOM, CENTER);
-    sketch.textSize(50);
-    sketch.fill(0,0,200);
-    if(gameMode==="Two Player"){
-      sketch.text(pointsP2,0,10);
-    }
-  };
+    //writes points for player 2
+    sketch.draw = () => {
+      sketch.background(0);
+      sketch.translate(30,15);
+      sketch.textAlign(BOTTOM, CENTER);
+      sketch.textSize(50);
+      sketch.fill(0,0,200);
+      if(gameMode==="Two Player"){
+        sketch.text(pointsP2,0,10);
+      }
+    };
+  }
 });
 
 //calls set up when window is resized
