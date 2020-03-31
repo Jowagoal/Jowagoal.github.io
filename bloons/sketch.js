@@ -3,6 +3,8 @@ let theTrack = [];
 let theDartMonkeys = [];
 let theDarts = [];
 let addingDartMonkey = false;
+let money = 0;
+let lives = 150;
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -16,6 +18,7 @@ function draw(){
   displayBloons();
   displayTowers();
   displayProjectiles();
+  displayMoney();
 }
 
 function displayTrack(){
@@ -43,7 +46,7 @@ function displayTowers(){
 function displayDartMonkeys(){
   if(addingDartMonkey){
     fill(0,0,0,50);
-    circle(mouseX,mouseY,400);
+    circle(mouseX,mouseY,150*2);
     fill(150,75,0);
     circle(mouseX,mouseY,40);
     line(mouseX,mouseY,mouseX+30,mouseY);
@@ -52,16 +55,22 @@ function displayDartMonkeys(){
     let bloonInRange = [];
     theDartMonkeys[i].display();
     for(var j=0; j<theBloons.length; j++){
-      if(dist(theBloons[j].x,theBloons[j].y,theDartMonkeys[i].x,theDartMonkeys[i].y)<200){
+      if(dist(theBloons[j].x,theBloons[j].y,theDartMonkeys[i].x,theDartMonkeys[i].y)<theDartMonkeys[i].range){
         bloonInRange.push(theBloons[j]);
       }
     }
     if(bloonInRange.length!==0){
+      if(theDartMonkeys[i].startFrameCount===0||theDartMonkeys[i].timeNoShot>100-theDartMonkeys[i].attackSpeed){
+        theDartMonkeys[i].startFrameCount = frameCount;
+        theDartMonkeys[i].timeNoShot = 0;
+      }
       let first = findFirst(bloonInRange);
       theDartMonkeys[i].faceBloon(first);
-      if(frameCount%60===0){
+      if(Math.floor((frameCount-theDartMonkeys[i].startFrameCount)%(100-theDartMonkeys[i].attackSpeed))===0){
         theDartMonkeys[i].shoot();
       }
+    }else{
+      theDartMonkeys[i].timeNoShot++;
     }
   }
 }
@@ -114,6 +123,14 @@ function displayProjectiles(){
   }
 }
 
+function displayMoney(){
+  textAlign(LEFT, TOP);
+  textSize(25);
+  fill(0);
+  text("Money: " + money, 15, 15);
+  text("Lives: " + lives, 15, 50);
+}
+
 function mousePressed(){
   if(addingDartMonkey){
     checkIfOpen('Dart Monkey');
@@ -121,7 +138,7 @@ function mousePressed(){
     for(var i=0; i<theDartMonkeys.length; i++){
       if(dist(mouseX,mouseY,theDartMonkeys[i].x,theDartMonkeys[i].y)<40){
         theDartMonkeys[i].showingUpgrades = true;
-      }else{
+      }else if(!(mouseX>width-300&&mouseX<width&&mouseY>0&&mouseY<height&&theDartMonkeys[i].showingUpgrades)){
         theDartMonkeys[i].showingUpgrades = false;
       }
     }
@@ -192,26 +209,106 @@ function keyPressed(){
   }
 }
 
+function mouseClicked(){
+  for(var i=0; i<theDartMonkeys.length; i++){
+    if(theDartMonkeys[i].showingUpgrades){
+      //top upgrades
+      if(mouseX>width-300&&mouseX<width&&mouseY>200&&mouseY<300){
+        if(theDartMonkeys[i].upgradeTop===1&&money>=90){
+          money-=90;
+          theDartMonkeys[i].upgradeTop++;
+          theDartMonkeys[i].range = 175;
+        }else if(theDartMonkeys[i].upgradeTop===2&&money>=120){
+          money-=120;
+          theDartMonkeys[i].upgradeTop++;
+          theDartMonkeys[i].range = 200;
+        }
+      //bottom upgrades
+      }else if(mouseX>width-300&&mouseX<width&&mouseY>350&&mouseY<450){
+        if(theDartMonkeys[i].upgradeBottom===1&&money>=140){
+          money-=140;
+          theDartMonkeys[i].upgradeBottom++;
+          theDartMonkeys[i].pierce+=1;
+        }else if(theDartMonkeys[i].upgradeBottom===2&&money>=170){
+          money-=170;
+          theDartMonkeys[i].upgradeBottom++;
+          theDartMonkeys[i].pierce+=2;
+        }
+      }
+    }
+  }
+}
+
 class DartMonkey{
   constructor(x,y){
     this.x = x;
     this.y = y;
     this.angle = 0;
     this.showingUpgrades = false;
+    this.startFrameCount = 0;
+    this.timeNoShot = 0;
+    this.attackSpeed = 40;
+    this.pierce = 1;
+    this.range = 150;
+    this.upgradeTop = 1;
+    this.upgradeBottom = 1;
   }
 
   display(){
     push();
-    translate(this.x,this.y)
+    translate(this.x,this.y);
     rotate(this.angle);
     fill(150,75,0);
     circle(0,0,40);
     line(0,0,30,0);
-    if(this.showingUpgrades){
-      fill(0,0,0,50);
-      circle(0,0,400);
-    }
     pop();
+
+    if(this.showingUpgrades){
+      push();
+      translate(this.x,this.y);
+      fill(0,0,0,50);
+      circle(0,0,this.range*2);
+      pop();
+
+      fill(210,190,100)
+      rect(width-300,0,300,height);
+
+      textAlign(CENTER, TOP);
+      textSize(50);
+      fill(0);
+      text("Dart Monkey", width-150,0);
+
+      textSize(25);
+      fill(150,75,0);
+      rect(width-300,200,300,100);
+      if(this.upgradeTop===1){
+        fill(0);
+        text("Long Range Darts",width-150,210);
+        text("Cost: 90",width-150,250);
+      }else if(this.upgradeTop===2){
+        fill(0);
+        text("Enhanced Eyesight",width-150,210);
+        text("Cost: 120",width-150,250);
+      }else if(this.upgradeTop===3){
+        fill(0);
+        text("All Upgrades Bought",width-150,210);
+      }
+      
+      fill(150,75,0);
+      rect(width-300,350,300,100);
+      if(this.upgradeBottom===1){
+        fill(0);
+        text("Sharp Shots",width-150,360);
+        text("Cost: 140",width-150,400);
+      }else if(this.upgradeBottom===2){
+        fill(0);
+        text("Razor Sharp Shots",width-150,360);
+        text("Cost: 170",width-150,400);
+      }else if(this.upgradeBottom===3){
+        fill(0);
+        text("All Upgrades Bought",width-150,360);
+      }
+    }
   }
 
   faceBloon(bloon){
@@ -222,22 +319,25 @@ class DartMonkey{
   }
 
   shoot(){
-    theDarts.push(new Dart(this.x,this.y,this.angle));
+    theDarts.push(new Dart(this.x,this.y,this.angle,this.pierce,this.range));
   }
 }
 
 class Dart{
-  constructor(x,y,angle){
+  constructor(x,y,angle,pierce,range){
     this.x = x;
     this.y = y;
     this.angle = angle;
+    this.pierce = pierce;
+    this.range = range;
+    this.bloonsHit = 0;
     this.hostTowerX = x;
     this.hostTowerY = y;
   }
 
   move(){
-    this.y+=30*sin(this.angle);
-    this.x+=30*cos(this.angle);
+    this.y+=15*sin(this.angle);
+    this.x+=15*cos(this.angle);
     circle(this.x,this.y,3);
   }
 
@@ -245,11 +345,14 @@ class Dart{
     let done = false;
     for(var i=0; i<theBloons.length; i++){
       if(dist(this.x,this.y,theBloons[i].x,theBloons[i].y)<theBloons[i].diameter/2+1.5){
-        done = true;
         theBloons[i].pop(i);
+        this.bloonsHit++;
+        if(this.bloonsHit===this.pierce){
+          done = true;
+        }
       }
     }
-    if(dist(this.x,this.y,this.hostTowerX,this.hostTowerY)>200){
+    if(dist(this.x,this.y,this.hostTowerX,this.hostTowerY)>this.range+50){
       done = true;
     }
     return done;
@@ -351,10 +454,12 @@ class RedBloon{
   }
 
   pop(i){
+    money++;
     theBloons.splice(i,1);
   }
 
   through(i){
+    lives-=1;
     theBloons.splice(i,1);
   }
 }
@@ -399,10 +504,12 @@ class BlueBloon{
   }
 
   pop(i){
+    money++;
     theBloons.splice(i,1,new RedBloon(this.x,this.y,this.checkpoint))
   }
 
   through(i){
+    lives-=2;
     theBloons.splice(i,1);
   }
 }
@@ -447,10 +554,12 @@ class GreenBloon{
   }
 
   pop(i){
+    money++;
     theBloons.splice(i,1,new BlueBloon(this.x,this.y,this.checkpoint))
   }
 
   through(i){
+    lives-=3;
     theBloons.splice(i,1);
   }
 }
@@ -495,10 +604,12 @@ class YellowBloon{
   }
 
   pop(i){
+    money++;
     theBloons.splice(i,1,new GreenBloon(this.x,this.y,this.checkpoint))
   }
 
   through(i){
+    lives-=4;
     theBloons.splice(i,1);
   }
 }
@@ -543,10 +654,12 @@ class PinkBloon{
   }
 
   pop(i){
+    money++;
     theBloons.splice(i,1,new YellowBloon(this.x,this.y,this.checkpoint))
   }
 
   through(i){
+    lives-=5;
     theBloons.splice(i,1);
   }
 }
@@ -591,6 +704,7 @@ class BlackBloon{
   }
 
   pop(i){
+    money++;
     if(this.checkpoint%2===0){
       theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
       theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
@@ -601,6 +715,7 @@ class BlackBloon{
   }
 
   through(i){
+    lives-=11;
     theBloons.splice(i,1);
   }
 }
@@ -645,6 +760,7 @@ class WhiteBloon{
   }
 
   pop(i){
+    money++;
     if(this.checkpoint%2===0){
       theBloons.splice(i,1,new PinkBloon(this.x-5,this.y,this.checkpoint));
       theBloons.push(new PinkBloon(this.x+5,this.y,this.checkpoint));
@@ -655,6 +771,7 @@ class WhiteBloon{
   }
 
   through(i){
+    lives-=11;
     theBloons.splice(i,1);
   }
 }
