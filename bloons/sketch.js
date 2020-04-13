@@ -28,10 +28,139 @@ let roundStarted = false;
 let roundCounter = -1;
 let bloonCounter = 0;
 
+let redBloonTypes = [];
+let blueBloonTypes = [];
+let greenBloonTypes = [];
+let yellowBloonTypes = [];
+let pinkBloonTypes = [];
+let blackBloonTypes = [];
+let whiteBloonTypes = [];
+let purpleBloonTypes = [];
+let zebraBloonTypes = [];
+let rainbowBloonTypes = [];
+let ceramicBloonTypes = [];
+let leadBloonTypes = [];
+
+function preload(){
+  redNormal = loadImage('assets/BTD6Red.png');
+  redCamo = loadImage('assets/BTD6CamoRed.png');
+  redRegrow = loadImage('assets/BTD6RegrowRed.png');
+  redCamoRegrow = loadImage('assets/BTD6CamoRegrowRed.png');
+  redBloonTypes.push(redNormal);
+  redBloonTypes.push(redCamo);
+  redBloonTypes.push(redRegrow);
+  redBloonTypes.push(redCamoRegrow);
+  blueNormal = loadImage('assets/BTD6Blue.png');
+  blueCamo = loadImage('assets/BTD6CamoBlue.png');
+  blueRegrow = loadImage('assets/BTD6RegrowBlue.png');
+  blueCamoRegrow = loadImage('assets/BTD6CamoRegrowBlue.png');
+  blueBloonTypes.push(blueNormal);
+  blueBloonTypes.push(blueCamo);
+  blueBloonTypes.push(blueRegrow);
+  blueBloonTypes.push(blueCamoRegrow);
+  greenNormal = loadImage('assets/BTD6Green.png');
+  greenCamo = loadImage('assets/BTD6CamoGreen.png');
+  greenRegrow = loadImage('assets/BTD6RegrowGreen.png');
+  greenCamoRegrow = loadImage('assets/BTD6CamoRegrowGreen.png');
+  greenBloonTypes.push(greenNormal);
+  greenBloonTypes.push(greenCamo);
+  greenBloonTypes.push(greenRegrow);
+  greenBloonTypes.push(greenCamoRegrow);
+  yellowNormal = loadImage('assets/BTD6Yellow.png');
+  yellowCamo = loadImage('assets/BTD6CamoYellow.png');
+  yellowRegrow = loadImage('assets/BTD6RegrowYellow.png');
+  yellowCamoRegrow = loadImage('assets/BTD6CamoRegrowYellow.png');
+  yellowBloonTypes.push(yellowNormal);
+  yellowBloonTypes.push(yellowCamo);
+  yellowBloonTypes.push(yellowRegrow);
+  yellowBloonTypes.push(yellowCamoRegrow);
+  pinkNormal = loadImage('assets/BTD6Pink.png');
+  pinkCamo = loadImage('assets/BTD6CamoPink.png');
+  pinkRegrow = loadImage('assets/BTD6RegrowPink.png');
+  pinkCamoRegrow = loadImage('assets/BTD6CamoRegrowPink.png');
+  pinkBloonTypes.push(pinkNormal);
+  pinkBloonTypes.push(pinkCamo);
+  pinkBloonTypes.push(pinkRegrow);
+  pinkBloonTypes.push(pinkCamoRegrow);
+  blackNormal = loadImage('assets/BTD6Black.png');
+  blackCamo = loadImage('assets/BTD6CamoBlack.png');
+  blackRegrow = loadImage('assets/BTD6RegrowBlack.png');
+  blackCamoRegrow = loadImage('assets/BTD6CamoRegrowBlack.png');
+  blackBloonTypes.push(blackNormal);
+  blackBloonTypes.push(blackCamo);
+  blackBloonTypes.push(blackRegrow);
+  blackBloonTypes.push(blackCamoRegrow);
+  whiteNormal = loadImage('assets/BTD6White.png');
+  whiteCamo = loadImage('assets/BTD6CamoWhite.png');
+  whiteRegrow = loadImage('assets/BTD6RegrowWhite.png');
+  whiteCamoRegrow = loadImage('assets/BTD6CamoRegrowWhite.png');
+  whiteBloonTypes.push(whiteNormal);
+  whiteBloonTypes.push(whiteCamo);
+  whiteBloonTypes.push(whiteRegrow);
+  whiteBloonTypes.push(whiteCamoRegrow);
+  purpleNormal = loadImage('assets/BTD6Purple.png');
+  purpleCamo = loadImage('assets/BTD6CamoPurple.png');
+  purpleRegrow = loadImage('assets/BTD6RegrowPurple.png');
+  purpleCamoRegrow = loadImage('assets/BTD6CamoRegrowPurple.png');
+  purpleBloonTypes.push(purpleNormal);
+  purpleBloonTypes.push(purpleCamo);
+  purpleBloonTypes.push(purpleRegrow);
+  purpleBloonTypes.push(purpleCamoRegrow);
+  zebraNormal = loadImage('assets/BTD6Zebra.png');
+  zebraCamo = loadImage('assets/BTD6CamoZebra.png');
+  zebraRegrow = loadImage('assets/BTD6RegrowZebra.png');
+  zebraCamoRegrow = loadImage('assets/BTD6CamoRegrowZebra.png');
+  zebraBloonTypes.push(zebraNormal);
+  zebraBloonTypes.push(zebraCamo);
+  zebraBloonTypes.push(zebraRegrow);
+  zebraBloonTypes.push(zebraCamoRegrow);
+  rainbowNormal = loadImage('assets/BTD6Rainbow.png');
+  rainbowCamo = loadImage('assets/BTD6CamoRainbow.png');
+  rainbowRegrow = loadImage('assets/BTD6RegrowRainbow.png');
+  rainbowCamoRegrow = loadImage('assets/BTD6CamoRegrowRainbow.png');
+  rainbowBloonTypes.push(rainbowNormal);
+  rainbowBloonTypes.push(rainbowCamo);
+  rainbowBloonTypes.push(rainbowRegrow);
+  rainbowBloonTypes.push(rainbowCamoRegrow);
+  ceramicNormal = loadImage('assets/BTD6Ceramic.png');
+  ceramicCamo = loadImage('assets/BTD6CamoCeramic.png');
+  ceramicRegrow = loadImage('assets/BTD6RegrowCeramic.png');
+  ceramicCamoRegrow = loadImage('assets/BTD6CamoRegrowCeramic.png');
+  ceramicFortified = loadImage('assets/FortifiedCeramic.png');
+  ceramicFortifiedCamo = loadImage('assets/FortifiedCamoCeramic.png');
+  ceramicFortifiedRegrow = loadImage('assets/FortifiedRegrowCeramic.png');
+  ceramicFortifiedCamoRegrow = loadImage('assets/FortifiedCamoRegrowCeramic.png');
+  ceramicBloonTypes.push(ceramicNormal);
+  ceramicBloonTypes.push(ceramicCamo);
+  ceramicBloonTypes.push(ceramicRegrow);
+  ceramicBloonTypes.push(ceramicCamoRegrow);
+  ceramicBloonTypes.push(ceramicFortified);
+  ceramicBloonTypes.push(ceramicFortifiedCamo);
+  ceramicBloonTypes.push(ceramicFortifiedRegrow);
+  ceramicBloonTypes.push(ceramicFortifiedCamoRegrow);
+  leadNormal = loadImage('assets/BTD6Lead.png');
+  leadCamo = loadImage('assets/BTD6CamoLead.png');
+  leadRegrow = loadImage('assets/BTD6RegrowLead.png');
+  leadCamoRegrow = loadImage('assets/BTD6CamoRegrowLead.png');
+  leadFortified = loadImage('assets/FortifiedLead.png');
+  leadFortifiedCamo = loadImage('assets/FortifiedCamoLead.png');
+  leadFortifiedRegrow = loadImage('assets/FortifiedRegrowLead.png');
+  leadFortifiedCamoRegrow = loadImage('assets/FortifiedCamoRegrowLead.png');
+  leadBloonTypes.push(leadNormal);
+  leadBloonTypes.push(leadCamo);
+  leadBloonTypes.push(leadRegrow);
+  leadBloonTypes.push(leadCamoRegrow);
+  leadBloonTypes.push(leadFortified);
+  leadBloonTypes.push(leadFortifiedCamo);
+  leadBloonTypes.push(leadFortifiedRegrow);
+  leadBloonTypes.push(leadFortifiedCamoRegrow);
+}
+
 function setup(){
   createCanvas(windowWidth, windowHeight);
   playAreaWidth = width-300;
   strokeWeight(3);
+  imageMode(CENTER);
   createTrack();
 
   let dm = {
@@ -1080,6 +1209,7 @@ function mouseClicked(){
           money-=295;
           theIceMonkeys[i].upgradeBottom++;
           theIceMonkeys[i].pierce = 1;
+          theIceMonkeys[i].canPopLead = true;
         }
       }
     }
@@ -1099,6 +1229,10 @@ class DartMonkey{
     this.pierce = 1;
     this.range = 150;
     this.canSeeCamo = false;
+    this.canPopLead = false;
+    this.canPopPurple = true;
+    this.canPopIce = false;
+    this.canPopBlack = true;
     this.upgradeTop = 1;
     this.upgradeBottom = 1;
     this.id = id;
@@ -1133,7 +1267,7 @@ class DartMonkey{
       dartId/=10;
     }
     dartId+=this.id;
-    theDarts.push(new Dart(this.x,this.y,this.angle,this.pierce,this.range,dartId,3,this.canSeeCamo));
+    theDarts.push(new Dart(this.x,this.y,this.angle,this.pierce,this.range,dartId,3,this.canPopIce,this.canSeeCamo,this.canPopLead,this.canPopPurple,this.canPopBlack));
   }
 }
 
@@ -1148,6 +1282,10 @@ class TackShooter{
     this.pierce = 1;
     this.range = 50;
     this.canSeeCamo = false;
+    this.canPopLead = false;
+    this.canPopPurple = true;
+    this.canPopIce = false;
+    this.canPopBlack = true;
     this.upgradeTop = 1;
     this.upgradeBottom = 1;
     this.id = id;
@@ -1180,7 +1318,7 @@ class TackShooter{
       }
       let angle = i*TWO_PI/8;
       dartId+=this.id;
-      theDarts.push(new Dart(this.x,this.y,angle,this.pierce,this.range,dartId,this.dartSize,this.canSeeCamo));
+      theDarts.push(new Dart(this.x,this.y,angle,this.pierce,this.range,dartId,this.dartSize,this.canPopIce,this.canSeeCamo,this.canPopLead,this.canPopPurple,this.canPopBlack));
     }
   }
 }
@@ -1196,6 +1334,10 @@ class IceMonkey{
     this.pierce = 0;
     this.range = 50;
     this.canSeeCamo = false;
+    this.canPopLead = false;
+    this.canPopPurple = true;
+    this.canPopIce = false;
+    this.canPopBlack = true;
     this.upgradeTop = 1;
     this.upgradeBottom = 1;
     this.id = id;
@@ -1219,7 +1361,7 @@ class IceMonkey{
           theBloons[i].frozen[2] = this.permaFreeze;
         }
         if(this.pierce===1){
-          theBloons[i].pop(i,-1,frameCount,false,true);
+          theBloons[i].pop(i,-1,frameCount,false,true,this.canPopIce,this.canSeeCamo,this.canPopLead,this.canPopPurple,this.canPopBlack);
         }
       }
     }
@@ -1230,7 +1372,7 @@ class IceMonkey{
 
 //creates a new projectile
 class Dart{
-  constructor(x,y,angle,pierce,range,id,size,camo){
+  constructor(x,y,angle,pierce,range,id,size,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
     this.x = x;
     this.y = y;
     this.angle = angle;
@@ -1241,8 +1383,12 @@ class Dart{
     this.hostTowerY = y;
     this.done = false;
     this.id = id;
-    this.size = size
-    this.camo = camo
+    this.size = size;
+    this.canSeeCamo = canSeeCamo;
+    this.canPopLead = canPopLead;
+    this.canPopPurple = canPopPurple;
+    this.canPopIce = canPopIce;
+    this.canPopBlack = canPopBlack;
   }
 
   move(){
@@ -1256,7 +1402,7 @@ class Dart{
     this.done = false;
     for(var i=theBloons.length-1; i>=0; i--){
       if(dist(this.x,this.y,theBloons[i].x,theBloons[i].y)<theBloons[i].diameter/2+1.5){       
-        theBloons[i].pop(i,j,this.id,true,false);
+        theBloons[i].pop(i,j,this.id,true,false,this.canPopIce,this.canSeeCamo,this.canPopLead,this.canPopPurple,this.canPopBlack);
       }
     }
     if(dist(this.x,this.y,this.hostTowerX,this.hostTowerY)>this.range*1.2){
@@ -1396,66 +1542,21 @@ class RedBloon{
   }
   
   display(i){
-    fill(255,0,0);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(200,0,0);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(redBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(redBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(redBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(200,0,0);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,this.diameter/2/2,this.diameter/5);
-        pop();
-      }
+      image(redBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(200,0,0);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          push();
-          fill(200,0,0);
-          translate(this.x,this.y);
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,0,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++;
     if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==1){
@@ -1463,7 +1564,25 @@ class RedBloon{
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1);
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -1499,6 +1618,7 @@ class RedBloon{
         }
       }
     }
+     */
   }
 
   through(i){
@@ -1570,66 +1690,21 @@ class BlueBloon{
   }
   
   display(i){
-    fill(0,0,255);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(0,0,200);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(blueBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(blueBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(blueBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(0,0,200);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(blueBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(0,0,200);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(0,0,200);
-          push();
-          translate(this.x,this.y);    
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
     if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==2){
@@ -1637,7 +1712,25 @@ class BlueBloon{
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new RedBloon(this.x,this.y,this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -1673,6 +1766,7 @@ class BlueBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -1744,67 +1838,21 @@ class GreenBloon{
   }
   
   display(i){
-    fill(0,200,0);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(0,150,0);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(greenBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(greenBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(greenBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(0,150,0);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,this.diameter/2/2,this.diameter/5);
-        pop();
-      }
+      image(greenBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(0,150,0);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(0,150,0);
-      
-          push();
-          translate(this.x,this.y);
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-     }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
     if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==3){
@@ -1812,7 +1860,25 @@ class GreenBloon{
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new BlueBloon(this.x,this.y,this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -1848,6 +1914,7 @@ class GreenBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -1919,66 +1986,21 @@ class YellowBloon{
   }
   
   display(i){
-    fill(255,255,0);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(200,200,0);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(yellowBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(yellowBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(yellowBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(200,200,0);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(yellowBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(200,200,0);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(200,200,0);
-          push();
-          translate(this.x,this.y);
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
     if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==4){
@@ -1986,7 +2008,25 @@ class YellowBloon{
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new GreenBloon(this.x,this.y,this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -2022,6 +2062,7 @@ class YellowBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -2093,66 +2134,21 @@ class PinkBloon{
   }
   
   display(i){
-    fill(255,0,255);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(200,0,200);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(pinkBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(pinkBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(pinkBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(200,0,200);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(pinkBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(200,0,200);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(200,0,200);
-          push();
-          translate(this.x,this.y);    
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
     if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==5){
@@ -2160,14 +2156,33 @@ class PinkBloon{
         theBloons.splice(i,1,new BlackBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
       }else if(this.regrow[1]===7){
         theBloons.splice(i,1,new WhiteBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
-      }
-      else if(this.regrow[1]===8){
+      }else if(this.regrow[1]===8){
         theBloons.splice(i,1,new PurpleBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }else if(this.regrow[1]>8){
+        theBloons.splice(i,1,new BlackBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
       }
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new YellowBloon(this.x,this.y,this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -2203,6 +2218,7 @@ class PinkBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -2274,75 +2290,54 @@ class BlackBloon{
   }
   
   display(i){
-    fill(100);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(0);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(blackBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(blackBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(blackBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(0);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(blackBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(0);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(0);
-          push();
-          translate(this.x,this.y);    
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
-    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==1){
-      
+    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==6){
+      if(this.regrow[1]===9){
+        theBloons.splice(i,1,new LeadBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }else if(this.regrow[1]>=10){
+        theBloons.splice(i,1,new ZebraBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
     }
   }
 
   
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo||!canPopBlack){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      this.frozen = [...this.frozen];
+      theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -2384,6 +2379,7 @@ class BlackBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -2455,74 +2451,53 @@ class WhiteBloon{
   }
   
   display(i){
-    fill(255);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(200);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(whiteBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(whiteBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(whiteBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(200);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(whiteBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(200);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(200);
-          push();
-          translate(this.x,this.y);    
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
     this.regrowTimeCounter++
-    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==1){
-      
+    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==7){
+      theBloons.splice(i,1,new ZebraBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
     }
   }
 
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo||ice){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      this.frozen = [...this.frozen];
+      theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }else if(ice){
+      theBloons[i].frozen[0] = false;
+      theBloons[i].frozen[1] = 0;
+      theBloons[i].frozen[2] = 0;
+    }
+    
+    /*
     if(ice){
       theBloons[i].frozen[0] = false;
       theBloons[i].frozen[1] = 0;
@@ -2565,6 +2540,7 @@ class WhiteBloon{
         }
       }
     }
+    */
   }
 
   through(i){
@@ -2636,75 +2612,46 @@ class PurpleBloon{
   }
   
   display(i){
-    fill(128,0,128);
-    if(this.regrow[0]){
-      push();
-      rectMode(CENTER);
-      translate(this.x,this.y);
-      rotate(PI/4);
-      noStroke()
-      rect(0,0,this.diameter/1.5,this.diameter/1.5);
-      circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-      circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-      if(this.camo){
-        fill(0);
-        circle(-this.diameter/2/1.5,0,this.diameter/5);
-        circle(0,-this.diameter/2/1.5,this.diameter/5);
-        circle(0,0,this.diameter/5);
-      }
-      pop();
+    if(this.camo&&this.regrow[0]){
+      image(purpleBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(purpleBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(purpleBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
     }else{
-      circle(this.x,this.y,this.diameter);
-      if(this.camo){
-        push();
-        noStroke();
-        fill(64,0,64);
-        translate(this.x,this.y);
-        circle(-this.diameter/2/2,0,this.diameter/5);
-        circle(0,-this.diameter/2/2,this.diameter/5);
-        circle(0,0,this.diameter/5);
-        pop();
-      }
+      image(purpleBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
     }
-    if(this.frozen[0]===true){
+    if(this.frozen[0]){
       fill(180,210,230,100);
-      if(this.regrow[0]){
-        push();
-        rectMode(CENTER);
-        translate(this.x,this.y);
-        rotate(PI/4);
-        noStroke()
-        rect(0,0,this.diameter/1.5,this.diameter/1.5);
-        circle(0,-this.diameter/2/1.5,this.diameter/1.5);
-        circle(-this.diameter/2/1.5,0,this.diameter/1.5);
-        if(this.camo){
-          fill(64,0,64);
-          circle(-this.diameter/2/1.5,0,this.diameter/5);
-          circle(0,-this.diameter/2/1.5,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-        }
-        pop();
-      }else{
-        circle(this.x,this.y,this.diameter);
-        if(this.camo){
-          fill(64,0,64);
-          push();
-          translate(this.x,this.y);    
-          circle(-this.diameter/2/2,0,this.diameter/5);
-          circle(0,-this.diameter/2/2,this.diameter/5);
-          circle(0,this.diameter/2/2,this.diameter/5);
-          pop();
-        }
-      }
-    }
-    this.regrowTimeCounter++
-    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==1){
-      
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
     }
   }
 
   
-  pop(i,j,id,dart,ice){
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo||!canPopPurple){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      this.frozen = [...this.frozen];
+      theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
     if(this.immune!==id){
       if(dart){
         if(!this.frozen[0]){
@@ -2746,10 +2693,685 @@ class PurpleBloon{
         }
       }
     }
+    */
   }
 
   through(i){
     lives-=11;
+    theBloons.splice(i,1);
+  }
+}
+
+class ZebraBloon{
+  constructor(x,y,checkpoint,id,f,ftc,regrow,camo){
+    this.x = x;
+    this.y = y;
+    this.diameter = 40;
+    this.speed = 126/60;
+    this.halfSpeed = this.speed/2;
+    this.checkpoint = checkpoint;
+    this.immune = id;
+    if(f&&ftc!==undefined){
+      this.frozen = f;
+      this.freezeTimeCounter = ftc;
+    }else{
+      this.frozen = [false,0,0];
+      this.freezeTimeCounter = 0;
+    }
+    if(regrow!==undefined){
+      this.regrow = regrow;
+      this.regrowTimeCounter = 0;
+    }else{
+      this.regrow = [false];
+      this.regrowTimeCounter = 0;
+    }
+    if(camo!==undefined){
+      this.camo = camo;
+    }else{
+      this.camo = false;
+    }
+  }
+
+  move(){
+    if(this.frozen[0]===false){
+      if(this.frozen[2]!==0){
+        if(this.freezeTimeCounter>=this.frozen[2]){
+          this.speed*=2;
+          this.freezeTimeCounter = 0;
+          this.frozen[2] = 0;
+        }else{
+          this.speed = this.halfSpeed;
+          this.freezeTimeCounter++;
+        }
+      }
+      for(var i=0; i<theTrack.length-1; i++){
+        if(dist(this.x,this.y,theTrack[i].x,theTrack[i].y)<this.speed*0.9){
+          this.x = theTrack[i].x
+          this.y = theTrack[i].y
+          this.checkpoint = i;
+        }
+      }
+      this.y-=this.speed*sin(theTrack[this.checkpoint].angle);
+      this.x-=this.speed*cos(theTrack[this.checkpoint].angle);
+    }else{
+      if(this.freezeTimeCounter>=this.frozen[1]){
+        this.frozen[1] = 0;
+        this.frozen[0] = false;
+        this.freezeTimeCounter = 0;
+      }else{
+        this.freezeTimeCounter++;
+      }
+    }
+  }
+  
+  display(i){
+    if(this.camo&&this.regrow[0]){
+      image(zebraBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(zebraBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(zebraBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
+    }else{
+      image(zebraBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
+    }
+    if(this.frozen[0]){
+      fill(180,210,230,100);
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
+    }
+    this.regrowTimeCounter++;
+    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==10){
+      theBloons.splice(i,1,new RainbowBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+  }
+
+  
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo||!canPopBlack||ice){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new BlackBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      this.frozen = [...this.frozen];
+      theBloons.push(new WhiteBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }else if(ice){
+      theBloons[i].frozen[0] = false;
+      theBloons[i].frozen[1] = 0;
+      theBloons[i].frozen[2] = 0;
+    }
+    
+    /*
+    if(this.immune!==id){
+      if(dart){
+        if(!this.frozen[0]){
+          if(this.camo){
+            if(theDarts[j].camo){
+              money++;
+              theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+              this.frozen = [...this.frozen];
+              theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            }
+          }else{
+            money++;
+            theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            this.frozen = [...this.frozen];
+            theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+          }
+        }else{
+          theDarts[j].bloonsHit+=1000;
+        }
+      }else if(ice){
+        money++;
+        theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+      if(j!==-1){
+        if(this.camo){
+          if(theDarts[j].camo){
+            theDarts[j].bloonsHit++;
+            if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+              theDarts[j].done = true;
+            }
+          }
+        }else{
+          theDarts[j].bloonsHit++;
+          if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+            theDarts[j].done = true;
+          }
+        }
+      }
+    }
+    */
+  }
+
+  through(i){
+    lives-=23;
+    theBloons.splice(i,1);
+  }
+}
+
+class RainbowBloon{
+  constructor(x,y,checkpoint,id,f,ftc,regrow,camo){
+    this.x = x;
+    this.y = y;
+    this.diameter = 40;
+    this.speed = 154/60;
+    this.halfSpeed = this.speed/2;
+    this.checkpoint = checkpoint;
+    this.immune = id;
+    if(f&&ftc!==undefined){
+      this.frozen = f;
+      this.freezeTimeCounter = ftc;
+    }else{
+      this.frozen = [false,0,0];
+      this.freezeTimeCounter = 0;
+    }
+    if(regrow!==undefined){
+      this.regrow = regrow;
+      this.regrowTimeCounter = 0;
+    }else{
+      this.regrow = [false];
+      this.regrowTimeCounter = 0;
+    }
+    if(camo!==undefined){
+      this.camo = camo;
+    }else{
+      this.camo = false;
+    }
+  }
+
+  move(){
+    if(this.frozen[0]===false){
+      if(this.frozen[2]!==0){
+        if(this.freezeTimeCounter>=this.frozen[2]){
+          this.speed*=2;
+          this.freezeTimeCounter = 0;
+          this.frozen[2] = 0;
+        }else{
+          this.speed = this.halfSpeed;
+          this.freezeTimeCounter++;
+        }
+      }
+      for(var i=0; i<theTrack.length-1; i++){
+        if(dist(this.x,this.y,theTrack[i].x,theTrack[i].y)<this.speed*0.9){
+          this.x = theTrack[i].x
+          this.y = theTrack[i].y
+          this.checkpoint = i;
+        }
+      }
+      this.y-=this.speed*sin(theTrack[this.checkpoint].angle);
+      this.x-=this.speed*cos(theTrack[this.checkpoint].angle);
+    }else{
+      if(this.freezeTimeCounter>=this.frozen[1]){
+        this.frozen[1] = 0;
+        this.frozen[0] = false;
+        this.freezeTimeCounter = 0;
+      }else{
+        this.freezeTimeCounter++;
+      }
+    }
+  }
+  
+  display(i){
+    if(this.camo&&this.regrow[0]){
+      image(rainbowBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.regrow[0]){
+      image(rainbowBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+    }else if(this.camo){
+      image(rainbowBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
+    }else{
+      image(rainbowBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
+    }
+    if(this.frozen[0]){
+      fill(180,210,230,100);
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
+    }
+    this.regrowTimeCounter++;
+    if(this.regrow[0]&&this.regrowTimeCounter>=90&&this.regrow[1]!==11){
+      theBloons.splice(i,1,new CeramicBloon(this.x,this.y,this.checkpoint,undefined,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+  }
+
+  
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      money++;
+      theBloons.splice(i,1,new ZebraBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      this.frozen = [...this.frozen];
+      theBloons.push(new ZebraBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+    }
+    if(dart&&canPop){
+      theDarts[j].bloonsHit++;
+      if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+        theDarts[j].done = true;
+      }
+    }else if(dart&&this.frozen[0]){
+      theDarts[j].done = true;
+    }
+    
+    /*
+    if(this.immune!==id){
+      if(dart){
+        if(!this.frozen[0]){
+          if(this.camo){
+            if(theDarts[j].camo){
+              money++;
+              theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+              this.frozen = [...this.frozen];
+              theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            }
+          }else{
+            money++;
+            theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            this.frozen = [...this.frozen];
+            theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+          }
+        }else{
+          theDarts[j].bloonsHit+=1000;
+        }
+      }else if(ice){
+        money++;
+        theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+      if(j!==-1){
+        if(this.camo){
+          if(theDarts[j].camo){
+            theDarts[j].bloonsHit++;
+            if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+              theDarts[j].done = true;
+            }
+          }
+        }else{
+          theDarts[j].bloonsHit++;
+          if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+            theDarts[j].done = true;
+          }
+        }
+      }
+    }
+    */
+  }
+
+  through(i){
+    lives-=47;
+    theBloons.splice(i,1);
+  }
+}
+
+class LeadBloon{
+  constructor(x,y,checkpoint,id,f,ftc,regrow,camo,fortified){
+    this.x = x;
+    this.y = y;
+    this.diameter = 40;
+    this.speed = 70/60;
+    this.halfSpeed = this.speed/2;
+    this.checkpoint = checkpoint;
+    this.immune = id;
+    if(f&&ftc!==undefined){
+      this.frozen = f;
+      this.freezeTimeCounter = ftc;
+    }else{
+      this.frozen = [false,0,0];
+      this.freezeTimeCounter = 0;
+    }
+    if(regrow!==undefined){
+      this.regrow = regrow;
+      this.regrowTimeCounter = 0;
+    }else{
+      this.regrow = [false];
+      this.regrowTimeCounter = 0;
+    }
+    if(camo!==undefined){
+      this.camo = camo;
+    }else{
+      this.camo = false;
+    }
+    if(fortified!==undefined){
+      this.fortified = fortified;
+    }else{
+      this.fortified = false;
+    }
+    if(fortified){
+      this.hitsToPop = 4;
+    }else{
+      this.hitsToPop = 1;
+    }
+    this.hits = 0;
+  }
+
+  move(){
+    if(this.frozen[0]===false){
+      if(this.frozen[2]!==0){
+        if(this.freezeTimeCounter>=this.frozen[2]){
+          this.speed*=2;
+          this.freezeTimeCounter = 0;
+          this.frozen[2] = 0;
+        }else{
+          this.speed = this.halfSpeed;
+          this.freezeTimeCounter++;
+        }
+      }
+      for(var i=0; i<theTrack.length-1; i++){
+        if(dist(this.x,this.y,theTrack[i].x,theTrack[i].y)<this.speed*0.9){
+          this.x = theTrack[i].x
+          this.y = theTrack[i].y
+          this.checkpoint = i;
+        }
+      }
+      this.y-=this.speed*sin(theTrack[this.checkpoint].angle);
+      this.x-=this.speed*cos(theTrack[this.checkpoint].angle);
+    }else{
+      if(this.freezeTimeCounter>=this.frozen[1]){
+        this.frozen[1] = 0;
+        this.frozen[0] = false;
+        this.freezeTimeCounter = 0;
+      }else{
+        this.freezeTimeCounter++;
+      }
+    }
+  }
+  
+  display(i){
+    if(this.fortified){
+      if(this.camo&&this.regrow[0]){
+        image(leadBloonTypes[7],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.regrow[0]){
+        image(leadBloonTypes[6],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.camo){
+        image(leadBloonTypes[5],this.x,this.y,this.diameter*3/4,this.diameter);
+      }else{
+        image(leadBloonTypes[4],this.x,this.y,this.diameter*3/4,this.diameter);
+      }
+    }else{
+      if(this.camo&&this.regrow[0]){
+        image(leadBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.regrow[0]){
+        image(leadBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.camo){
+        image(leadBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
+      }else{
+        image(leadBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
+      }
+    }
+    if(this.frozen[0]){
+      fill(180,210,230,100);
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
+    }
+  }
+
+  
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo||!canPopLead){
+      canPop = false;
+    }
+    if(canPop){
+      this.hits++;
+      if(this.hits>=this.hitsToPop){
+        money++;
+        theBloons.splice(i,1,new BlackBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new BlackBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+    }
+    if(dart){
+      theDarts[j].done = true;
+    }
+    
+    /*
+    if(this.immune!==id){
+      if(dart){
+        if(!this.frozen[0]){
+          if(this.camo){
+            if(theDarts[j].camo){
+              money++;
+              theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+              this.frozen = [...this.frozen];
+              theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            }
+          }else{
+            money++;
+            theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            this.frozen = [...this.frozen];
+            theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+          }
+        }else{
+          theDarts[j].bloonsHit+=1000;
+        }
+      }else if(ice){
+        money++;
+        theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+      if(j!==-1){
+        if(this.camo){
+          if(theDarts[j].camo){
+            theDarts[j].bloonsHit++;
+            if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+              theDarts[j].done = true;
+            }
+          }
+        }else{
+          theDarts[j].bloonsHit++;
+          if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+            theDarts[j].done = true;
+          }
+        }
+      }
+    }
+    */
+  }
+
+  through(i){
+    if(this.fortified){
+      lives-=26;
+    }else{
+      lives-=23;
+    }
+    theBloons.splice(i,1);
+  }
+}
+
+class CeramicBloon{
+  constructor(x,y,checkpoint,id,f,ftc,regrow,camo,fortified){
+    this.x = x;
+    this.y = y;
+    this.diameter = 40;
+    this.speed = 175/60;
+    this.halfSpeed = this.speed/2;
+    this.checkpoint = checkpoint;
+    this.immune = id;
+    if(f&&ftc!==undefined){
+      this.frozen = f;
+      this.freezeTimeCounter = ftc;
+    }else{
+      this.frozen = [false,0,0];
+      this.freezeTimeCounter = 0;
+    }
+    if(regrow!==undefined){
+      this.regrow = regrow;
+      this.regrowTimeCounter = 0;
+    }else{
+      this.regrow = [false];
+      this.regrowTimeCounter = 0;
+    }
+    if(camo!==undefined){
+      this.camo = camo;
+    }else{
+      this.camo = false;
+    }
+    if(fortified!==undefined){
+      this.fortified = fortified;
+    }else{
+      this.fortified = false;
+    }
+    if(fortified){
+      this.hitsToPop = 20;
+    }else{
+      this.hitsToPop = 10;
+    }
+    this.hits = 0;
+  }
+
+  move(){
+    if(this.frozen[0]===false){
+      if(this.frozen[2]!==0){
+        if(this.freezeTimeCounter>=this.frozen[2]){
+          this.speed*=2;
+          this.freezeTimeCounter = 0;
+          this.frozen[2] = 0;
+        }else{
+          this.speed = this.halfSpeed;
+          this.freezeTimeCounter++;
+        }
+      }
+      for(var i=0; i<theTrack.length-1; i++){
+        if(dist(this.x,this.y,theTrack[i].x,theTrack[i].y)<this.speed*0.9){
+          this.x = theTrack[i].x
+          this.y = theTrack[i].y
+          this.checkpoint = i;
+        }
+      }
+      this.y-=this.speed*sin(theTrack[this.checkpoint].angle);
+      this.x-=this.speed*cos(theTrack[this.checkpoint].angle);
+    }else{
+      if(this.freezeTimeCounter>=this.frozen[1]){
+        this.frozen[1] = 0;
+        this.frozen[0] = false;
+        this.freezeTimeCounter = 0;
+      }else{
+        this.freezeTimeCounter++;
+      }
+    }
+  }
+  
+  display(i){
+    if(this.fortified){
+      if(this.camo&&this.regrow[0]){
+        image(ceramicBloonTypes[7],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.regrow[0]){
+        image(ceramicBloonTypes[6],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.camo){
+        image(ceramicBloonTypes[5],this.x,this.y,this.diameter*3/4,this.diameter);
+      }else{
+        image(ceramicBloonTypes[4],this.x,this.y,this.diameter*3/4,this.diameter);
+      }
+    }else{
+      if(this.camo&&this.regrow[0]){
+        image(ceramicBloonTypes[3],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.regrow[0]){
+        image(ceramicBloonTypes[2],this.x,this.y,this.diameter,this.diameter);
+      }else if(this.camo){
+        image(ceramicBloonTypes[1],this.x,this.y,this.diameter*3/4,this.diameter);
+      }else{
+        image(ceramicBloonTypes[0],this.x,this.y,this.diameter*3/4,this.diameter);
+      }
+    }
+    if(this.frozen[0]){
+      fill(180,210,230,100);
+      push();
+      noStroke();
+      circle(this.x,this.y,this.diameter);
+      pop();
+    }
+  }
+
+  
+  pop(i,j,id,dart,ice,canPopIce,canSeeCamo,canPopLead,canPopPurple,canPopBlack){
+    let canPop = true;
+    if(this.immune===id||!canPopIce&&this.frozen[0]&&!ice||!canSeeCamo&&this.camo){
+      canPop = false;
+    }
+    if(canPop){
+      this.hits++;
+      if(this.hits>=this.hitsToPop){
+        money++;
+        theBloons.splice(i,1,new RainbowBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new RainbowBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+    }
+    if(dart){
+      theDarts[j].done = true;
+    }
+    
+    /*
+    if(this.immune!==id){
+      if(dart){
+        if(!this.frozen[0]){
+          if(this.camo){
+            if(theDarts[j].camo){
+              money++;
+              theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+              this.frozen = [...this.frozen];
+              theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            }
+          }else{
+            money++;
+            theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+            this.frozen = [...this.frozen];
+            theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+          }
+        }else{
+          theDarts[j].bloonsHit+=1000;
+        }
+      }else if(ice){
+        money++;
+        theBloons.splice(i,1,new PinkBloon(this.x-5*cos(theTrack[this.checkpoint].angle),this.y-5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+        this.frozen = [...this.frozen];
+        theBloons.push(new PinkBloon(this.x+5*cos(theTrack[this.checkpoint].angle),this.y+5*sin(theTrack[this.checkpoint].angle),this.checkpoint,id,this.frozen,this.freezeTimeCounter,this.regrow,this.camo));
+      }
+      if(j!==-1){
+        if(this.camo){
+          if(theDarts[j].camo){
+            theDarts[j].bloonsHit++;
+            if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+              theDarts[j].done = true;
+            }
+          }
+        }else{
+          theDarts[j].bloonsHit++;
+          if(theDarts[j].bloonsHit>=theDarts[j].pierce){
+            theDarts[j].done = true;
+          }
+        }
+      }
+    }
+    */
+  }
+
+  through(i){
+    if(this.fortified){
+      lives-=114;
+    }else{
+      lives-=104;
+    }
     theBloons.splice(i,1);
   }
 }
