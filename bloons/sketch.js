@@ -723,7 +723,6 @@ function setup(){
     r39.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
     r39.push(15);
   }
-  //special setup
   for(var i=0; i<2; i++){
     r39.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,11]));
     r39.push(10);
@@ -732,6 +731,269 @@ function setup(){
   for(var i=0; i<1; i++){
     r40.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
     r40.push(1);
+  }
+  let r41 = [];
+  for(var i=0; i<60; i++){
+    r41.push(new BlackBloon(theTrack[0].x,theTrack[0].y,0));
+    r41.push(3);
+  }
+  for(var i=0; i<60; i++){
+    r41.push(new ZebraBloon(theTrack[0].x,theTrack[0].y,0));
+    r41.push(3);
+  }
+  let r42 = [];
+  //special setup
+  for(var i=0; i<6; i++){
+    r42.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,11]));
+    r42.push(15);
+  }
+  for(var i=0; i<5; i++){
+    r42.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r42.push(10);
+  }
+  let r43 = [];
+  for(var i=0; i<10; i++){
+    r43.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r43.push(15);
+  }
+  for(var i=0; i<7; i++){
+    r43.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r43.push(15);
+  }
+  let r44 = [];
+  for(var i=0; i<35; i++){
+    r44.push(new ZebraBloon(theTrack[0].x,theTrack[0].y,0));
+    r44.push(15);
+  }
+  for(var i=0; i<15; i++){
+    r44.push(new ZebraBloon(theTrack[0].x,theTrack[0].y,0));
+    r44.push(5);
+  }
+  let r45 = [];
+  for(var i=0; i<25; i++){
+    r45.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r45.push(10);
+  }
+  for(var i=0; i<10; i++){
+    r45.push(new PurpleBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r45.push(10);
+  }
+  for(var i=0; i<100; i++){
+    r45.push(new PinkBloon(theTrack[0].x,theTrack[0].y,0));
+    r45.push(1);
+  }
+  for(var i=0; i<4; i++){
+    r45.push(new LeadBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,undefined,true));
+    r45.push(5);
+  }
+  let r46 = [];
+  for(var i=0; i<4; i++){
+    r46.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,undefined,true));
+    r46.push(20);
+  }
+  let r47 = [];
+  for(var i=0; i<12; i++){
+    r47.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r47.push(10);
+  }
+  for(var i=0; i<70; i++){
+    r47.push(new PinkBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r47.push(3);
+  }
+  let r48 = [];
+  for(var i=0; i<40; i++){
+    r48.push(new PinkBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,5]));
+    r48.push(5);
+  }
+  for(var i=0; i<30; i++){
+    r48.push(new PurpleBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,8],true));
+    r48.push(5);
+  }
+  for(var i=0; i<40; i++){
+    r48.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r48.push(5);
+  }
+  for(var i=0; i<3; i++){
+    r48.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,undefined,true));
+    r48.push(3);
+  }
+  let r49 = [];
+  for(var i=0; i<20; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(1);
+  }
+  for(var i=0; i<74; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+  }
+  for(var i=0; i<10; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(1);
+  }
+  for(var i=0; i<74; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+  }
+  for(var i=0; i<20; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new ZebraBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(1);
+  }
+  for(var i=0; i<75; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+  }
+  for(var i=0; i<10; i++){
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new GreenBloon(theTrack[0].x,theTrack[0].y,0));
+    r49.push(3);
+    r49.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,11]));
+    r49.push(1);
+  }
+  let r50 = [];
+  for(var i=0; i<1; i++){
+    r50.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+    r50.push(5);
+  }
+  for(var i=0; i<8; i++){
+    r50.push(new LeadBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,undefined,true));
+    r50.push(10);
+  }
+  for(var i=0; i<20; i++){
+    r50.push(new RedBloon(theTrack[0].x,theTrack[0].y,0));
+    r50.push(5);
+  }
+  for(var i=0; i<20; i++){
+    r50.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r50.push(10);
+  }
+  for(var i=0; i<1; i++){
+    r50.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+    r50.push(5);
+  }
+  let r51 = [];
+  for(var i=0; i<15; i++){
+    r51.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r51.push(10);
+  }
+  for(var i=0; i<10; i++){
+    r51.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,11]));
+    r51.push(5);
+  }
+  let r52 = [];
+  for(var i=0; i<25; i++){
+    r52.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r52.push(5);
+  }
+  for(var i=0; i<10; i++){
+    r52.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r52.push(10);
+    if(i%5===0){
+      r52.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r52.push(1);
+    }
+  }
+  let r53 = [];
+  for(var i=0; i<50; i++){
+    r53.push(new PinkBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r53.push(3);
+  }
+  for(var i=0; i<30; i++){
+    r53.push(new PinkBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r53.push(3);
+    if(i%10===0){
+      r53.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r53.push(1);
+    }
+  }
+  let r54 = [];
+  for(var i=0; i<35; i++){
+    r54.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r54.push(5);
+    if(i%18===0){
+      r54.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r54.push(1);
+    }
+  }
+  let r55 = [];
+  for(var i=0; i<35; i++){
+    r55.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    if(i%9===0){
+      r55.push(60);
+    }else{
+      r55.push(3);
+    }
+  }
+  for(var i=0; i<1; i++){
+    r55.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+    r55.push(1);
+  }
+  let r56 = [];
+  for(var i=0; i<48; i++){
+    r56.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r56.push(5);
+  }
+  for(var i=0; i<1; i++){
+    r56.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+    r56.push(1);
+  }
+  let r57 = [];
+  for(var i=0; i<40; i++){
+    r57.push(new RainbowBloon(theTrack[0].x,theTrack[0].y,0));
+    r57.push(15);
+    if(i%21===0){
+      r57.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r57.push(1);
+      r57.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r57.push(10);
+    }
+  }
+  let r58 = [];
+  for(var i=0; i<15; i++){
+    if(i%5===0){
+      r58.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r58.push(1);
+    }
+    r58.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r58.push(15);
+  }
+  for(var i=0; i<10; i++){
+    if(i%5===0){
+      r58.push(new MOABBloon(theTrack[0].x,theTrack[0].y,0));
+      r58.push(1);
+    }
+    r58.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,undefined,true));
+    r58.push(15);
+  }
+  let r59 = [];
+  for(var i=0; i<20; i++){
+    r59.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0));
+    r59.push(15);
+  }
+  for(var i=0; i<50; i++){
+    r59.push(new LeadBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,undefined,true));
+    r59.push(3);
+  }
+  for(var i=0; i<10; i++){
+    r59.push(new CeramicBloon(theTrack[0].x,theTrack[0].y,0,undefined,undefined,undefined,[true,12]));
+    r59.push(30);
+  }
+  let r60 = [];
+  for(var i=0; i<1; i++){
+    r60.push(new BFBBloon(theTrack[0].x,theTrack[0].y,0));
+    r60.push(1);
   }
   /*
     for regen:
@@ -750,7 +1012,8 @@ function setup(){
   */
   theRounds.push(r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17
     ,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35
-    ,r36,r37,r38,r39,r40);
+    ,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48,r49,r50,r51,r52,r53
+    ,r54,r55,r56,r57,r58,r59,r60);
 }
 
 function draw(){
