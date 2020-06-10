@@ -5,15 +5,29 @@ let speed = 1;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   fill(0);
-
   
-  /*
-  things.push(new Thing(width*2/4,height*2/4,25,2000000,random(0,255),0,0));
-  things.push(new Thing(width*2/4,height*3/4,.25,20000,random(0,255),1,0));
-  things.push(new Thing(width*2/4,height*1/4,.25,20000,random(0,255),-1,0));
-  things.push(new Thing(width*1/4,height*2/4,2.5,200000,random(0,255),0,0.5));
-  things.push(new Thing(width*3/4,height*2/4,2.5,200000,random(0,255),0,-0.5));
-  */
+  things.push(new Thing(width/2,height/2,25,2000000,random(0,255),0,0));
+
+  things.push(new Thing(width/2,height/2+100,.025,2000,random(0,255),1,0));
+  things.push(new Thing(width/2+100,height/2,.025,2000,random(0,255),0,-1));
+  things.push(new Thing(width/2-100,height/2,.025,2000,random(0,255),0,1));
+  things.push(new Thing(width/2,height/2-100,.025,2000,random(0,255),-1,0));
+
+  things.push(new Thing(width/2+100,height/2+100,.25,20000,random(0,255),-1.415/2,1.415/2));
+  things.push(new Thing(width/2+100,height/2-100,.25,20000,random(0,255),1.415/2,1.415/2));
+  things.push(new Thing(width/2-100,height/2+100,.25,20000,random(0,255),-1.415/2,-1.415/2));
+  things.push(new Thing(width/2-100,height/2-100,.25,20000,random(0,255),1.415/2,-1.415/2));
+
+  things.push(new Thing(width/2,height/2+300,2.5,200000,random(0,255),0.85,0));
+  things.push(new Thing(width/2+300,height/2,2.5,200000,random(0,255),0,-0.85));
+  things.push(new Thing(width/2-300,height/2,2.5,200000,random(0,255),0,0.85));
+  things.push(new Thing(width/2,height/2-300,2.5,200000,random(0,255),-0.85,0));
+
+  things.push(new Thing(width/2+300,height/2+300,2.5,200000,random(0,255),-1.115/2,1.115/2));
+  things.push(new Thing(width/2+300,height/2-300,2.5,200000,random(0,255),1.115/2,1.115/2));
+  things.push(new Thing(width/2-300,height/2+300,2.5,200000,random(0,255),-1.115/2,-1.115/2));
+  things.push(new Thing(width/2-300,height/2-300,2.5,200000,random(0,255),1.115/2,-1.115/2));
+  
   /*
   things.push(new Thing(width*8/16,height*8/16,25,2000000,random(0,255),0,0));
   things.push(new Thing(width*8/16,height*5/16,2,2000,random(0,255),-1.5,0));
@@ -140,7 +154,7 @@ class Thing{
 }
 
 function mouseClicked(){
-  //things.push(new Thing(mouseX,mouseY,20,20,random(0,255),0))
+  things.push(new Thing(mouseX,mouseY,2.5,200000,random(0,255),1,0))
 }
 
 function keyPressed(){
