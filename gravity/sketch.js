@@ -7,12 +7,12 @@ function setup() {
   fill(0);
   
   things.push(new Thing(width/2,height/2,25,2000000,random(0,255),0,0));
-
+  /*
   things.push(new Thing(width/2,height/2+100,.025,2000,random(0,255),1,0));
   things.push(new Thing(width/2+100,height/2,.025,2000,random(0,255),0,-1));
   things.push(new Thing(width/2-100,height/2,.025,2000,random(0,255),0,1));
   things.push(new Thing(width/2,height/2-100,.025,2000,random(0,255),-1,0));
-
+  */
   things.push(new Thing(width/2+100,height/2+100,.25,20000,random(0,255),-1.415/2,1.415/2));
   things.push(new Thing(width/2+100,height/2-100,.25,20000,random(0,255),1.415/2,1.415/2));
   things.push(new Thing(width/2-100,height/2+100,.25,20000,random(0,255),-1.415/2,-1.415/2));
@@ -38,7 +38,7 @@ function setup() {
 }
 
 function draw(){
-  background(220);
+  background(220,5);
   if(speed>=1){
     for(var z=1; z<=speed; z++){
       doThings();
@@ -48,7 +48,7 @@ function draw(){
   }
   for(var i=things.length-1; i>=0; i--){
     things[i].display();
-    things[i].showMovement();
+    //things[i].showMovement();
   }
   stroke(0);
   fill(0);
