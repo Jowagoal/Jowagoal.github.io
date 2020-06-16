@@ -2,13 +2,18 @@ let things = [];
 const G = 0.0000000000667408;
 let speed = 1;
 
+function preload(){
+  inconsolata = loadFont('assets/Inconsolata.otf');
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   fill(0);
+  textFont(inconsolata);
+  textSize(25);
+  textAlign(CENTER)
   things.push(new Thing(0,0,0,0,0,0,20,2000000,0));
-  things.push(new Thing(0,100,0,1.5,0,0,2,2000,0));
-  things.push(new Thing(0,0,-100,1.5,0,0,2,2000,0));
-  things.push(new Thing(0,-100,0,0,0,1.5,2,2000,0));
+  things.push(new Thing(-50,-100,-150,0,1,0,2,200,0));
   
   /*
   
@@ -23,6 +28,9 @@ function setup() {
 function draw(){
   orbitControl();
   background(220);
+  
+
+
   if(speed>=1){
     for(var z=1; z<=speed; z++){
       doThings();
@@ -32,7 +40,7 @@ function draw(){
   }
   for(var i=things.length-1; i>=0; i--){
     things[i].display();
-    //things[i].showMovement();
+    things[i].showMovement();
   }
 }
 
@@ -105,7 +113,38 @@ class Thing{
     let m1 = this.m; 
     let m2 = thi.m;
     let r2 = Math.pow(dist(this.x,this.y,this.z,thi.x,thi.y,thi.z),2)
-    let fdirect = G*((m1*m2)/r2);
+    let fdirectXYZ = G*((m1*m2)/r2);
+
+    let opposite = dist(thi.x,this.y,this.z,thi.x,this.y,thi.z);
+    let adjacent = dist(this.x,this.y,this.z,thi.x,this.y,thi.z);
+    let thetaXZ = atan(opposite/adjacent);
+
+    opposite = dist(thi.x,thi.y,thi.z,thi.x,this.y,this.z);
+    adjacent = dist(this.x,this.y,this.z,thi.x,this.y,thi.z);
+    let thetaXYZ = atan(opposite/adjacent);
+
+    let fdirectXZ = fdirectXYZ*cos(thetaXYZ)
+    
+    let e = thi.m/this.m;
+    fdirectXZ*=e;
+    
+    if(this.x>thi.x){
+      this.fx -= fdirectXZ*cos(thetaXZ);
+    }else{
+      this.fx += fdirectXZ*cos(thetaXZ);
+    }
+    if(this.y>thi.y){
+      this.fy -= fdirectXZ*tan(thetaXYZ);
+    }else{
+      this.fy += fdirectXZ*tan(thetaXYZ);
+    }
+    if(this.z>thi.z){
+      this.fz -= fdirectXZ*sin(thetaXZ);
+    }else{
+      this.fz += fdirectXZ*sin(thetaXZ);
+    }
+
+    /*
 
     let o = this.y-thi.y;
     let a = this.x-thi.x;
@@ -127,14 +166,15 @@ class Thing{
       ez = abs((this.z-thi.z)/(this.y-thi.y));
       ey = 1-ez;
     }
-    let e = thi.m/this.m;
 
+    let e = thi.m/this.m;
     fdirect*=e;
 
     this.fx += fdirect*cos(thetaXY)*ey;
     this.fx += fdirect*cos(thetaXZ)*ez;
     this.fy += fdirect*sin(thetaXY);
     this.fz += fdirect*sin(thetaXZ);
+    */
   }
 
   move(){
