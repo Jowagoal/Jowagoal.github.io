@@ -1,7 +1,7 @@
 let theParticles = [];
 let theForce = [];
 let maxSpeed = 1;
-let forcePower = maxSpeed/25;
+let forcePower = maxSpeed/20;
 let spacing;
 
 function setup(){
