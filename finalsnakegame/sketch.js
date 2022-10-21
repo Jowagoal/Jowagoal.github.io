@@ -4,7 +4,7 @@
 
 //global variables
 
-//this variable determines the state of the program
+//this variable determines the state of the program.
 let state = "Main Menu";
 
 let gameMode;
