@@ -189,7 +189,7 @@ function preload(){
   //preloads pictures for store
   bare = loadImage('assets/no skin.PNG')
   lines = loadImage('assets/lines.PNG');
-//  iso = loadImage('assets/iso.PNG');
+  iso = loadImage('assets/iso.png');
   snakeEyes = loadImage('assets/snake eyes.PNG');
   topHat = loadImage('assets/top hat.PNG');
   train = loadImage('assets/train.PNG');
@@ -229,13 +229,13 @@ function preload(){
     picture: lines,
   };
 
-//  isotopeSkin = {
-//    name: 'Isotope',
-//    cost: 50,
-//    bought: 'no',
-//    active: 'no',
-//    picture: iso,
-//  };
+  isotopeSkin = {
+    name: 'Isotope',
+    cost: 50,
+    bought: 'no',
+    active: 'no',
+    picture: iso,
+  };
 
   eyesSkin = {
     name: 'Eyes',
@@ -2181,9 +2181,9 @@ function applySkin(r, g, b){
           line(i,-25,-25,i,25,-25);
         }
       }
-//    }else if(skin==="Isotope"){
-//      //each bady part is a sphere
-//      sphere(30,5,5);
+    }else if(skin==="Isotope"){
+      //each bady part is a sphere
+      sphere(30,5,5);
     }else if(skin==="Scales"){
       box(50);
         if(r){
