@@ -1,4 +1,4 @@
-print('Test 1)')
+console.log('Test 1)')
 // 3D Snake
 // Jordie Walter
 // Jan 20, 2019
@@ -181,7 +181,7 @@ let bufferX;
 let menuMusic;
 let gameMusic;
 
-print('test 2')
+console.log('test 2')
 
 function preload(){
   //preloads audio
@@ -193,7 +193,7 @@ function preload(){
   bare = loadImage('assets/no skin.PNG')
   lines = loadImage('assets/lines.PNG');
   iso = loadImage('assets/iso.png');
-  print('test3')
+  console.log('test3')
   snakeEyes = loadImage('assets/snake eyes.PNG');
   topHat = loadImage('assets/top hat.PNG');
   train = loadImage('assets/train.PNG');
